@@ -1,6 +1,7 @@
-import React, { useEffect, useCallback } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import { useAuth } from '../auth';
+
 
 export default () => {
   const { user } = useAuth();

@@ -21,4 +21,6 @@ if (!firebaseAdmin.apps.length) {
   });
 }
 
-export { firebaseAdmin };
+const db = firebaseAdmin.firestore();
+
+export { firebaseAdmin, db };

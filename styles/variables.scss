@@ -1,0 +1,33 @@
+@font-face {
+  font-family: Gilroy;
+  src: url(./fonts/Gilroy/GILROY-LIGHT.OTF);
+}
+
+@font-face {
+  font-family: GilroyBold;
+  src: url(./fonts/Gilroy/GILROY-EXTRABOLD.OTF);
+}
+
+@font-face {
+  font-family: OpenSans;
+  src: url(./fonts/Open_Sans/OpenSans-Regular.ttf);
+}
+
+@font-face {
+  font-family: OpenSansBold;
+  src: url(./fonts//Open_Sans/OpenSans-Bold.ttf);
+}
+
+@font-face {
+  font-family: OpenSansSemiBold;
+  src: url(./fonts//Open_Sans/OpenSans-SemiBold.ttf);
+}
+
+$primary-color: #94a9aa;
+$secondary-color: #568dc9;
+
+$primary-font: Gilroy;
+$primary-font-bold: GilroyBold;
+$secondary-font: OpenSans;
+$secondary-font-bold: OpenSansBold;
+$secondary-font-semi-bold: OpenSansSemiBold;
