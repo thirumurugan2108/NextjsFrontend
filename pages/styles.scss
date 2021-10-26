@@ -8,17 +8,18 @@
     height: 80vh;
 }
 
-
-
-
-
 * {
     box-sizing: border-box;
     font-family: $primary-font;
     letter-spacing: 1px;
   }
+
+  body {
+    margin:0;
+
+  }
   
-  input[type=text], select, textarea {
+  input[type=text],input[type=number], select, textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -34,7 +35,7 @@
     display: inline-block;
   }
   
-  input[type=submit] {
+  input[type=submit], button {
     background-color:#7fb6f3;
     padding: 12px 20px;
     border: none;
@@ -85,6 +86,3 @@
     }
   }
 
- #site_url {
-   width: 80%;
- }

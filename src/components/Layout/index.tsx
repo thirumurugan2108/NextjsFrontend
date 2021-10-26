@@ -16,7 +16,7 @@ export default function Layout({
   return (
     <>
       <header className={styles.header}>
-        <h3>Bing Mee</h3>
+        <h3 className={styles.title}>Bing Mee</h3>
       </header>
       <main>{children}</main>
     </>

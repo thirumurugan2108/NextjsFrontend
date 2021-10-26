@@ -20,6 +20,6 @@ export default () => {
           <a>Login</a>
         </Link>
       </p>
-    </div>
+ </div>
   );
 };

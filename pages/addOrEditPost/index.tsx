@@ -1,13 +1,14 @@
-import React, {  useState } from "react";
-import Layout from "../../src/components/layout";
+import React, { useState } from "react";
+import Layout from "../../src/components/Layout";
 import styles from "./addOrEditPost.module.scss";
 import { useReducer } from "react";
 import UploadBox from "../../utils/sharedComponents/uploadBox/uploadBox";
+import { createPost } from "../../utils/services/post.service";
+
 const initialState = {
-  site_url: "",
   title: "",
-  description: "",
-  image_url: "",
+  price: 0,
+  image: "",
 };
 
 function reducer(state: any, action: any) {
@@ -29,29 +30,22 @@ function reducer(state: any, action: any) {
 }
 
 const addOrEditPost = (_props: any) => {
-  //   const [email, setEmail] = useState("");
-  //   const [pass, setPass] = useState("");
-  const [title, setTitle] = useState("");
   const [image, setImage] = useState("");
-  const [   ,seturl] = useState("");
-  // const [urllist, setUrlList] = useState([]);
-  const [description, setDescription] = useState("");
+
   const [state, dispatch] = useReducer(reducer, initialState);
+
   const onChange = (e: any) => {
-    console.log(e.target.name);
+    console.log(e.target.value);
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
 
-  const minAmount = "<$200K";
-  const maxAmount = ">$1M";
-
   React.useEffect(() => {
     async function fetchurl() {
-      let url = state.site_url;
+      // let url = state.site_url;
       // 'https://www.timesnownews.com/videos/mirror-now/politics/tamil-nadu-7-day-full-lockdown-from-may/98153';
-      url = url.replaceAll("/", "%2F");
-      url = url.replaceAll(":", "%3A");
-      console.log(url);
+      // url = url.replaceAll("/", "%2F");
+      // url = url.replaceAll(":", "%3A");
+      // console.log(url);
       // await fetch(
       //   `https://api.microlink.io?url=${url}&audio=true&video=true&iframe=true`
       // )
@@ -68,82 +62,79 @@ const addOrEditPost = (_props: any) => {
       //   });
       //https://api.microlink.io?url=https%3A%2F%2Freact-firebase-js.com%2Findex.html&palette=true&audio=true&video=true&iframe=true
     }
-    if (state.site_url) {
-      fetchurl();
-    }
-  }, [state.site_url]);
+    // if (state.site_url) {
+    //   fetchurl();
+    // }
+  }, []);
 
+  const updateFile = (event: any) => {
+    console.log(event);
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    console.log(URL.createObjectURL(event.target.files[0]));
+    setImage(URL.createObjectURL(event.target.files[0]));
+
+    reader.onloadend = function (e: any) {
+      dispatch({ type: "generic", field: "image", value: reader.result });
+    }.bind(this);
+  };
+
+  const submit = () => {
+    console.log('tset');
+    createPost({
+      title: state.title,
+      image: state.image,
+      price: state.price,
+    });
+  };
   return (
     <Layout>
       <>
         <div className="formContainer">
           <h2 className="text-center">Submit Post and related Details</h2>
-          <form className={styles.form1}>
-                  <UploadBox></UploadBox>
+          <div className={styles.form1}>
+            <UploadBox updateFile={(e: any) => updateFile(e)}></UploadBox>
             <div className="row">
-              <div className="col-25">
-                <label htmlFor="fname">Link( URL )</label>
-              </div>
-              <div className="col-75">
-                <div>
-                  <input
-                    type="text"
-                    id="fname"
-                    name="site_url"
-                    className={styles.linkInput}
-                    onChange={onChange}
-                    placeholder="Your Link.."
-                  />
-                  {/* <button className={styles.RefreshBtn}>Refresh</button> */}
-                </div>
-                <label className="italicBold">Max: 70 Characters</label>
-              </div>
+              <img src={image} alt={image} width="300" />
             </div>
             <div className="row">
               <div className="col-25">
-                <label htmlFor="lname">Title</label>
+                <label htmlFor="title">Title</label>
               </div>
               <div className="col-75">
                 <input
                   type="text"
-                  id="lname"
-                  name="lastname"
-                  onChange={onChange}
-                  value={title}
+                  id="title"
+                  name="title"
+                  onChange={(e) => onChange(e)}
                   placeholder="Your Title"
                 />
-                <label className="italicBold">Max: 170 Characters</label>
+                <label className="italicBold">Max: 20 Characters</label>
               </div>
             </div>
             <div className="row">
               <div className="col-25">
-                <label htmlFor="lname">Descrption</label>
+                <label htmlFor="price">Price</label>
               </div>
               <div className="col-75">
-                <textarea
-                  id="lname"
-                  name="lastname"
-                  onChange={onChange}
-                  placeholder="Your Description"
-                  value={description}
+                <input
+                  type="number"
+                  id="price"
+                  name="price"
+                  onChange={(e) => onChange(e)}
+                  placeholder="Your price"
                 />
               </div>
             </div>
-            <div className="row">
-              <img src={image} alt={title} width="300" />
+
+            <div className="row text-center">
+              <button value="Submit" onClick={() => submit()}>
+                Submit
+              </button>
             </div>
-            <div className="row">
-              <input type="submit" value="Submit" />
-            </div>
-            <input
-                id="maxAmount"
-                type="radio"
-                value={maxAmount}
-                checked={state.fund_amount === ">$1M"}
-                name="fund_amount"
-                onChange={onChange}
-              />
-          </form>
+          </div>
         </div>
       </>
     </Layout>

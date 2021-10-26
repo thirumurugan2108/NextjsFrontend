@@ -1,13 +1,12 @@
 import React, {  useState } from "react";
-import Layout from "../src/components/layout";
+import Layout from "../src/components/Layout";
 import styles from "./createPost.module.scss";
 import { useReducer } from "react";
 const initialState = {
-  site_url: "",
-  title: "",
-  description: "",
-  image_url: "",
-};
+      "title":"",
+      "price":0,
+      "image":""
+  };
 
 function reducer(state: any, action: any) {
   switch (action.type) {

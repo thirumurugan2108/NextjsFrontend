@@ -22,6 +22,7 @@
     "@microlink/vanilla": "^5.5.5",
     "@mui/material": "^5.0.0",
     "@types/react": "^16.9.56",
+    "axios": "^0.23.0",
     "firebase": "^8.0.2",
     "firebase-admin": "^9.4.0",
     "next": "^11.1.2",

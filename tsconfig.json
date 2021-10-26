@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-  ],
+, "src/components/Toast/toastts", "src/components/Toast/content/toast.js"  ],
   "exclude": [
     "node_modules"
   ]
