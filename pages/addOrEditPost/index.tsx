@@ -31,6 +31,7 @@ function reducer(state: any, action: any) {
 
 const addOrEditPost = (_props: any) => {
   const [image, setImage] = useState("");
+  const [isUpdate, setIsUpdate] = useState(false);
 
   const [state, dispatch] = useReducer(reducer, initialState);
 
