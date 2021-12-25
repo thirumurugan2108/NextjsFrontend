@@ -2,15 +2,15 @@ import axios from "axios";
 
 const baseUrl = 'http://localhost:3001/v1/auth/';
 
-export function login(email: string, password: string) {
-    axios.post(baseUrl+ 'login',{
-        "email": "fake@example.com",
-        "password": "password1"
+export function login(username: string, password: string) {
+    return axios.post(baseUrl+ 'login',{
+      name:username,
+      password: password
       })
 }
 
 export function signup(username: string,email:string, password: string) {
-    axios.post(baseUrl+ 'register',{
+    return axios.post(baseUrl+ 'register',{
         "name": "fake name1",
         "email": "fake@example.com",
         "password": "password1"

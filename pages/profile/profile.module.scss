@@ -93,19 +93,21 @@
   background-repeat: no-repeat;
   background-size: cover;
   border-radius: 10rem;
-  
-  
-  
 }
+
 .profile {
   border-radius: 10rem;
   background-color: white;
   height: 6rem;
   width: 6rem;
-  /*   border: 1px solid black; */
   position: absolute;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+.cardHeader{
+  display: flex;
+  justify-content: space-between;
 }
 
 .slot {
@@ -116,6 +118,7 @@
   margin-top: 2rem;
   display: flex;
   justify-content: space-between;
+  flex-wrap: wrap;
   padding: 1rem;
   margin: 1rem 1rem 1rem;
   .cardEdit {
@@ -128,13 +131,20 @@
       border: 1px solid black;
     }
   }
+  input {
+    width: 70%;
+    margin: 0.5rem 0;
+    padding: 0.2rem;
+  }
+  button {
+    margin: 0 0.5rem;
+  }
 }
+
 .chatContent {
   color: grey;
   margin-top: -1rem;
 }
-
-
 
 .col {
   display: flex;
