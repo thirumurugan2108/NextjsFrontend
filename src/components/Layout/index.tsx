@@ -1,5 +1,6 @@
 // import Head from "next/head";0
 // import Image from "next/image";
+import Menu from "../Menu";
 import styles from "./layout.module.css";
 
 // import Link from "next/link";
@@ -19,6 +20,7 @@ export default function Layout({
         <h3 className={styles.title}>Bing Mee</h3>
       </header>
       <main>{children}</main>
+      <Menu></Menu>
     </>
   );
 }

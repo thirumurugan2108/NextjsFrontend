@@ -13,7 +13,7 @@ export function createPost(post:any) {
 }
 
 export function getAllpostImages() {
-  return axios.get(baseUrl, 
+  return axios.get(baseUrl+'?isVideo=false', 
     {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token')
