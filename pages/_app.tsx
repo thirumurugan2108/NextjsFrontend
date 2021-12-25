@@ -1,12 +1,15 @@
 import type { AppProps } from 'next/app';
 import { AuthProvider } from '../auth';
+import ConfigProvider from '../utils/context/postContext';
 import './styles.scss'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <AuthProvider>
-      <Component {...pageProps} />
-    </AuthProvider>
+    <ConfigProvider>
+      <AuthProvider>
+        <Component {...pageProps} />
+      </AuthProvider>
+    </ConfigProvider>
   );
 }
 export default MyApp;
