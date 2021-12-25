@@ -1,0 +1,146 @@
+.title {
+  color: white;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.main {
+  background-color: black;
+  padding-top: 1px;
+}
+.connect {
+  font-weight: bold;
+  font-size: 18px;
+  margin-left: 1rem;
+}
+
+.subTitle {
+  color: orange;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.logo {
+  border-bottom: 0.5px solid grey;
+}
+.contentSection {
+  border-radius: 15px 15px 1px 1px;
+  background-color: white;
+  position: relative;
+  margin-top: 4rem;
+  padding: 0.5rem;
+}
+
+.menu {
+  display: flex;
+  position: absolute;
+  padding: 1rem;
+  width: 100vw;
+  box-sizing: border-box;
+  bottom: 0;
+  border-top: 0.5px solid grey;
+  justify-content: space-around;
+}
+.profileIconOuter {
+  border-radius: 10rem;
+  background-color: white;
+  height: 5rem;
+  width: 5rem;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  .edit {
+    position: absolute;
+    background: url(../../assets/images/edit.svg) no-repeat;
+    width: 32%;
+    height: 32%;
+  }
+
+  &:hover {
+    background:rgb(235, 232, 232);
+    cursor: pointer;
+    .profileIconInner {
+      opacity: 0.5;
+    }
+  }
+  input {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    outline: none;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+  }
+}
+.contentSection h3 {
+  text-align: center;
+  padding-top: 3rem;
+}
+
+.profileIconInner {
+  height: 4rem;
+  width: 4rem;
+  position: absolute;
+  left: 0.5rem;
+  top: 0.5rem;
+  background-image: url("https://static.dezeen.com/uploads/2021/06/elon-musk-architect_dezeen_1704_col_1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 10rem;
+  
+  
+  
+}
+.profile {
+  border-radius: 10rem;
+  background-color: white;
+  height: 6rem;
+  width: 6rem;
+  /*   border: 1px solid black; */
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.slot {
+  box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 10%);
+  border-radius: 1rem;
+  background: #fafafa;
+  height: 30%;
+  margin-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 1rem 1rem 1rem;
+  .cardEdit {
+    background: url(../../assets/images/edit.svg) no-repeat;
+    width: 1.8rem;
+    height: 1.8rem;
+    align-self: flex-end;
+    cursor: pointer;
+    &:hover{
+      border: 1px solid black;
+    }
+  }
+}
+.chatContent {
+  color: grey;
+  margin-top: -1rem;
+}
+
+
+
+.col {
+  display: flex;
+  flex-direction: colum;
+}
+
+.alt {
+  margin: 3rem 4rem;
+}
