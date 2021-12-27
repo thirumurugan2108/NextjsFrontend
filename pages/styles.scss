@@ -8,6 +8,14 @@
     height: 80vh;
 }
 
+.razorpay-container {
+  width: 100vw !important;
+}
+
+
+#container {
+  width: 100vw !important;
+}
 * {
     box-sizing: border-box;
     font-family: $primary-font;
@@ -48,12 +56,6 @@
     background-color: $secondary-color;
   }
   
-  .formContainer {
-    border-radius: 5px;
-    background-color: #f2f2f2;
-    padding: 20px;
-  }
-
   .italicBold {
     font-style: italic;
     font-weight: bold;

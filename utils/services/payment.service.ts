@@ -1,10 +1,10 @@
 import axios from "axios";
 import { Post } from "../models/post.model";
 
-const baseUrl = 'http://localhost:3001/v1/posts/';
+const baseUrl = 'http://localhost:3001/v1/payment/';
 
-export function createPost(post:any) {
-    axios.post(baseUrl, post,
+export async function createPayment() {
+    return await axios.get(baseUrl,
     {
       headers: {
         Authorization: 'Bearer ' + localStorage.getItem('token')

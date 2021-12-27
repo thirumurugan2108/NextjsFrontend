@@ -68,7 +68,7 @@ const addOrEditPost = (_props: any) => {
   return (
     <Layout>
       <>
-        <div className="formContainer">
+        <div className={styles.formContainer}>
           <h2 className="text-center">Submit Post and related Details</h2>
           <div className={styles.form1}>
             <UploadBox updateFile={(e: any) => updateFile(e)}></UploadBox>
@@ -108,7 +108,7 @@ const addOrEditPost = (_props: any) => {
             </div>
 
             <div className="row text-center">
-              <button value="Submit" onClick={() => submit()}>
+              <button value="Submit"  className={styles.submit} onClick={() => submit()}>
                 Submit
               </button>
             </div>
