@@ -1,10 +1,20 @@
 import * as React from 'react';
+import { useRouter } from "next/router";
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 import styles from './home.module.scss'
 import { createPayment} from '../../utils/services/payment.service'
+
+import useSWR from 'swr'
+
+const fetcher = (url) => {
+  // fetch(url).then((res) => res.json())
+  console.log(url);
+}
+
+
 const style = {
   position: 'absolute',
   top: '50%',
@@ -17,10 +27,17 @@ const style = {
   p: 4,
 };
 
-export default function About() {
+export default function About(ctx) {
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const router = useRouter();
+  const query = router.query;
+  const { data, error } = useSWR(query, fetcher,{
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  })
 
   const initializeRazorpay = () => {
     return new Promise((resolve) => {
@@ -79,11 +96,19 @@ export default function About() {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
+
+  React.useEffect(()=> {
+    console.log(ctx);
+    // console.log(post)
+    // console.log(username)
+    console.log(router.query)
+  }, [])
+
   
   return (
     <div className={styles.container}>
       <div className={styles.main}>
-        <h5 className={styles.title}>WELCOME TO MY OFFICIAL WEBSITE</h5>
+        <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
         <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
 
         <div className={styles.contentSection}>

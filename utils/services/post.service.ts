@@ -7,7 +7,7 @@ export function createPost(post:any) {
     axios.post(baseUrl, post,
     {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
       }
     }).catch(e => console.log(e));
 }
@@ -16,7 +16,7 @@ export function getAllpost(isVideo: Boolean) {
   return axios.get(baseUrl+'?isVideo='+ isVideo, 
     {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
       }
     });
 }
@@ -25,7 +25,7 @@ export function upsertPost(post:Post){
   axios.post(baseUrl+'uploadImages', post,
     {
       headers: {
-        Authorization: 'Bearer ' + localStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
       }
     }).catch(e => console.log(e));
 }   

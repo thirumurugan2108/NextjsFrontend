@@ -12,7 +12,11 @@ const [isVideo,setIsVideo] = React.useState(false);
 const setConfigState = useConfigSetState();
 const router = useRouter();
   React.useEffect(()=> {
-    fetchAllImages();
+    if(sessionStorage.getItem('token')){
+      fetchAllImages();
+    } else {
+      router.push('./login');
+    }
   }, [])
 
   const fetchAllVideos = async () => {

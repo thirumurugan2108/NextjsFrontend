@@ -1,11 +1,6 @@
-// import Head from "next/head";0
-// import Image from "next/image";
 import Menu from "../Menu";
 import styles from "./layout.module.css";
 
-// import Link from "next/link";
-
-// const name = "Thiru";
 export const siteTitle = "Next.js Sample Website";
 
 const newLocal = <header className={styles.header}>

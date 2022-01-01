@@ -1,3 +1,4 @@
+import { useRouter } from "next/dist/client/router";
 import React, { useReducer, useState } from "react";
 import { login } from "../utils/services/user.service";
 import styles from "./login.module.scss";
@@ -32,6 +33,8 @@ export default (_props) => {
 
   const [open, setOpen] = React.useState(false);
 
+  const router = useRouter();
+
   const handleClick = () => {
     setOpen(true);
   };
@@ -47,8 +50,9 @@ export default (_props) => {
   const loginOrSignUp = () => {
     if (isLogin) {
       login(state.username, state.password).then(data => {
-        console.log(data.data.tokens.access.token);
-        localStorage.setItem('token',data.data.tokens.access.token);
+        sessionStorage.setItem('token',data.data.tokens.access.token);
+        router.push('./service-history');
+        // router.back();
       });
     }
   }
