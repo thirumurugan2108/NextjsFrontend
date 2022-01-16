@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../src/components/Layout";
+import Layout from "../../src/components/layout";
 import styles from './profile.module.scss';
 import { getExtensionFromFileName } from '../../utils/common/commonUtil'
 

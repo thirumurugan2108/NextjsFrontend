@@ -1,6 +1,6 @@
 import {useState, useReducer, useEffect} from 'react';
 import { useRouter } from "next/router";
-
+import React from "react";
 import useSWR from 'swr'
 
 import styles from './home.module.scss'

@@ -1,5 +1,5 @@
 import React, {  useState } from "react";
-import Layout from "../src/components/Layout";
+import Layout from "../src/components/layout";
 import styles from "./createPost.module.scss";
 import { useReducer } from "react";
 const initialState = {

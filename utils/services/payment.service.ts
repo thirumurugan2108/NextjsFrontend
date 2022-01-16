@@ -1,7 +1,6 @@
 import axios from "axios";
-import { Post } from "../models/post.model";
 
-const baseUrl = 'http://localhost:3001/v1/payment/';
+const baseUrl = 'http://ec2-13-126-51-246.ap-south-1.compute.amazonaws.com:3001/v1/payment/';
 
 export async function createPayment(username: String, id: String, isCard: Boolean) {
   return await axios.get(baseUrl + `?username=${username}&id=${id}&isCard=${isCard}`,

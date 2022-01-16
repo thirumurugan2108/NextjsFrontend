@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../src/components/Layout";
+import Layout from "../../src/components/layout";
 import styles from "./addOrEditPost.module.scss";
 import { useReducer } from "react";
 import { updatePost, upsertPost } from "../../utils/services/post.service";
@@ -75,7 +75,7 @@ const addOrEditPost = (_props: any) => {
     var reader = new FileReader();
     reader.readAsDataURL(file);
     setImage(URL.createObjectURL(file));
-    reader.onloadend = function (e: any) {
+    reader.onloadend = function () {
       // dispatch({ type: "generic", field: "image", value: reader.result });
       dispatch({ type: "generic", field: "imageFile", value: file });
       dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
