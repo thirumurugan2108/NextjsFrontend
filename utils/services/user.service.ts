@@ -14,5 +14,10 @@ export function signup(username: string,email:string, password: string) {
         "name": "fake name1",
         "email": "fake@example.com",
         "password": "password1"
-      })
+      });
+}
+
+
+export function getHomeDetailsByUsername (username: String){
+  return axios.get('http://localhost:3001/v1/users/public?username='+ username);
 }

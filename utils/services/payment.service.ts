@@ -3,17 +3,20 @@ import { Post } from "../models/post.model";
 
 const baseUrl = 'http://localhost:3001/v1/payment/';
 
-export async function createPayment() {
-    return await axios.get(baseUrl,
-    {
-      headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
-      }
-    }).catch(e => console.log(e));
+export async function createPayment(username: String, id: String, isCard: Boolean) {
+  return await axios.get(baseUrl + `?username=${username}&id=${id}&isCard=${isCard}`,
+  ).catch(e => console.log(e));
+}
+
+export async function verifyPayment(paymentVerificationData: any) {
+  return await axios.post(baseUrl, {
+    ...paymentVerificationData
+  },
+  );
 }
 
 export function getAllpost(isVideo: Boolean) {
-  return axios.get(baseUrl+'?isVideo='+ isVideo, 
+  return axios.get(baseUrl + '?isVideo=' + isVideo,
     {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('token')
@@ -21,11 +24,3 @@ export function getAllpost(isVideo: Boolean) {
     });
 }
 
-export function upsertPost(post:Post){
-  axios.post(baseUrl+'uploadImages', post,
-    {
-      headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
-      }
-    }).catch(e => console.log(e));
-}   

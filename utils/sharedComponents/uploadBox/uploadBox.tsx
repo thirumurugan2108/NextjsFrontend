@@ -8,11 +8,10 @@ export default function UploadBox(props:any) {
   async function onFileChange(event: any) {
     // setSelectedFile(event.target.files[0]);
     setfileName(event.target.files[0].name);
-    
-    
     props.updateFile(event);
   }
 
+  
   return (
     <>
       <div className={classes.uploadContainer}>
@@ -22,7 +21,7 @@ export default function UploadBox(props:any) {
         ) : (
           <Fragment>
             <p>
-              <strong>{fileName}</strong> file has beed added successfully..
+              <span className={classes.filename}>{fileName}</span> file has beed added successfully..
             </p>
             <p> Click here to change the file.</p>
           </Fragment>

@@ -1,7 +1,7 @@
 export interface Post {
-    uuid: String;
+    uuid?: String;
     title: String;
-    Price: String;
-    file: File;
+    price: String;
+    image: File;
     isUpdate: Boolean;
 }

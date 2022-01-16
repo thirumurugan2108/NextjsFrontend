@@ -3,8 +3,8 @@ import { Post } from "../models/post.model";
 
 const baseUrl = 'http://localhost:3001/v1/posts/';
 
-export function createPost(post:any) {
-    axios.post(baseUrl, post,
+export function updatePost(post:any) {
+    axios.post(baseUrl+ 'updatePost', post,
     {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('token')
@@ -12,8 +12,8 @@ export function createPost(post:any) {
     }).catch(e => console.log(e));
 }
 
-export function getAllpost(isVideo: Boolean) {
-  return axios.get(baseUrl+'?isVideo='+ isVideo, 
+export function getAllpost() {
+  return axios.get(baseUrl, 
     {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('token')
@@ -21,7 +21,7 @@ export function getAllpost(isVideo: Boolean) {
     });
 }
 
-export function upsertPost(post:Post){
+export function upsertPost(post:FormData){
   axios.post(baseUrl+'uploadImages', post,
     {
       headers: {

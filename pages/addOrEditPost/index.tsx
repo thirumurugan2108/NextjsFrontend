@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import Layout from "../../src/components/Layout";
 import styles from "./addOrEditPost.module.scss";
 import { useReducer } from "react";
+import { updatePost, upsertPost } from "../../utils/services/post.service";
+import { useConfigState, useConfigSetState } from "../../utils/context/postContext";
 import UploadBox from "../../utils/sharedComponents/uploadBox/uploadBox";
-import { createPost } from "../../utils/services/post.service";
-import { useConfigState } from "../../utils/context/postContext";
+import { getExtensionFromFileName } from "../../utils/common/commonUtil";
+
 const initialState = {
   title: "",
   price: 0,
@@ -16,6 +18,10 @@ function reducer(state: any, action: any) {
     case "editMode":
       return {
         ...action.payload,
+      };
+    case "clear":
+      return {
+        ...initialState
       };
     case "generic":
       return {
@@ -31,7 +37,8 @@ function reducer(state: any, action: any) {
 
 const addOrEditPost = (_props: any) => {
   const [image, setImage] = useState("");
-  const [isUpdate, setIsUpdate] = useState(false);
+  const [isImage, setIsImage] = useState(true);
+  const setConfigState = useConfigSetState();
   const configState = useConfigState();
 
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -42,38 +49,87 @@ const addOrEditPost = (_props: any) => {
   };
 
   React.useEffect(() => {
-    if(configState !== null && configState !== undefined){
-      setIsUpdate(true);
+    if (configState !== null && configState !== undefined) {
+      console.log(configState)
       dispatch({ type: "editMode", payload: configState });
+      setImage(configState.fileUrl);
+      if(configState.isVideo) {
+        setIsImage(false);
+      } else {
+        setIsImage(true);
+      }
+    }
+    return () => {
+      resetValues();
     }
   }, []);
 
-  const updateFile = (event: any) => {
+  const updloadFile = (event: any) => {
     var file = event.target.files[0];
+
+    if (file.type === 'video/mp4') {
+      setIsImage(false);
+    } else {
+      setIsImage(true);
+    }
     var reader = new FileReader();
     reader.readAsDataURL(file);
-    setImage(URL.createObjectURL(event.target.files[0]));
+    setImage(URL.createObjectURL(file));
     reader.onloadend = function (e: any) {
-      dispatch({ type: "generic", field: "image", value: reader.result });
+      // dispatch({ type: "generic", field: "image", value: reader.result });
+      dispatch({ type: "generic", field: "imageFile", value: file });
+      dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
     }.bind(this);
   };
 
   const submit = () => {
-    createPost({
-      title: state.title,
-      image: state.image,
-      price: state.price,
-    });
-  };
+
+    if (state.imageFile) {
+      let formdata = new FormData();
+      formdata.set('title', state.title);
+      formdata.set('price', state.price);
+      // ...(uuid && { uuid }),
+      if (state.uuid) {
+        formdata.set('uuid', state.uuid);
+      }
+
+      formdata.set('file', state.imageFile);
+      formdata.set('extensionName', state.extensionName);
+      upsertPost(formdata);
+    } else {
+      updatePost({
+        title: state.title,
+        price: state.price,
+        id: state.id
+      })
+    }
+  }
+
+  const addNew = () => {
+    resetValues();
+    window.scrollTo(0, 0);
+  }
+
+  function resetValues() {
+    dispatch({ type: "clear", payload: {} });
+    setConfigState({});
+    setImage('');
+  }
+
   return (
     <Layout>
       <>
         <div className={styles.formContainer}>
           <h2 className="text-center">Submit Post and related Details</h2>
           <div className={styles.form1}>
-            <UploadBox updateFile={(e: any) => updateFile(e)}></UploadBox>
+            <UploadBox updateFile={(e: any) => updloadFile(e)}></UploadBox>
             <div className="row">
-              <img src={state.image} alt={image} width="300" />
+              {image && isImage && <img src={image} alt={'image'} width="300" />}
+              {image && !isImage &&  <video
+                                    src={image}
+                                    autoPlay
+                                    className={styles.video}
+                                />}
             </div>
             <div className="row">
               <div className="col-25">
@@ -108,8 +164,11 @@ const addOrEditPost = (_props: any) => {
             </div>
 
             <div className="row text-center">
-              <button value="Submit"  className={styles.submit} onClick={() => submit()}>
+              <button value="Submit" className={styles.submit} onClick={() => submit()}>
                 Submit
+              </button>
+              <button value="Add New" className={styles.submit} onClick={() => addNew()}>
+                Add New
               </button>
             </div>
           </div>
@@ -120,3 +179,5 @@ const addOrEditPost = (_props: any) => {
 };
 
 export default addOrEditPost;
+
+

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Layout from "../../src/components/Layout";
 import styles from './profile.module.scss';
+import { getExtensionFromFileName } from '../../utils/common/commonUtil'
 
 import Image from 'next/image';
 
@@ -15,12 +16,12 @@ const initialState = {
   }]
 };
 
-function reducer(state: any, action: any) {
+function reducer(state, action) {
   switch (action.type) {
     case "editToggle":
       return {
         ...state,
-        cardlist: state.cardList.map((data: any, index: any) => {
+        cardlist: state.cardList.map((data, index) => {
           if (index === action.index) {
             data.isEditMode = action.isEdit;
           }
@@ -43,28 +44,36 @@ function reducer(state: any, action: any) {
   }
 }
 
-const Profile = (_props: any) => {
+const Profile = (_props) => {
   const [fileName, setfileName] = useState();
   const [isCardEditMode, setisCardEditMode] = useState(false);
+  const [image, setImage] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  async function onFileChange(event: any) {
+  async function onFileChange(event) {
     // setSelectedFile(event.target.files[0]);
     setfileName(event.target.files[0].name);
+    const file = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(file);
+    setImage(URL.createObjectURL(file));
+    reader.onloadend = function (e) {
+      // dispatch({ type: "generic", field: "image", value: reader.result });
+      dispatch({ type: "generic", field: "imageFile", value: file });
+      dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
+    }.bind(this);
 
-
-    // props.updateFile(event);
   }
 
-  const onEdit = (index: any) => {
+  const onEdit = (index) => {
     dispatch({ type: "editToggle", index: index, isEdit: true })
   }
 
-  const onEditCancel = (index: any) => {
+  const onEditCancel = (index) => {
     dispatch({ type: "editToggle", index: index, isEdit: false })
   }
 
-  const onCardSubmit = (index: any) => {
+  const onCardSubmit = (index) => {
     dispatch({ type: "editToggle", index: index, isEdit: true })
   }
   
@@ -79,7 +88,7 @@ const Profile = (_props: any) => {
             <div className={styles.profileIconOuter}>
               <span className={styles.edit}></span>
               <input type="file" onChange={onFileChange} />
-              <div className={styles.profileIconInner}>
+              <div className={styles.profileIconInner} style={{ backgroundImage: `url(${image})` }}>
               </div>
 
             </div>
@@ -88,7 +97,7 @@ const Profile = (_props: any) => {
               <p className={styles.connect}>Let's Connect</p>
               {/* <button>Add Cards</button> */}
             </div>
-            {state.cardList && state.cardList.map((data: any, index: any) => {
+            {state.cardList && state.cardList.map((data, index) => {
 
               // ({
               //   data.isEditMode && 

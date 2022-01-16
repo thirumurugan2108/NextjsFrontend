@@ -65,15 +65,59 @@ const ServiceHistory = (_props) => {
   const onCardSubmit = (index) => {
     dispatch({ type: "editToggle", index: index, isEdit: true })
   }
-  
+
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.main}>
-         <h1>SERVICE HISTORY</h1>
-
+          <p className={styles.username}>Hi Names</p>
+          <h1 className={styles.welcome}>Welcome Back.</h1>
         </div>
 
+        <ul className={styles.accountBalance}>
+    <li>
+      <p>Total Revenue</p>
+      <p className={styles.price}>Rs.900</p>
+    </li>
+    <li>
+    <p>Balance</p>
+      <p className={styles.price}>Rs.900</p>
+    </li>
+    <li>
+      <p>Paid</p>
+      <p className={styles.price}>Rs.1000</p>
+    </li>
+        </ul>
+
+        <table className={styles.accountsTable}>
+          <thead>
+            <th>username</th>
+            <th>price</th>
+            <th>status</th>
+            <th>Edit</th>
+          </thead>
+          <tbody>
+            <tr>
+              <td> Mohan</td>
+              <td> 400</td>
+              <td> pending</td>
+              <td> <button>edit</button></td>
+            </tr>
+            <tr>
+              <td> Aashik</td>
+              <td> 400</td>
+              <td> pending</td>
+              <td> <button>edit</button></td>
+            </tr>
+            <tr>
+              <td> Santhosh</td>
+              <td> 400</td>
+              <td> pending</td>
+              <td> <button>edit</button></td>
+            </tr>
+
+          </tbody>
+        </table>
       </div>
     </Layout>
   );
