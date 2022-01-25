@@ -91,6 +91,7 @@ const PaymentDetails = (props) => {
 
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
+        console.log(data,'data');
         var options = {
             key: 'rzp_test_6mQa7wgUCs49Is', // Enter the Key ID generated from the Dashboard
             name: "Manu Arora Pvt Ltd",
@@ -199,7 +200,7 @@ const PaymentDetails = (props) => {
                             </>
                         }
                         {state.imageUrl &&
-                            <>
+                            <> 
                                 <Image
                                     loader={myLoader}
                                     src={state.imageUrl}
@@ -216,6 +217,7 @@ const PaymentDetails = (props) => {
                                 <video
                                     src={state.videoUrl}
                                     autoPlay
+                                    controls="true"
                                     className={styles.video}
                                     alt="Picture of the author"
                                 />

@@ -4,9 +4,9 @@ import Footer from "../../src/components/footer";
 import Header from "../../src/components/header";
 import styles from "./terms-and-condtions.module.scss"
 
-const newLocal = <header className={styles.header}>
-  <h3 className={styles.title}>Bing Mee</h3>
-</header>;
+// const newLocal = <header className={styles.header}>
+//   <h3 className={styles.title}>Bing Mee</h3>
+// </header>;
 
 
 const termsAndConditions = () => {

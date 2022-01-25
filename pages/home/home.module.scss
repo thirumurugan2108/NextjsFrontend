@@ -107,8 +107,8 @@
   
   
   .align {
-    color: orange;
-    border: 1px solid orange;
+    color: orangered;
+    border: 1px solid orangered;
     border-radius: 4px;
     padding:0.2rem 0.5rem;
     align-self:flex-end;
@@ -129,7 +129,7 @@
   }
   .unlock{
     border-radius: 8px;
-    background-color: orange;
+    background-color: orangered;
     cursor: pointer;
     color: white;
     text-align: center;
@@ -154,7 +154,9 @@
     padding:1rem;
     margin: 0 1rem;
     position:relative;
-    background-color:#EEEEEE;
+    // background-color:#EEEEEE;
+    // background-image: url('../../assets/images/test.jpeg');
+    background-color: lightgray;
   }
   
   
