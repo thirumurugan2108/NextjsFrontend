@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
+import Footer from '../../src/components/footer';
 
 
 const fetcher = (query) => {
@@ -174,6 +175,7 @@ export default function About(ctx) {
 
 
       </div>
+      <Footer></Footer>
 
       <PaymentDetails handleclose={handleClose}
         open={open}

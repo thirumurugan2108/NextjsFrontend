@@ -89,31 +89,32 @@ const ServiceHistory = (_props) => {
     </li>
         </ul>
 
+        <h1 className={styles.welcome}>Pending</h1>
         <table className={styles.accountsTable}>
           <thead>
             <th>username</th>
             <th>price</th>
             <th>status</th>
-            <th>Edit</th>
+            <th>View/Edit</th>
           </thead>
           <tbody>
             <tr>
               <td> Mohan</td>
               <td> 400</td>
               <td> pending</td>
-              <td> <button>edit</button></td>
+              <td> <button>View/edit</button></td>
             </tr>
             <tr>
               <td> Aashik</td>
               <td> 400</td>
               <td> pending</td>
-              <td> <button>edit</button></td>
+              <td> <button>View/edit</button></td>
             </tr>
             <tr>
               <td> Santhosh</td>
               <td> 400</td>
               <td> pending</td>
-              <td> <button>edit</button></td>
+              <td> <button>View/edit</button></td>
             </tr>
 
           </tbody>

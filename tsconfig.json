@@ -28,7 +28,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/Toast/toastts", "src/components/Toast/content/toast.js", "pages/login.jsx", "pages/influencerContent/index.jsx", "pages/home/[username].jsx", "pages/profile/index.jsx"  ],
+, "src/components/Toast/toastts", "src/components/Toast/content/toast.js", "pages/login.jsx", "pages/influencerContent/index.jsx", "pages/home/[username].jsx", "pages/addOrEditPost/index.jsx", "pages/profile/index.jsx"  ],
   "exclude": [
     "node_modules"
   ]
