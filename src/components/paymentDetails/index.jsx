@@ -189,7 +189,7 @@ const PaymentDetails = (props) => {
                                 <input type="text" id="buyerName" name="buyerName" placeholder='insta Id' onChange={(e) => onChange(e)} />
 
                                 <label htmlFor="buyerPhoneNumber">Phone number :</label>
-                                <input type="text" id="buyerPhoneNumber" name='buyerPhoneNumber' placeholder='phonenumber' onChange={(e) => onChange(e)} />
+                                <input type="number" id="buyerPhoneNumber" name='buyerPhoneNumber' placeholder='phonenumber' onChange={(e) => onChange(e)} />
 
                                 <label htmlFor="buyerEmailId">Email :</label>
                                 <input type="text" id="buyerEmailId" name="buyerEmailId" placeholder='email' onChange={(e) => onChange(e)} />

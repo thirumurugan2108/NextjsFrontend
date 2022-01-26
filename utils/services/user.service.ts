@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'http://ec2-13-126-51-246.ap-south-1.compute.amazonaws.com:3001/v1/auth/';
+const baseUrl = 'http://localhost:3001/v1/auth/';
 
 export function login(username: string, password: string) {
     return axios.post(baseUrl+ 'login',{
@@ -19,5 +19,5 @@ export function login(username: string, password: string) {
 
 
 export function getHomeDetailsByUsername (username: String){
-  return axios.get('http://ec2-13-126-51-246.ap-south-1.compute.amazonaws.com:3001/v1/users/public?username='+ username);
+  return axios.get('http://localhost:3001/v1/users/public?username='+ username);
 }

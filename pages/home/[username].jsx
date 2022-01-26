@@ -6,6 +6,7 @@ import useSWR from 'swr'
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
+import Pop18 from '../../src/components/Pop18'
 
 
 const fetcher = (query) => {
@@ -182,6 +183,7 @@ export default function About(ctx) {
         isCard={isCard}
         >
       </PaymentDetails>
+      <Pop18 open="true"></Pop18>
     </div>
   );
 }
