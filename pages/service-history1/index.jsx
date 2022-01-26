@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import Layout from "../../src/components/layout";
 import styles from './service-history1.module.scss';
-
+import styles1 from "./card.module.scss"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faFacebook} from "@fortawesome/free-brands-svg-icons";
+import { faGooglePlusSquare} from "@fortawesome/free-brands-svg-icons";
+import { faInstagram} from "@fortawesome/free-brands-svg-icons";
 import Box from '@mui/material/Box';
-// import Button from '@mui/material/Button';
+//import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
 
 import { useReducer } from "react";
+import { borderRadius } from "@mui/system";
 
 const style = {
   position: 'absolute',
@@ -16,9 +22,9 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
+  borderRadius:4,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
+  boxShadow: 4,
   p: 4,
 };
 
@@ -134,11 +140,11 @@ const ServiceHistory = (_props) => {
               <option value="success">success</option>
             </select>
             }
-            <p>
-            {!isStatusEditable &&  <button onClick={editStatus}>edit</button>}
-            {isStatusEditable &&  <button onClick={saveSatus}>save</button>}
-            {!isStatusEditable && <button onClick={viewDetails}>View</button>}
-            {isStatusEditable && <button onClick={cancelStatus}>Cancel</button>}
+            <p >
+            {!isStatusEditable &&  <button style={{marginRight:5}}onClick={editStatus}>edit</button>}
+            {isStatusEditable &&  <button  style={{marginRight:5}}onClick={saveSatus}>save</button>}
+            {!isStatusEditable && <button style={{marginRight:5}} onClick={viewDetails}>View</button>}
+            {isStatusEditable && <button  style={{marginRight:5}}onClick={cancelStatus}>Cancel</button>}
             </p>
           </div>
         </div>
@@ -150,11 +156,32 @@ const ServiceHistory = (_props) => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
+         
           <Box sx={style}>
-
-            <h1>NAme</h1>
-            <h1>phnenumber</h1>
-            <h1>instaid</h1>
+          
+          <div id={styles1.cardloginContainer}>
+    <div className={styles1.cardprofileImg}></div>
+    
+   
+    <h1>
+      Zanti
+    </h1>
+    <div className={styles1.cardsocial}>
+      
+    <a><FontAwesomeIcon icon={faFacebook}>
+    </FontAwesomeIcon></a>
+    <a><FontAwesomeIcon icon={faGooglePlusSquare}>
+    </FontAwesomeIcon></a>
+    <a><FontAwesomeIcon icon={faInstagram}>
+    </FontAwesomeIcon></a>
+    
+    </div>
+    <button id={styles1.button}><FontAwesomeIcon icon={faPhone}>
+    </FontAwesomeIcon>
+      </button>
+        
+    <button id={styles1.button}>Message</button>
+  </div>
 
           </Box>
         </Modal>
