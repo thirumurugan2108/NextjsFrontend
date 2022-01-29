@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Layout from "../../src/components/layout";
+import Layout from "../../src/components/Layout";
 import styles from "./addOrEditPost.module.scss";
 import { useReducer } from "react";
 import { updatePost, upsertPost } from "../../utils/services/post.service";

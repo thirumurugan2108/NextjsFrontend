@@ -1,5 +1,5 @@
 import React from "react";
-import Layout from "../../src/components/layout";
+import Layout from "../../src/components/Layout";
 import Footer from "../../src/components/footer";
 import Header from "../../src/components/header";
 import styles from "./terms-and-condtions.module.scss"
