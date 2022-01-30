@@ -2,49 +2,83 @@
 //     --main-radius:5px;
 //     --main-padding:5px;
 //   }
+.right{
+  width: 50%;
+  float: right;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+}
+.svg_icons{
+  transform: scale(3.6);
+  display: flex;
+  align-items: center;
+  left: 48%;
+  position: absolute;
+  top: 65%;
+}
+.left{
+  width: 50%;
+  float: left;
+  position: absolute;
+  top: 20%;
+}
 .container {
   display: grid;
   height: 120vh;
   padding: 10px;
   grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 0.1fr 0.5fr 1.5fr 0.5fr 1fr 1fr 1fr;
-  grid-template-areas: "head1 head1 head1" "head2 head2 head2" "total bal paid" "head3 head3 head3" "detail detail detail" "detail2 detail2 detail2" "detail3 detail3 detail3";
+  grid-template-rows:  1.5fr 0.5fr 1fr 1fr 1fr;
+  grid-template-areas:  "total bal paid" "head3 head3 head3" "detail detail detail" "detail2 detail2 detail2" "detail3 detail3 detail3";
   grid-gap: 0.7rem;
 }
-#head1 {
-  grid-area: head1;
-}
-#head2 {
-  grid-area: head2;
-}
+// #head1 {
+//   grid-area: head1;
+// }
+// #head2 {
+//   grid-area: head2;
+// }
 #head3 {
   grid-area: head3;
 }
 #total {
   text-align: center;
-  background-color: rgb(106, 189, 194);
+  position: relative;
+  // background-color: rgb(106, 189, 194);
   grid-area: total;
   border-radius: 20px;
+  border-style: solid;
+  border-color:  rgb(106, 189, 194);
   padding-top: 5px;
 }
 #paid {
-  text-align: center;
-  background-color: rgb(211, 115, 211);
+  text-align: center; 
+  // background-color: rgb(211, 115, 211);
+  position: relative;
   grid-area: paid;
+  border-style: solid;
+  border-color:  rgb(211, 115, 211);
   border-radius: 20px;
   padding-top: 5px;
 }
 #bal {
   text-align: center;
-  background-color: rgba(231, 182, 91, 0.938);
+  // background-color: rgba(231, 182, 91, 0.938);
+  position: relative;
   grid-area: bal;
+  border-style: solid;
+  border-color:  rgba(231, 182, 91, 0.938);
   border-radius: 20px;
   padding-top: 5px;
 }
 #detail {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  background-color: rgb(170, 119, 128);
+  grid-template-columns:0.3fr 1fr 1fr;
+  // background-color: rgb(170, 119, 128);
+  
+  box-shadow:  0px 1px gainsboro;
+  
+  position: relative;
   grid-area: detail;
   border-radius: 20px;
   padding-top: 5px;
@@ -52,29 +86,76 @@
 #detail2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  background-color: rgb(170, 119, 128);
-  grid-area: detail2;
+  // background-color: rgb(170, 119, 128);
+  
+  box-shadow:  0px 1px gainsboro;
+  
+ 
+  grid-area: detail;
   border-radius: 20px;
   padding-top: 5px;
 }
 #detail3 {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  background-color: rgb(170, 119, 128);
-  grid-area: detail3;
+  grid-template-columns: 1fr 1fr 1fr;
+  // background-color: rgb(170, 119, 128);
+  
+  box-shadow:  0px 1px gainsboro;
+  
+ 
+  grid-area: detail;
   border-radius: 20px;
   padding-top: 5px;
 }
-.column {
+.column1 {
   float: left;
-  width: 50%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5px;
+  /* Should be removed. Only for demonstration */
+}
+.column2 {
+  float: left;
+  position: absolute;
+  left: 15%;
+  top: 50%;
+  transform: translate(0, -50%);
+  padding: 10px;
+  /* Should be removed. Only for demonstration */
+}
+.column3 {
+  float: left;
+  position: absolute;
+  left: 70%;
+  top: 50%;
+  transform: translate(0, -50%);
   padding: 10px;
   /* Should be removed. Only for demonstration */
 }
 @media only screen and (max-width: 550px) {
   .container {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 0.2fr 0.5fr 1.5fr 1.5fr 0.5fr 1fr 1fr 1fr;
-    grid-template-areas: "head1 head1" "head2 head2" "total total" "bal paid" "head3 head3" "detail detail" "detail2 detail2" "detail3 detail3";
+    padding: 5px;
+    grid-template-rows:  1fr 1fr 0.1fr 0.5fr 0.5fr 0.5fr;
+    grid-template-areas:  "total total" "bal paid" "head3 head3" "detail detail" "detail2 detail2" "detail3 detail3";
   }
+  .svg_icons{
+    transform: scale(3.5);
+    display: flex;
+    align-items: center;
+    left: 45%;
+    position: absolute;
+    top: 60%;
+  }
+  .money{
+
+    display: flex;
+    align-items: center;
+    left: 25%;
+    position: absolute;
+    top: 50%;
+  }
+  
 }

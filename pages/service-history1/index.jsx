@@ -3,11 +3,13 @@ import Layout from "../../src/components/layout";
 import styles from './service-history1.module.scss';
 import styles1 from "./card.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone } from "@fortawesome/free-solid-svg-icons";
+import { faPhone, faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook} from "@fortawesome/free-brands-svg-icons";
 import { faGooglePlusSquare} from "@fortawesome/free-brands-svg-icons";
+
 import { faInstagram} from "@fortawesome/free-brands-svg-icons";
 import Box from '@mui/material/Box';
+import CreditScoreIcon from '@mui/icons-material/CreditScore';
 //import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -118,36 +120,53 @@ const ServiceHistory = (_props) => {
 
   return (
     <Layout>
-      <div className={styles.container}>
-        <p id={styles.head1}>Hi Names</p>
-
+      <h3 id={styles.head1}>Hi Names</h3>
         <h2 id={styles.head2}>Welcome Back!</h2>
-        <div id={styles.total}><h3>Total Revenue</h3><p>INR : 65478</p><a href="https://icons8.com/icon/26138/next-page"><img src="https://img.icons8.com/ios/50/000000/circled-chevron-right.png" /></a></div>
-        <div id={styles.bal}><h3>Balance</h3><p>INR : 9872</p><a href="https://icons8.com/icon/26138/next-page"><img src="https://img.icons8.com/ios/50/000000/circled-chevron-right.png" /></a></div>
-        <div id={styles.paid}><h3>Paid</h3><p>INR : 7654  </p><a href="https://icons8.com/icon/26138/next-page"><img src="https://img.icons8.com/ios/50/000000/circled-chevron-right.png" /></a></div>
+      <div className={styles.container}>
+        <div id={styles.total}> 
+        <div className={styles.left}> 
+        <a ><FontAwesomeIcon icon={faWallet} size="6x">
+    </FontAwesomeIcon></a>
+    <h3>Total Revenue</h3>
+          </div> 
+    <div className={styles.right}>
+     <h2> <FontAwesomeIcon icon={faRupeeSign} size="1x">
+    </FontAwesomeIcon> : 65478</h2> 
+      </div>
+      </div>
+        <div id={styles.bal}><h3>Balance</h3><p><FontAwesomeIcon icon={faRupeeSign} size="1x">
+    </FontAwesomeIcon> :  9872</p><a ><FontAwesomeIcon className={styles.money} icon={faMoneyCheckAlt} size="4x">
+    </FontAwesomeIcon></a></div>
+        <div id={styles.paid}><h3>Paid</h3><p><FontAwesomeIcon icon={faRupeeSign} size="1x">
+    </FontAwesomeIcon> : 7654  </p> <a ><CreditScoreIcon className={styles.svg_icons}></CreditScoreIcon></a></div>
         <h2 id={styles.head3}>Pending</h2>
 
-        <div id={styles.detail}>
+        <a  onClick={viewDetails} id={styles.detail}>
+          <div  className={styles.column1}><a ><FontAwesomeIcon icon={faArrowAltCircleRight} size="2x">
+    </FontAwesomeIcon></a></div>
 
-          <div className={styles.column} >
+          <div className={styles.column2} >
             <h3>Thirumurugan</h3>
-            <p>INR:400</p>
+            {!isStatusEditable && <p>Pending</p>}
           </div>
-          <div className={styles.column}>
-            {!isStatusEditable && <h3>Status:Pending</h3>}
+          <div className={styles.column3}>
+          <p><FontAwesomeIcon icon={faRupeeSign} size="1x">
+    </FontAwesomeIcon> : 400</p>
+    {/* <button style={{marginRight:5}} onClick={viewDetails}>View details</button>
             {isStatusEditable && <select name="status" id="status">
               <option value="pending">pending</option>
               <option value="success">success</option>
             </select>
-            }
-            <p >
+            }  */}
+            {/* <p >
             {!isStatusEditable &&  <button style={{marginRight:5}}onClick={editStatus}>edit</button>}
             {isStatusEditable &&  <button  style={{marginRight:5}}onClick={saveSatus}>save</button>}
             {!isStatusEditable && <button style={{marginRight:5}} onClick={viewDetails}>View</button>}
             {isStatusEditable && <button  style={{marginRight:5}}onClick={cancelStatus}>Cancel</button>}
-            </p>
+            </p> */}
           </div>
-        </div>
+          
+        </a>
 
 
         <Modal
