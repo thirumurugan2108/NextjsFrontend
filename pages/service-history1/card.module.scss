@@ -48,17 +48,17 @@ $darkBackground: #5b5f97;
     margin-bottom: 20px;
   }
   .cardsocial {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: block;
     width: calc(100% - 40px);
     margin: 0 auto;
-   
+    padding: 5px;
+    text-align: center;
+
     a {
       text-align: center;
       border: solid 2px $accent;
       width: 85px;
-      padding: 5px 0;
+     
       border-radius: 5px;
       &:hover {
         background: $accent;

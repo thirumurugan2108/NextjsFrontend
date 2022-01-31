@@ -3,14 +3,16 @@ import Layout from "../../src/components/layout";
 import styles from './service-history1.module.scss';
 import styles1 from "./card.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhone, faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
+import { faPhoneSquare, faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 import { faFacebook} from "@fortawesome/free-brands-svg-icons";
 import { faGooglePlusSquare} from "@fortawesome/free-brands-svg-icons";
 
 import { faInstagram} from "@fortawesome/free-brands-svg-icons";
 import Box from '@mui/material/Box';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
-//import Button from '@mui/material/Button';
+import NativeSelect from '@mui/material/NativeSelect';
+
+import Button from '@mui/material/Button';
 // import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
 
@@ -23,7 +25,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  width: 100,
   borderRadius:4,
   bgcolor: 'background.paper',
   boxShadow: 4,
@@ -117,6 +119,11 @@ const ServiceHistory = (_props) => {
   const cancelStatus = () => {
     setStatusEditabe(false);
   }
+  const [status, setstatus] = React.useState('');
+
+  const handleChange = (event) => {
+    setstatus(event.target.value);
+  };
 
   return (
     <Layout>
@@ -174,35 +181,42 @@ const ServiceHistory = (_props) => {
           onClose={hideDetails}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
+          
         >
          
-          <Box sx={style}>
+          <Box id={styles1.cardloginContainer} sx={style}>
           
-          <div id={styles1.cardloginContainer}>
-    <div className={styles1.cardprofileImg}></div>
+          
+    
     
    
     <h1>
-      Zanti
+     User details
     </h1>
     <div className={styles1.cardsocial}>
-      
-    <a><FontAwesomeIcon icon={faFacebook}>
-    </FontAwesomeIcon></a>
-    <a><FontAwesomeIcon icon={faGooglePlusSquare}>
-    </FontAwesomeIcon></a>
-    <a><FontAwesomeIcon icon={faInstagram}>
-    </FontAwesomeIcon></a>
-    
+    <div style={{padding:10}}><b>Name</b>&nbsp;&nbsp;:&nbsp;&nbsp;Thirumurugan</div>
+    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Email Id</b>&nbsp;:&nbsp;&nbsp;name123@gmail.com</div>
+    <div style={{padding:10}}><b>Info</b>&nbsp;&nbsp;:&nbsp;&nbsp;instaidname</div>
+    <div style={{padding:10}}><b>Contact</b>&nbsp;:&nbsp;&nbsp;911234567890</div>
+    <div style={{padding:10}}><b>Status</b>&nbsp;:&nbsp;&nbsp; <NativeSelect
+          defaultValue={30}
+          inputProps={{
+            name: 'age',
+            id: 'uncontrolled-native',
+          }}
+        >
+          <option value={10}>Pending</option>
+          <option value={20}>Finished</option>
+          
+        </NativeSelect></div>
     </div>
-    <button id={styles1.button}><FontAwesomeIcon icon={faPhone}>
-    </FontAwesomeIcon>
-      </button>
-        
-    <button id={styles1.button}>Message</button>
-  </div>
-
-          </Box>
+   
+  <div>
+        <Button variant="outlined" onClick={hideDetails} style={{left:50}}>Close</Button>
+  `     <Button variant="outlined" style={{left:150}}>OK</Button>
+            </div>
+  
+  </Box>
         </Modal>
       </div>
     </Layout>
