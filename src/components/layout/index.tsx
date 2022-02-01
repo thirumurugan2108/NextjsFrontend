@@ -1,11 +1,9 @@
 import Menu from "../Menu";
+import Header from "../header";
 import styles from "./layout.module.css";
 
 export const siteTitle = "Next.js Sample Website";
 
-const newLocal = <header className={styles.header}>
-  <h3 className={styles.title}>Bing Mee</h3>
-</header>;
 export default function Layout({
   children,
 }: {
@@ -14,7 +12,7 @@ export default function Layout({
 }) {
   return (
     <>
-      {newLocal}
+      <Header></Header>
       <main>{children}</main>
       <Menu></Menu>
     </>

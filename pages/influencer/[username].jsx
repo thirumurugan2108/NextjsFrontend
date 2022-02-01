@@ -25,7 +25,10 @@ const initialState = {
   videos: [],
   buyerName: '',
   buyerPhoneNumber: '',
-  buyerEmailId: ''
+  buyerEmailId: '',
+  user:{
+    photoUrl:''
+  }
 };
 
 function reducer(state, action) {
@@ -81,6 +84,9 @@ export default function About(ctx) {
   useEffect(() => {
     if (data) {
       console.log(data);
+      if(!data.data.user.photoUrl) {
+        data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
+      }
       dispatch({ type: 'fetchfromdb', payload: data.data });
     }
   }, [data]);
@@ -98,7 +104,7 @@ export default function About(ctx) {
 
         <div className={styles.contentSection}>
           <div className={styles.profileIconOuter}>
-            <div className={styles.profileIconInner}>
+            <div className={styles.profileIconInner} style={{backgroundImage: `url(${state.user?.photoUrl})`}}>
             </div>
           </div>
           <h3>{state?.user?.name}</h3>
@@ -134,7 +140,7 @@ export default function About(ctx) {
               <a onClick={handleOpen}>Booknow</a>
             </div>
           </div> */}
-          <h4 className={styles.subHeading}>Images</h4>
+          {state.images?.length != 0 && <h4 className={styles.subHeading}>Images</h4>}
           <div className={styles.parentScroll}>
             {state.images && state.images.map((data, index) => {
               return (
@@ -153,7 +159,7 @@ export default function About(ctx) {
             )}
           </div>
 
-          <h4 className={styles.subHeading}>Videos</h4>
+          {state.videos?.length != 0 && <h4 className={styles.subHeading}>Videos</h4>}
           <div className={styles.parentScroll}>
             {state.videos && state.videos.map((data, index) => {
               return (

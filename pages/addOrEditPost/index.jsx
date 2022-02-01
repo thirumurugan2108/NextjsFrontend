@@ -263,21 +263,6 @@ const addOrEditPost = (_props) => {
                 Add New
               </button>
             </div>
-            {/* <Stack spacing={2} sx={{ width: '100%' }}> */}
-            <Button variant="outlined" onClick={handleClick}>
-              Open success snackbar
-            </Button>
-            <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-              <Alert severity="error" onClose={handleClose} sx={{ width: '100%' }}>This is an error message!</Alert>
-            </Snackbar>
-            {/* <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-              Your video has been uploaded it will reflect in few moments
-            </Alert> */}
-            {/* <Alert severity="error">This is an error message!</Alert>
-            <Alert severity="warning">This is a warning message!</Alert>
-            <Alert severity="info">This is an information message!</Alert>
-            <Alert severity="success">This is a success message!</Alert> */}
-            {/* </Stack> */}
           </div>
         </div>
 

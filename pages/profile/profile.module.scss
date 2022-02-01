@@ -28,6 +28,13 @@
   position: relative;
   margin-top: 4rem;
   padding: 0.5rem;
+  .influencerLink {
+    text-align: center;
+    width: 80%;
+    margin: auto;
+    display: block;
+    word-break: break-word;
+  }
 }
 
 .menu {
