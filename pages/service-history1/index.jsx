@@ -3,11 +3,8 @@ import Layout from "../../src/components/layout";
 import styles from './service-history1.module.scss';
 import styles1 from "./card.module.scss"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhoneSquare, faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
-import { faFacebook} from "@fortawesome/free-brands-svg-icons";
-import { faGooglePlusSquare} from "@fortawesome/free-brands-svg-icons";
+import { faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 
-import { faInstagram} from "@fortawesome/free-brands-svg-icons";
 import Box from '@mui/material/Box';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
 import NativeSelect from '@mui/material/NativeSelect';
@@ -25,7 +22,7 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 100,
+  width: 400,
   borderRadius:4,
   bgcolor: 'background.paper',
   boxShadow: 4,
@@ -184,21 +181,20 @@ const ServiceHistory = (_props) => {
           
         >
          
-          <Box id={styles1.cardloginContainer} sx={style}>
+          <Box sx={style}>
           
           
-    
-    
    
-    <h1>
+   
+    <h1 style={{textAlign:"center"}}>
      User details
     </h1>
     <div className={styles1.cardsocial}>
-    <div style={{padding:10}}><b>Name</b>&nbsp;&nbsp;:&nbsp;&nbsp;Thirumurugan</div>
+    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Name</b>&nbsp;&nbsp;:&nbsp;&nbsp;Thirumurugan</div>
     <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Email Id</b>&nbsp;:&nbsp;&nbsp;name123@gmail.com</div>
-    <div style={{padding:10}}><b>Info</b>&nbsp;&nbsp;:&nbsp;&nbsp;instaidname</div>
-    <div style={{padding:10}}><b>Contact</b>&nbsp;:&nbsp;&nbsp;911234567890</div>
-    <div style={{padding:10}}><b>Status</b>&nbsp;:&nbsp;&nbsp; <NativeSelect
+    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Info</b>&nbsp;&nbsp;:&nbsp;&nbsp;instaidname</div>
+    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Contact</b>&nbsp;:&nbsp;&nbsp;911234567890</div>
+    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Status</b>&nbsp;:&nbsp;&nbsp; <NativeSelect
           defaultValue={30}
           inputProps={{
             name: 'age',
@@ -212,11 +208,13 @@ const ServiceHistory = (_props) => {
     </div>
    
   <div>
-        <Button variant="outlined" onClick={hideDetails} style={{left:50}}>Close</Button>
-  `     <Button variant="outlined" style={{left:150}}>OK</Button>
+        <Button variant="outlined" onClick={hideDetails} style={{right:250}}>Close</Button>
+  `     <Button variant="outlined" style={{left:60}}>OK</Button>
             </div>
-  
+            
+    
   </Box>
+  
         </Modal>
       </div>
     </Layout>
