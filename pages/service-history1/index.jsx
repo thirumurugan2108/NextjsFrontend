@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import Layout from "../../src/components/layout";
 import styles from './service-history1.module.scss';
 import styles1 from "./card.module.scss"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { faWallet,faMoneyCheckAlt,faRupeeSign,faArrowAltCircleRight } from "@fortawesome/free-solid-svg-icons";
 
 import Box from '@mui/material/Box';
 import CreditScoreIcon from '@mui/icons-material/CreditScore';
@@ -23,7 +23,7 @@ const style = {
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: 400,
-  borderRadius:4,
+  borderRadius: 4,
   bgcolor: 'background.paper',
   boxShadow: 4,
   p: 4,
@@ -125,38 +125,52 @@ const ServiceHistory = (_props) => {
   return (
     <Layout>
       <h3 id={styles.head1}>Hi Names</h3>
-        <h2 id={styles.head2}>Welcome Back!</h2>
+      <h2 id={styles.head2}>Welcome Back!</h2>
       <div className={styles.container}>
-        <div id={styles.total}> 
-        <div className={styles.left}> 
-        <a ><FontAwesomeIcon icon={faWallet} size="6x">
-    </FontAwesomeIcon></a>
-    <h3>Total Revenue</h3>
-          </div> 
-    <div className={styles.right}>
-     <h2> <FontAwesomeIcon icon={faRupeeSign} size="1x">
-    </FontAwesomeIcon> : 65478</h2> 
-      </div>
-      </div>
-        <div id={styles.bal}><h3>Balance</h3><p><FontAwesomeIcon icon={faRupeeSign} size="1x">
-    </FontAwesomeIcon> :  9872</p><a ><FontAwesomeIcon className={styles.money} icon={faMoneyCheckAlt} size="4x">
-    </FontAwesomeIcon></a></div>
-        <div id={styles.paid}><h3>Paid</h3><p><FontAwesomeIcon icon={faRupeeSign} size="1x">
-    </FontAwesomeIcon> : 7654  </p> <a ><CreditScoreIcon className={styles.svg_icons}></CreditScoreIcon></a></div>
+        <div id={styles.total}>
+          <div className={styles.left}>
+            <a >
+              {/* <FontAwesomeIcon icon={faWallet} size="6x"> */}
+              {/* </FontAwesomeIcon> */}
+            </a>
+            <h3>Total Revenue</h3>
+          </div>
+          <div className={styles.right}>
+            <h2>
+              {/* <FontAwesomeIcon icon={faRupeeSign} size="1x"> */}
+              {/* </FontAwesomeIcon> */}
+              : 65478</h2>
+          </div>
+        </div>
+        <div id={styles.bal}><h3>Balance</h3><p>
+          {/* <FontAwesomeIcon icon={faRupeeSign} size="1x"> */}
+          {/* </FontAwesomeIcon> */}
+          :  9872</p><a >
+            {/* <FontAwesomeIcon className={styles.money} icon={faMoneyCheckAlt} size="4x"> */}
+            {/* </FontAwesomeIcon> */}
+          </a></div>
+        <div id={styles.paid}><h3>Paid</h3><p>
+          {/* <FontAwesomeIcon icon={faRupeeSign} size="1x"> */}
+          {/* </FontAwesomeIcon> */}
+          : 7654  </p> <a ><CreditScoreIcon className={styles.svg_icons}></CreditScoreIcon></a></div>
         <h2 id={styles.head3}>Pending</h2>
 
-        <a  onClick={viewDetails} id={styles.detail}>
-          <div  className={styles.column1}><a ><FontAwesomeIcon icon={faArrowAltCircleRight} size="2x">
-    </FontAwesomeIcon></a></div>
+        <a onClick={viewDetails} id={styles.detail}>
+          <div className={styles.column1}><a >
+            {/* <FontAwesomeIcon icon={faArrowAltCircleRight} size="2x"> */}
+            {/* </FontAwesomeIcon> */}
+          </a></div>
 
           <div className={styles.column2} >
             <h3>Thirumurugan</h3>
             {!isStatusEditable && <p>Pending</p>}
           </div>
           <div className={styles.column3}>
-          <p><FontAwesomeIcon icon={faRupeeSign} size="1x">
-    </FontAwesomeIcon> : 400</p>
-    {/* <button style={{marginRight:5}} onClick={viewDetails}>View details</button>
+            <p>
+              {/* <FontAwesomeIcon icon={faRupeeSign} size="1x"> */}
+              {/* </FontAwesomeIcon> */}
+              : 400</p>
+            {/* <button style={{marginRight:5}} onClick={viewDetails}>View details</button>
             {isStatusEditable && <select name="status" id="status">
               <option value="pending">pending</option>
               <option value="success">success</option>
@@ -169,7 +183,7 @@ const ServiceHistory = (_props) => {
             {isStatusEditable && <button  style={{marginRight:5}}onClick={cancelStatus}>Cancel</button>}
             </p> */}
           </div>
-          
+
         </a>
 
 
@@ -178,43 +192,43 @@ const ServiceHistory = (_props) => {
           onClose={hideDetails}
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
-          
+
         >
-         
+
           <Box sx={style}>
-          
-          
-   
-   
-    <h1 style={{textAlign:"center"}}>
-     User details
-    </h1>
-    <div className={styles1.cardsocial}>
-    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Name</b>&nbsp;&nbsp;:&nbsp;&nbsp;Thirumurugan</div>
-    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Email Id</b>&nbsp;:&nbsp;&nbsp;name123@gmail.com</div>
-    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Info</b>&nbsp;&nbsp;:&nbsp;&nbsp;instaidname</div>
-    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Contact</b>&nbsp;:&nbsp;&nbsp;911234567890</div>
-    <div style={{padding:10}}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Status</b>&nbsp;:&nbsp;&nbsp; <NativeSelect
-          defaultValue={30}
-          inputProps={{
-            name: 'age',
-            id: 'uncontrolled-native',
-          }}
-        >
-          <option value={10}>Pending</option>
-          <option value={20}>Finished</option>
-          
-        </NativeSelect></div>
-    </div>
-   
-  <div>
-        <Button variant="outlined" onClick={hideDetails} style={{right:250}}>Close</Button>
-  `     <Button variant="outlined" style={{left:60}}>OK</Button>
+
+
+
+
+            <h1 style={{ textAlign: "center" }}>
+              User details
+            </h1>
+            <div className={styles1.cardsocial}>
+              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Name</b>&nbsp;&nbsp;:&nbsp;&nbsp;Thirumurugan</div>
+              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Email Id</b>&nbsp;:&nbsp;&nbsp;name123@gmail.com</div>
+              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Info</b>&nbsp;&nbsp;:&nbsp;&nbsp;instaidname</div>
+              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Contact</b>&nbsp;:&nbsp;&nbsp;911234567890</div>
+              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Status</b>&nbsp;:&nbsp;&nbsp; <NativeSelect
+                defaultValue={30}
+                inputProps={{
+                  name: 'age',
+                  id: 'uncontrolled-native',
+                }}
+              >
+                <option value={10}>Pending</option>
+                <option value={20}>Finished</option>
+
+              </NativeSelect></div>
             </div>
-            
-    
-  </Box>
-  
+
+            <div>
+              <Button variant="outlined" onClick={hideDetails}  >Cancel</Button>
+              <Button variant="outlined" className={styles.save} >Save</Button>
+            </div>
+
+
+          </Box>
+
         </Modal>
       </div>
     </Layout>
