@@ -24,3 +24,23 @@ export function getAllpost(isVideo: Boolean) {
     });
 }
 
+export function getpaymentdetailsByUser() {
+  return axios.get(baseUrl + 'paymentDetails',
+    {
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      }
+    });
+}
+
+export function updatePaymentStatus(id: String, status: String) {
+  return axios.post(baseUrl + 'paymentDetails', {
+    id: id,
+    status: status
+  },
+    {
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      }
+    });
+}

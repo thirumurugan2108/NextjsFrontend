@@ -199,7 +199,7 @@ const addOrEditPost = (_props) => {
 
   const SuccessMssage = () => {
     return (
-      <Alert severity="success">Your file has been saved successfully!</Alert>
+      <Alert severity="success">Your file has been saved successfully!. It will reflect in few mins</Alert>
     )
   }
 
