@@ -1,6 +1,5 @@
 import Menu from "../Menu";
 import Header from "../header";
-import styles from "./layout.module.css";
 
 export const siteTitle = "Next.js Sample Website";
 
