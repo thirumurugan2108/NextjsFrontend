@@ -12,6 +12,7 @@ import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
 import * as Yup from 'yup';
+import { useRouter } from "next/router";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -22,9 +23,12 @@ const initialState = {
   title: "",
   price: "",
   image: "",
+  isPaid: "Yes"
 };
 
-function reducer(state, action) {
+function reducer(state = initialState, action) {
+  console.log(state)
+  console.log(action);
   switch (action.type) {
     case "editMode":
       return {
@@ -54,6 +58,8 @@ const addOrEditPost = (_props) => {
   const setConfigState = useConfigSetState();
   const configState = useConfigState();
 
+  const router = useRouter();
+
   const [state, dispatch] = useReducer(reducer, initialState);
 
 
@@ -62,8 +68,6 @@ const addOrEditPost = (_props) => {
   let validationSchema = Yup.object({
     title: Yup.string()
       .required('please enter title '),
-    price: Yup.string()
-      .required('please enter price '),
   });
 
   const handleClick = () => {
@@ -78,6 +82,8 @@ const addOrEditPost = (_props) => {
     setOpen(false);
   };
 
+  console.log(state);
+
   const onChange = (e) => {
     console.log(e.target.value);
     console.log(e.target.name);
@@ -85,16 +91,22 @@ const addOrEditPost = (_props) => {
   };
 
   React.useEffect(() => {
-    if (configState !== null && configState !== undefined) {
-      console.log(configState)
-      dispatch({ type: "editMode", payload: configState });
-      setImage(configState.fileUrl);
-      if (configState.isVideo) {
-        setIsImage(false);
-      } else {
-        setIsImage(true);
+
+    if (sessionStorage.getItem('token')) {
+      if (configState !== null && configState !== undefined && Object.keys(configState).length !== 0) {
+        console.log(configState)
+        dispatch({ type: "editMode", payload: configState });
+        setImage(configState.fileUrl);
+        if (configState.isVideo) {
+          setIsImage(false);
+        } else {
+          setIsImage(true);
+        }
       }
+    } else {
+      router.push('./login');
     }
+
     return () => {
       resetValues();
     }
@@ -103,27 +115,36 @@ const addOrEditPost = (_props) => {
   const updloadFile = (event) => {
     var file = event.target.files[0];
 
-    if (file.type === 'video/mp4') {
-      setIsImage(false);
-    } else {
-      setIsImage(true);
+    if (file) {
+      if (file.type === 'video/mp4') {
+        setIsImage(false);
+      } else {
+        setIsImage(true);
+      }
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      setImage(URL.createObjectURL(file));
+      reader.onloadend = function () {
+        // dispatch({ type: "generic", field: "image", value: reader.result });
+        dispatch({ type: "generic", field: "imageFile", value: file });
+        dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
+      }.bind(this);
     }
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    setImage(URL.createObjectURL(file));
-    reader.onloadend = function () {
-      // dispatch({ type: "generic", field: "image", value: reader.result });
-      dispatch({ type: "generic", field: "imageFile", value: file });
-      dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
-    }.bind(this);
   };
 
   const submit = () => {
     window.scrollTo(0, 0);
-    if(!image){
+    if (!image) {
       validationSchema = validationSchema.shape({
         imageFile: Yup.string()
           .required('please upload a file!'),
+      });
+    }
+
+    if (state.isPaid === 'Yes') {
+      validationSchema = validationSchema.shape({
+        price: Yup.string()
+          .required('please enter price'),
       });
     }
     // console.log('state');
@@ -142,17 +163,18 @@ const addOrEditPost = (_props) => {
           setErrors([]);
           setIsSuccess(true)
           resetValues();
-            valid; // => true
-            console.log(valid);
+          valid; // => true
+          console.log(valid);
           if (state.imageFile) {
             let formdata = new FormData();
             formdata.set('title', state.title);
             formdata.set('price', state.price);
+            formdata.set('isPaid', state.isPaid);
             // ...(uuid && { uuid }),
             if (state.uuid) {
               formdata.set('uuid', state.uuid);
             }
-  
+
             formdata.set('file', state.imageFile);
             formdata.set('extensionName', state.extensionName);
             upsertPost(formdata);
@@ -160,6 +182,7 @@ const addOrEditPost = (_props) => {
             updatePost({
               title: state.title,
               price: state.price,
+              isPaid: state.isPaid,
               id: state.id
             })
           }
@@ -176,7 +199,7 @@ const addOrEditPost = (_props) => {
   }
 
   function resetValues() {
-    dispatch({ type: "clear", payload: {} });
+    dispatch({ type: "clear", payload: initialState });
     setConfigState({});
     setImage('');
   }
@@ -238,21 +261,54 @@ const addOrEditPost = (_props) => {
                 <label className="italicBold">Max: 20 Characters</label>
               </div>
             </div>
+
             <div className="row">
               <div className="col-25">
-                <label htmlFor="price">Price</label>
+                <label htmlFor="title">Visibility</label>
               </div>
-              <div className="col-75">
+              <div className="col-25">
                 <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={state.price}
+                  type="radio"
+                  id="isPaidYes"
+                  name="isPaid"
+                  value="Yes"
+                  // defaultChecked="true"
+                  checked={state.isPaid === 'Yes'}
                   onChange={(e) => onChange(e)}
-                  placeholder="Your price"
                 />
+                <label className="italicBold" htmlFor="isPaidYes">Paid</label>
+              </div>
+
+              <div className="col-25">
+                <input
+                  type="radio"
+                  id="isPaidNo"
+                  name="isPaid"
+                  value="No"
+                  checked={state.isPaid === 'No'}
+                  onChange={(e) => onChange(e)}
+                />
+                <label className="italicBold" htmlFor="isPaidNo">Free</label>
               </div>
             </div>
+
+            {
+              state.isPaid == "Yes" && <div className="row">
+                <div className="col-25">
+                  <label htmlFor="price">Price</label>
+                </div>
+                <div className="col-75">
+                  <input
+                    type="number"
+                    id="price"
+                    name="price"
+                    value={state.price}
+                    onChange={(e) => onChange(e)}
+                    placeholder="Your price"
+                  />
+                </div>
+              </div>
+            }
 
             <div className="row text-center">
 

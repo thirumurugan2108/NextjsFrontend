@@ -62,6 +62,7 @@ function reducer(state, action) {
 
 const Profile = (_props) => {
   const [fileName, setfileName] = useState();
+  const [fullName, setFullName] = useState();
   const [username, setUsername] = useState();
   const [isCardEditMode, setisCardEditMode] = useState(false);
   const [image, setImage] = useState("");
@@ -88,6 +89,7 @@ const Profile = (_props) => {
         }
       });
       setImage(userDetail.data.photoUrl);
+      setFullName(userDetail.data.fullName);
     } catch (err) {
       console.log(err);
       router.push('./login');
@@ -98,17 +100,19 @@ const Profile = (_props) => {
     // setSelectedFile(event.target.files[0]);
     setfileName(event.target.files[0].name);
     const file = event.target.files[0];
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    setImage(URL.createObjectURL(file));
-    reader.onloadend = function (e) {
-      // dispatch({ type: "generic", field: "image", value: reader.result });
-      dispatch({ type: "generic", field: "imageFile", value: file });
-      dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
-      let formdata = new FormData();
-      formdata.set('file', file);
-      uploadPhoto(formdata);
-    }.bind(this);
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      setImage(URL.createObjectURL(file));
+      reader.onloadend = function (e) {
+        // dispatch({ type: "generic", field: "image", value: reader.result });
+        dispatch({ type: "generic", field: "imageFile", value: file });
+        dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
+        let formdata = new FormData();
+        formdata.set('file', file);
+        uploadPhoto(formdata);
+      }.bind(this);
+    }
 
   }
 
@@ -144,7 +148,7 @@ const Profile = (_props) => {
               </div>
 
             </div>
-            <h3>{username}</h3>
+            <h3>{fullName}</h3>
             <a href={`www.bingemeee.com/influencer/${username}`} className={styles.influencerLink}>www.bingemeee.com/influencer/{username}</a>
             <div className={styles.cardHeader}>
               <p className={styles.connect}>Let's Connect</p>
@@ -173,7 +177,7 @@ const Profile = (_props) => {
                   <div className={styles.slot}>
                     <input value={data.title} name="title" onChange={(e) => onCardChange(e, index)} />
                     <input value={data.description} name="description" onChange={(e) => onCardChange(e, index)} />
-                    <input value={data.price}  type="Number" name="price" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.price} type="Number" name="price" onChange={(e) => onCardChange(e, index)} />
                     <div>
                       <button onClick={() => onEditCancel(index)}>Cancel</button>
                       <button onClick={() => onCardSubmit(index, data)}>Submit</button>

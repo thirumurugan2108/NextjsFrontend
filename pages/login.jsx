@@ -121,7 +121,7 @@ export default (_props) => {
     <div className={styles.overallContainer}>
       <Header></Header>
       <div className={styles.form}>
-        <input type="text" placeholder="Insta Id" name="name" onChange={onChange} />
+        <input type="text" placeholder="Insta Id/ Username" name="name" onChange={onChange} />
         <input type="password" placeholder="password" name="password" onChange={onChange} />
         {!isLogin && (
           <>

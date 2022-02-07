@@ -1,6 +1,6 @@
 .container {
     padding: 1rem 1rem 5rem 1rem;
-    
+
     .total {
         width: 90%;
         display: -moz-box;
@@ -44,7 +44,7 @@
         border-radius: 1rem;
         background: #fafafa;
         padding: 1rem;
-        margin: auto;
+        margin: 2rem auto;
 
         align-items: center;
         .image {
@@ -80,6 +80,25 @@
     }
 }
 
-.save{
+.save {
     margin-right: 1rem;
+}
+
+.modalContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    .labelModal {
+        width: 20%;
+        margin: 1rem 0;
+    }
+
+    .modalValue {
+        width: 70%;
+    }
+
+    .dropdown{
+        width: 70%;
+    }
 }

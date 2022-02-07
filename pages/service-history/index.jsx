@@ -28,11 +28,11 @@ const style = {
   borderRadius: 4,
   bgcolor: 'background.paper',
   boxShadow: 4,
-  p: 4,
+  p: 2,
 };
 
 const initialState = {
-  
+
 };
 
 function reducer(state, action) {
@@ -63,13 +63,17 @@ const ServiceHistory = (_props) => {
   const [isStatusChanged, setStatusChanged] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
 
- 
+
   const fetchAllDetails = async () => {
     const paymentDetails = await getpaymentdetailsByUser();
     dispatch({
       type: 'fetchfromdb',
       payload: {
-        paymentDetails: paymentDetails.data
+        paymentDetails: paymentDetails.data,
+        username: paymentDetails.data.username,
+        totalRevenue: paymentDetails.data.totalRevenue,
+        paid: paymentDetails.data.paid,
+        balance: paymentDetails.data.balance,
       }
     })
   }
@@ -78,10 +82,12 @@ const ServiceHistory = (_props) => {
   }, [])
 
   const viewUserDetailsModal = (data, index) => {
-    dispatch({ type: "getModalData", payload: {
-      index,
-      ...data
-    } });
+    dispatch({
+      type: "getModalData", payload: {
+        index,
+        ...data
+      }
+    });
     setdisplayModal(true);
   };
 
@@ -92,13 +98,15 @@ const ServiceHistory = (_props) => {
   }
 
   const onStatusChange = (e, data) => {
-    if(data.status === e.target.value){
+    if (data.status === e.target.value) {
       setStatusChanged(false);
     } else {
-      dispatch({ type: "getModalData", payload: {
-        ...state.userModalData,
-        status: e.target.value
-      } });
+      dispatch({
+        type: "getModalData", payload: {
+          ...state.userModalData,
+          status: e.target.value
+        }
+      });
       setStatusChanged(true);
     }
   };
@@ -106,32 +114,32 @@ const ServiceHistory = (_props) => {
   const saveSatus = async () => {
     // save the status to backend..call the service here
     console.log(state.userModalData);
-      if(isStatusChanged && state.userModalData.id) {
-        await updatePaymentStatus( state.userModalData.id, state.userModalData.status);
-      }
+    if (isStatusChanged && state.userModalData.id) {
+      await updatePaymentStatus(state.userModalData.id, state.userModalData.status);
+    }
     setStatusChanged(false);
     await fetchAllDetails();
   }
 
 
-  
+
 
   return (
     <Layout>
       <div className={styles.container}>
-      <h3 id={styles.head1}>Hi Names</h3>
-      <h2 id={styles.head2}>Welcome Back!</h2>
+        <h3 id={styles.head1}>Hi {state?.username}</h3>
+        <h2 id={styles.head2}>Welcome Back!</h2>
         <div className={styles.total}>
           <div className={styles.label}>
             <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="wallet" class="svg-inline--fa fa-wallet fa-w-16"
-              role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 650">
+              role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 450">
               <path fill="currentColor" d="M461.2 128H80c-8.84 0-16-7.16-16-16s7.16-16 16-16h384c8.84 0 16-7.16 16-16 0-26.51-21.49-48-48-48H64C28.65 32 0 60.65 0 96v320c0 35.35 28.65 64 64 64h397.2c28.02 0 50.8-21.53 50.8-48V176c0-26.47-22.78-48-50.8-48zM416 336c-17.67 0-32-14.33-32-32s14.33-32 32-32 32 14.33 32 32-14.33 32-32 32z"></path>
             </svg>
             Total Revenue
           </div>
           <div className={styles.value}>
             <span className={styles.symbol}>₹</span>
-            <span className={styles.inr}>7600</span>
+            <span className={styles.inr}>{state?.totalRevenue}</span>
           </div>
         </div>
 
@@ -142,7 +150,7 @@ const ServiceHistory = (_props) => {
           </div>
           <div className={styles.value}>
             <span className={styles.symbol}>₹</span>
-            <span className={styles.inr}>7000</span>
+            <span className={styles.inr}>{state?.balance}</span>
           </div>
         </div>
 
@@ -153,7 +161,7 @@ const ServiceHistory = (_props) => {
           </div>
           <div className={styles.value}>
             <span className={styles.symbol}>₹</span>
-            <span className={styles.inr}>600</span>
+            <span className={styles.inr}>{state?.paid}</span>
           </div>
         </div>
 
@@ -171,24 +179,34 @@ const ServiceHistory = (_props) => {
             <h1 style={{ textAlign: "center" }}>
               User details
             </h1>
-            <div>
-              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Name</b>&nbsp;&nbsp;:&nbsp;&nbsp;{state.userModalData.buyerDetails.buyerName}</div>
-              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Email Id</b>&nbsp;:&nbsp;&nbsp;{state.userModalData.buyerDetails.buyerEmailId}</div>
-              {/* <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Info</b>&nbsp;&nbsp;:&nbsp;&nbsp;{state.userModalData.buyerDetails.buyerPhoneNumber}</div> */}
-              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Contact</b>&nbsp;:&nbsp;&nbsp;{state.userModalData.buyerDetails.buyerPhoneNumber}</div>
-              <div style={{ padding: 10 }}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Status</b>&nbsp;:&nbsp;&nbsp; <NativeSelect
+            <div className={styles.modalContainer}>
+              <span className={styles.labelModal}><b>Name</b>  </span>
+              <span className={styles.modalValue}>{state.userModalData.buyerDetails.buyerName}</span>
+              <span className={styles.labelModal}><b>Email Id</b></span>
+              <span className={styles.modalValue}>{state.userModalData.buyerDetails.buyerEmailId}</span>
+              <span className={styles.labelModal}><b>Contact</b></span>
+              <span className={styles.modalValue}>{state.userModalData.buyerDetails.buyerPhoneNumber}</span>
+
+              { state.userModalData.buyerDetails.comments && state.userModalData.buyerDetails.comments !== '' && <>
+              <span className={styles.labelModal}><b>Comments</b></span>
+              <span className={styles.modalValue}>{state.userModalData.buyerDetails.comments}</span>
+              </>}
+
+              <span className={styles.labelModal}><b>Status</b>          
+              </span><NativeSelect
                 defaultValue={state.userModalData.status}
+                className={styles.dropdown}
                 inputProps={{
                   name: 'status',
                   id: 'uncontrolled-native',
                 }}
-                onChange={(e) => onStatusChange(e,state.userModalData)}
+                onChange={(e) => onStatusChange(e, state.userModalData)}
               >
                 <option value={'pending'}>Pending</option>
                 <option value={'success'}>Success</option>
 
-              </NativeSelect></div>
-            </div>
+              </NativeSelect>
+              </div>
 
             <div>
               <Button variant="outlined" onClick={hideUserDetailsModal}  >Cancel</Button>
@@ -199,58 +217,58 @@ const ServiceHistory = (_props) => {
           </Box>
 
         </Modal>}
-      
-      <h2 id={styles.head3}>Pending</h2>
 
-      {state.paymentDetails?.pendingJobs && state.paymentDetails?.pendingJobs.map((data, index) => {
-        const buyerDetails = data.buyerDetails;
-        return (
-          <div onClick={() => viewUserDetailsModal(data, index)}
-            className={styles.pendingItem}>
-            {/* <div className={styles.}><a >
+        <h2 id={styles.head3}>Pending</h2>
+
+        {state.paymentDetails?.pendingJobs && state.paymentDetails?.pendingJobs.map((data, index) => {
+          const buyerDetails = data.buyerDetails;
+          return (
+            <div onClick={() => viewUserDetailsModal(data, index)}
+              className={styles.pendingItem}>
+              {/* <div className={styles.}><a >
               </a></div> */}
-            <div className={styles.image}>
-              <Image src={UserCircle} width="50px" height="50px"/>
-            </div>
-            <div className={styles.name} >
-              <h3>{buyerDetails.buyerName}</h3>
-              <p className={styles.statusPending}>
-                {data.status}</p>
-            </div>
-            <div className={styles.price}>
-              
-              + {data.productDetails.price}
-            </div>
+              <div className={styles.image}>
+                <Image src={UserCircle} width="50px" height="50px" />
+              </div>
+              <div className={styles.name} >
+                <h3>{buyerDetails.buyerName}</h3>
+                <p className={styles.statusPending}>
+                  {data.status}</p>
+              </div>
+              <div className={styles.price}>
 
-          </div>)
-      }
-      )}
+                + {data.productDetails.price}
+              </div>
 
-      {state.paymentDetails?.successJobs?.length != 0 && <h2 id={styles.head3}>Success</h2>}
+            </div>)
+        }
+        )}
 
-      {state.paymentDetails?.successJobs && state.paymentDetails?.successJobs.map((data, index) => {
-        const buyerDetails = data.buyerDetails;
-        return (
-          <div onClick={() => viewUserDetailsModal(data, index)}
-            className={styles.pendingItem}>
-            {/* <div className={styles.}><a >
+        {state.paymentDetails?.successJobs?.length != 0 && <h2 id={styles.head3}>Success</h2>}
+
+        {state.paymentDetails?.successJobs && state.paymentDetails?.successJobs.map((data, index) => {
+          const buyerDetails = data.buyerDetails;
+          return (
+            <div onClick={() => viewUserDetailsModal(data, index)}
+              className={styles.pendingItem}>
+              {/* <div className={styles.}><a >
               </a></div> */}
-            <div className={styles.image}>
-              <Image src={UserCircle} width="50px" height="50px"/>
-            </div>
-            <div className={styles.name} >
-              <h3>{buyerDetails.buyerName}</h3>
-              <p className={styles.statusSuccess}>
-                {data.status}</p>
-            </div>
-            <div className={styles.price}>
-              
-              + {data.productDetails.price}
-            </div>
+              <div className={styles.image}>
+                <Image src={UserCircle} width="50px" height="50px" />
+              </div>
+              <div className={styles.name} >
+                <h3>{buyerDetails.buyerName}</h3>
+                <p className={styles.statusSuccess}>
+                  {data.status}</p>
+              </div>
+              <div className={styles.price}>
 
-          </div>)
-      }
-      )}
+                + {data.productDetails.price}
+              </div>
+
+            </div>)
+        }
+        )}
       </div>
     </Layout>
   );

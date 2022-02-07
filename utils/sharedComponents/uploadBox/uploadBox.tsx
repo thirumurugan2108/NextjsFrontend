@@ -3,15 +3,17 @@ import classes from "./upladBox.module.scss";
 
 export const siteTitle = "Next.js Sample Website";
 
-export default function UploadBox(props:any) {
+export default function UploadBox(props: any) {
   const [fileName, setfileName] = useState();
   async function onFileChange(event: any) {
     // setSelectedFile(event.target.files[0]);
-    setfileName(event.target.files[0].name);
-    props.updateFile(event);
+    if (event?.target?.files[0]) {
+      setfileName(event.target.files[0].name);
+      props.updateFile(event);
+    }
   }
 
-  
+
   return (
     <>
       <div className={classes.uploadContainer}>

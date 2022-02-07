@@ -4,28 +4,17 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 
 import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import Modal from '@mui/material/Modal';
 
+import { modalStyle, imageLoader } from '../../../utils/common/commonUtil';
 import styles from "./paymentDetails.module.scss"
 import { createPayment, verifyPayment } from "../../../utils/services/payment.service"
+import { TextareaAutosize } from "@mui/material";
 
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
 
-const myLoader = ({ src, width, quality }) => {
-    return `${src}?w=${width}&q=${quality || 75}`
-}
+
 
 function reducer(state, action) {
     switch (action.type) {
@@ -50,7 +39,11 @@ const PaymentDetails = (props) => {
     const [data, setData] = useState(undefined);
     const [isPaymentMode, setisPaymentMode] = useState(true);
 
-    const router = useRouter()
+    const [naturalWidth, setNaturalWidth] = useState(0);
+    const [naturalHeight, setNaturalHeight] = useState(0);
+    const router = useRouter();
+
+    const [isCardSuccess, setCardSuccess] = useState(false);
 
     const onChange = (e) => {
         dispatch({ type: "generic", field: e.target.name, value: e.target.value });
@@ -91,7 +84,7 @@ const PaymentDetails = (props) => {
 
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
-        console.log(data,'data');
+        console.log(data, 'data');
         var options = {
             key: 'rzp_test_6mQa7wgUCs49Is', // Enter the Key ID generated from the Dashboard
             name: "Manu Arora Pvt Ltd",
@@ -121,6 +114,9 @@ const PaymentDetails = (props) => {
                     console.log(data.data.fileurl);
                     // props.handleclose();
                     setisPaymentMode(false);
+                    if (props.isCard) {
+                        setCardSuccess(true)
+                    }
                     if (!data.data.isVideo) {
                         dispatch({ type: "generic", field: 'imageUrl', value: data.data.fileurl });
                     } else {
@@ -171,9 +167,16 @@ const PaymentDetails = (props) => {
         setisPaymentMode(true)
         state.imageUrl = '';
         state.videoUrl = '';
+        setCardSuccess(false);
         props.handleclose();
     }
 
+
+
+    const getImageSize = (imageObj) => {
+        setNaturalWidth(imageObj.naturalWidth);
+        setNaturalHeight(imageObj.naturalHeight);
+    }
     return (
         <>
             <div>
@@ -183,30 +186,45 @@ const PaymentDetails = (props) => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
-                    <Box sx={style}>
+                    <Box sx={modalStyle}>
                         {isPaymentMode &&
                             <>
                                 <label htmlFor="buyerName">Name :</label>
-                                <input type="text" id="buyerName" name="buyerName" placeholder='insta Id' onChange={(e) => onChange(e)} />
+                                <input type="text" id="buyerName" name="buyerName" placeholder='name' onChange={(e) => onChange(e)} />
 
                                 <label htmlFor="buyerPhoneNumber">Phone number :</label>
                                 <input type="text" id="buyerPhoneNumber" name='buyerPhoneNumber' placeholder='phonenumber' onChange={(e) => onChange(e)} />
 
                                 <label htmlFor="buyerEmailId">Email :</label>
                                 <input type="text" id="buyerEmailId" name="buyerEmailId" placeholder='email' onChange={(e) => onChange(e)} />
+
+                                <label htmlFor="comments">Comments :</label>
+                                <TextareaAutosize
+                                    aria-label="comments"
+                                    id="comments"
+                                    name="comments"
+                                    minRows={3} 
+                                    placeholder="Comments for influencer"
+                                    onChange={(e) => onChange(e)}
+                                    style={{ width: '100%' }}
+                                />
                                 <div>
                                     <Button onClick={() => proceed()}>Proceed</Button>
                                 </div>
                             </>
+
                         }
                         {state.imageUrl &&
-                            <> 
+                            <>
                                 <Image
-                                    loader={myLoader}
+                                    loader={imageLoader}
                                     src={state.imageUrl}
                                     alt="Picture of the author"
-                                    width={500}
-                                    height={500}
+                                    onLoadingComplete={getImageSize}
+                                    width={naturalWidth}
+                                    height={naturalHeight}
+                                    layout="responsive"
+                                // height={500}
                                 />
                                 {/* <button onClick={download}>Download</button> */}
                             </>
@@ -217,15 +235,19 @@ const PaymentDetails = (props) => {
                                 <video
                                     src={state.videoUrl}
                                     autoPlay
-                                    controls="true"
+                                    controls
+                                    controlsList="nodownload"
                                     className={styles.video}
                                     alt="Picture of the author"
                                 />
                                 {/* <button onClick={download}>Download</button> */}
                             </>
                         }
-                        <div className={styles.videoContainer}>
-                        </div>
+
+                        {isCardSuccess &&
+
+                            <h2>Your order has been placed successfully . Influencer will contact you soon!</h2>
+                        }
                     </Box>
                 </Modal>
             </div>

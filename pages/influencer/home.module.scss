@@ -61,6 +61,9 @@
     padding-top:3rem;
   }
   
+  .video{
+    width: 100%;
+}
   
   .profileIconInner{
      height: 4rem;
@@ -152,11 +155,11 @@
     border-radius: 12px;
     // height:10rem;
     padding:1rem;
-    margin: 0 1rem;
+    margin: 0 0.5rem;
     position:relative;
     // background-color:#EEEEEE;
     // background-image: url('../../assets/images/test.jpeg');
-    background-color: lightgray;
+    background-color: #d3d3d345;
   }
   
   
