@@ -54,8 +54,6 @@ const createPost = (_props: any) => {
           setImage(result.data.image.url);
           setDescription(result.data.description);
           seturl(result.data.url);
-        })
-        .then((res) => {
         });
       //https://api.microlink.io?url=https%3A%2F%2Freact-firebase-js.com%2Findex.html&palette=true&audio=true&video=true&iframe=true
     }
