@@ -27,11 +27,13 @@ const initialState = {
 };
 
 function reducer(state = initialState, action) {
-  console.log(state)
-  console.log(action);
   switch (action.type) {
     case "editMode":
+      if(action.payload.price == null) {
+        action.payload.price = ""
+      }
       return {
+        ...state,
         ...action.payload,
       };
     case "clear":
@@ -82,11 +84,8 @@ const addOrEditPost = (_props) => {
     setOpen(false);
   };
 
-  console.log(state);
 
   const onChange = (e) => {
-    console.log(e.target.value);
-    console.log(e.target.name);
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
 
@@ -94,7 +93,6 @@ const addOrEditPost = (_props) => {
 
     if (sessionStorage.getItem('token')) {
       if (configState !== null && configState !== undefined && Object.keys(configState).length !== 0) {
-        console.log(configState)
         dispatch({ type: "editMode", payload: configState });
         setImage(configState.fileUrl);
         if (configState.isVideo) {
@@ -147,16 +145,12 @@ const addOrEditPost = (_props) => {
           .required('please enter price'),
       });
     }
-    // console.log('state');
-    console.log(state);
+    
     validationSchema.validate(state, { abortEarly: false })
       .catch((err) => {
         err.name; // => 'ValidationError'
         err.errors; // => [{ key: 'field_too_short', values: { min: 18 } }]
-        console.log(err.errors);
         setErrors(err.errors);
-        console.log(err.errors);
-        console.log(err.name);
       })
       .then((valid) => {
         if (valid) {
@@ -164,7 +158,6 @@ const addOrEditPost = (_props) => {
           setIsSuccess(true)
           resetValues();
           valid; // => true
-          console.log(valid);
           if (state.imageFile) {
             let formdata = new FormData();
             formdata.set('title', state.title);
@@ -205,8 +198,6 @@ const addOrEditPost = (_props) => {
   }
 
   const ErrorNotification = () => {
-    console.log(errors.length !== 0);
-    console.log(errors);
     if (errors.length !== 0) {
       return (
         <Alert severity="error" >

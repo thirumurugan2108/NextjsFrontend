@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'http://13.234.130.137:3001/v1/auth/';
+const baseUrl = 'https://api.bingemeee.com/v1/auth/';
 // const baseUrl = 'http://localhost:3001/v1/cards/';
 
 export function getcardDetails() {

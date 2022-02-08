@@ -36,7 +36,6 @@ const createPost = (_props: any) => {
   const [description, setDescription] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
   const onChange = (e: any) => {
-    console.log(e.target.name);
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
 
@@ -46,20 +45,17 @@ const createPost = (_props: any) => {
       // 'https://www.timesnownews.com/videos/mirror-now/politics/tamil-nadu-7-day-full-lockdown-from-may/98153';
       url = url.replaceAll("/", "%2F");
       url = url.replaceAll(":", "%3A");
-      console.log(url);
       await fetch(
         `https://api.microlink.io?url=${url}&audio=true&video=true&iframe=true`
       )
         .then(async (data) => {
           let result = await data.json();
-          console.log(result.data);
           setTitle(result.data.title);
           setImage(result.data.image.url);
           setDescription(result.data.description);
           seturl(result.data.url);
         })
         .then((res) => {
-          console.log(res);
         });
       //https://api.microlink.io?url=https%3A%2F%2Freact-firebase-js.com%2Findex.html&palette=true&audio=true&video=true&iframe=true
     }

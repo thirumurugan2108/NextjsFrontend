@@ -82,7 +82,6 @@ const Profile = (_props) => {
     try {
       const userDetail = await getUserDetails();
       const cardDetail = await getcardDetails();
-      console.log(cardDetail.data);
       dispatch({
         type: "fetchfromdb", payload: {
           cardList: cardDetail.data
@@ -91,7 +90,6 @@ const Profile = (_props) => {
       setImage(userDetail.data.photoUrl);
       setFullName(userDetail.data.fullName);
     } catch (err) {
-      console.log(err);
       router.push('./login');
     }
   }
@@ -117,7 +115,6 @@ const Profile = (_props) => {
   }
 
   const onCardChange = (e, index) => {
-    console.log(e.target.value);
     dispatch({ type: "onCardChange", field: e.target.name, value: e.target.value, index: index });
   };
   const onEdit = (index) => {

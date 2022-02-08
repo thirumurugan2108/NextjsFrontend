@@ -113,7 +113,6 @@ const ServiceHistory = (_props) => {
 
   const saveSatus = async () => {
     // save the status to backend..call the service here
-    console.log(state.userModalData);
     if (isStatusChanged && state.userModalData.id) {
       await updatePaymentStatus(state.userModalData.id, state.userModalData.status);
     }

@@ -70,15 +70,12 @@ export default (_props) => {
       });
     } else {
       signup(state.name, state.email, state.password, state.fullName).catch( err => {
-        console.log(err.response);
-        console.log(err.data);
-        console.log(err.response.data.message);
         setErrorMessage(err.response.data.message);
         setSignUpSucess(false);
       }).then( data => {
-        console.log(data);
         if(data){
           setSignUpSucess(true);
+          window.scrollTo(0, 0);
           setErrorMessage('');
           
         }
@@ -120,6 +117,7 @@ export default (_props) => {
   return (
     <div className={styles.overallContainer}>
       <Header></Header>
+      {isSignUpSucess && <SignUpSuccessMessage></SignUpSuccessMessage>}
       <div className={styles.form}>
         <input type="text" placeholder="Insta Id/ Username" name="name" onChange={onChange} />
         <input type="password" placeholder="password" name="password" onChange={onChange} />
@@ -160,7 +158,7 @@ export default (_props) => {
           )}
         </p>
       </div>
-      {isSignUpSucess && <SignUpSuccessMessage></SignUpSuccessMessage>}
+      
       {errorMessage !== '' && <ErrorMessage></ErrorMessage>}
     </div>
 

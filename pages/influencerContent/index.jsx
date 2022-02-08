@@ -23,11 +23,9 @@ export default function About() {
   const fetchAllPosts = async () => {
     try {setIsVideo(false);
     const result = await getAllpost();
-    console.log(result.data);
     setImageList(result.data.images);
     setVideoList(result.data.videos);
   } catch(err){
-    console.log(err);
     router.push('./login');
   }
   }

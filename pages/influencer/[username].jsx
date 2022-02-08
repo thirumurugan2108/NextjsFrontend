@@ -89,15 +89,10 @@ export default function About(ctx) {
   })
 
   useEffect(() => {
-    console.log(ctx);
-    // console.log(post)
-    // console.log(username)
-    console.log(router.query)
   }, []);
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       if (!data.data.user.photoUrl) {
         data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
       }

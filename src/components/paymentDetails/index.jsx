@@ -51,7 +51,6 @@ const PaymentDetails = (props) => {
 
     // useEffect(() => {
     //     if (data) {
-    //       console.log(data);
     //     //   dispatch({ type: 'fetchfromdb', payload: data.data });
     //     router.push('login');
     //     }
@@ -78,13 +77,11 @@ const PaymentDetails = (props) => {
         const res = await initializeRazorpay();
 
         if (!res) {
-            console.log("Razorpay SDK Failed to load");
             return;
         }
 
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
-        console.log(data, 'data');
         var options = {
             key: 'rzp_test_6mQa7wgUCs49Is', // Enter the Key ID generated from the Dashboard
             name: "Manu Arora Pvt Ltd",
@@ -110,8 +107,6 @@ const PaymentDetails = (props) => {
                     isCard: props.isCard
                 }).then(data => {
                     // router.push('../login');
-                    console.log(data)
-                    console.log(data.data.fileurl);
                     // props.handleclose();
                     setisPaymentMode(false);
                     if (props.isCard) {
@@ -123,11 +118,7 @@ const PaymentDetails = (props) => {
                         dispatch({ type: "generic", field: 'videoUrl', value: data.data.fileurl });
                     }
                 }).catch(err => {
-                    console.log(err);
                 });
-                console.log(response.razorpay_payment_id);
-                console.log(response.razorpay_order_id);
-                console.log(response.razorpay_signature);
             },
             prefill: {
                 name: buyerDetails.buyerName,
