@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseUrl = 'https://api.bingemeee.com/v1/';
-const baseUrl = 'http://localhost:3001/v1/';
+const baseUrl = 'https://api.bingemeee.com/v1/';
+// const baseUrl = 'http://localhost:3001/v1/';
 
 export function login(username: string, password: string) {
     return axios.post(baseUrl+ 'auth/login',{

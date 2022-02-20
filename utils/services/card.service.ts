@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const baseUrl = 'https://api.bingemeee.com/v1/cards/';
-const baseUrl = 'http://localhost:3001/v1/cards/';
+const baseUrl = 'https://api.bingemeee.com/v1/cards/';
+// const baseUrl = 'http://localhost:3001/v1/cards/';
 
 export function getcardDetails() {
   return axios.get(baseUrl,
