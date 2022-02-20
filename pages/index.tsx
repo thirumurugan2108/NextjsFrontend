@@ -1,7 +1,5 @@
-import React, { useEffect } from 'react';
-import Head from 'next/head';
+import { useEffect } from 'react';
 
-import Footer from '../src/components/footer';
 
 // import '@/static/assets/css/fontawesome.css'
 // import '@/static/assets/css/templatemo-digimedia-v3.css'
