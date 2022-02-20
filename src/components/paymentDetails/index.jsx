@@ -13,6 +13,12 @@ import styles from "./paymentDetails.module.scss"
 import { createPayment, verifyPayment } from "../../../utils/services/payment.service"
 import { TextareaAutosize } from "@mui/material";
 
+import MuiAlert from '@mui/material/Alert';
+import * as Yup from 'yup';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 
 
@@ -35,16 +41,27 @@ function reducer(state, action) {
 }
 
 const PaymentDetails = (props) => {
+    const router = useRouter();
     const [state, dispatch] = useReducer(reducer, {});
     const [data, setData] = useState(undefined);
     const [isPaymentMode, setisPaymentMode] = useState(true);
-
-    const [naturalWidth, setNaturalWidth] = useState(0);
-    const [naturalHeight, setNaturalHeight] = useState(0);
-    const router = useRouter();
-
+    const [errors, setErrors] = useState([]);
     const [isCardSuccess, setCardSuccess] = useState(false);
 
+    // used for image handling
+    const [naturalWidth, setNaturalWidth] = useState(0);
+    const [naturalHeight, setNaturalHeight] = useState(0);
+
+    // schema to valiadte user entering details before payment
+    let validationSchema = Yup.object({
+        buyerName: Yup.string()
+            .required('please enter name '),
+        buyerPhoneNumber: Yup.string()
+            .required('please enter phonenumber '),
+        buyerEmailId: Yup.string().email('Invalid Email format')
+            .required('please enter email '),
+    });
+ 
     const onChange = (e) => {
         dispatch({ type: "generic", field: e.target.name, value: e.target.value });
     };
@@ -83,13 +100,13 @@ const PaymentDetails = (props) => {
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
         var options = {
-            key: 'rzp_test_6mQa7wgUCs49Is', // Enter the Key ID generated from the Dashboard
-            name: "Manu Arora Pvt Ltd",
+            key: 'rzp_live_kSqk8k2TEX0otB', // Enter the Key ID generated from the Dashboard
+            // name: "Manu Arora Pvt Ltd",
             currency: 'INR',
             amount: data.data.price,
             order_id: data.data.id,
-            description: "Thankyou for your test donation",
-            image: "https://manuarora.in/logo.png",
+            // description: "Thankyou for your test donation",
+            // image: "https://manuarora.in/logo.png",
             handler: async function (response) {
                 // Validate payment at server - using webhooks is a better idea.
                 verifyPayment({
@@ -138,7 +155,17 @@ const PaymentDetails = (props) => {
     };
 
     const proceed = () => {
-        makePayment(state);
+        validationSchema.validate(state, { abortEarly: false })
+      .catch((err) => {
+        err.name; // => 'ValidationError'
+        err.errors; // => [{ key: 'field_too_short', values: { min: 18 } }]
+        setErrors(err.errors);
+      })
+      .then((valid) => {
+          if(valid) {
+              makePayment(state);
+          }
+      });
     }
 
     const download = () => {
@@ -162,7 +189,19 @@ const PaymentDetails = (props) => {
         props.handleclose();
     }
 
-
+    const ErrorMessage = () => {
+        if (errors.length !== 0) {
+          return (
+            <Alert severity="error" >
+              {errors.map(data => {
+                return (<li>{data}</li>)
+              })}
+            </Alert>
+          )
+        } else {
+          return <></>
+        }
+      }
 
     const getImageSize = (imageObj) => {
         setNaturalWidth(imageObj.naturalWidth);
@@ -171,15 +210,20 @@ const PaymentDetails = (props) => {
     return (
         <>
             <div>
+
                 <Modal
                     open={props.open}
                     onClose={onClose}
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
+
                     <Box sx={modalStyle}>
                         {isPaymentMode &&
                             <>
+                                {<ErrorMessage></ErrorMessage>}
+                                <h2 className={styles.userHeading}>Enter User Details</h2>
+                            
                                 <label htmlFor="buyerName">Name :</label>
                                 <input type="text" id="buyerName" name="buyerName" placeholder='name' onChange={(e) => onChange(e)} />
 
@@ -194,7 +238,7 @@ const PaymentDetails = (props) => {
                                     aria-label="comments"
                                     id="comments"
                                     name="comments"
-                                    minRows={3} 
+                                    minRows={3}
                                     placeholder="Comments for influencer"
                                     onChange={(e) => onChange(e)}
                                     style={{ width: '100%' }}

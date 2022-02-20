@@ -24,7 +24,8 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: 400,
+  'min-width': 370,
+  'max-width': 700,
   borderRadius: 4,
   bgcolor: 'background.paper',
   boxShadow: 4,
@@ -186,12 +187,18 @@ const ServiceHistory = (_props) => {
               <span className={styles.labelModal}><b>Contact</b></span>
               <span className={styles.modalValue}>{state.userModalData.buyerDetails.buyerPhoneNumber}</span>
 
-              { state.userModalData.buyerDetails.comments && state.userModalData.buyerDetails.comments !== '' && <>
-              <span className={styles.labelModal}><b>Comments</b></span>
-              <span className={styles.modalValue}>{state.userModalData.buyerDetails.comments}</span>
+              {state.userModalData.buyerDetails.comments && state.userModalData.buyerDetails.comments !== '' && <>
+                <span className={styles.labelModal}><b>Comments</b></span>
+                <span className={styles.modalValue}>{state.userModalData.buyerDetails.comments}</span>
+
+                <span className={styles.labelModal}><b>Product Title</b></span>
+                <span className={styles.modalValue}>{state.userModalData.productDetails.title}</span>
+
+                <span className={styles.labelModal}><b>Product Description</b></span>
+                <span className={styles.modalValue}>{state.userModalData.productDetails.description}</span>
               </>}
 
-              <span className={styles.labelModal}><b>Status</b>          
+              <span className={styles.labelModal}><b>Status</b>
               </span><NativeSelect
                 defaultValue={state.userModalData.status}
                 className={styles.dropdown}
@@ -205,7 +212,7 @@ const ServiceHistory = (_props) => {
                 <option value={'success'}>Success</option>
 
               </NativeSelect>
-              </div>
+            </div>
 
             <div>
               <Button variant="outlined" onClick={hideUserDetailsModal}  >Cancel</Button>

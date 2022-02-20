@@ -146,7 +146,7 @@ const Profile = (_props) => {
 
             </div>
             <h3>{fullName}</h3>
-            <a href={`www.bingemeee.com/influencer/${username}`} className={styles.influencerLink}>www.bingemeee.com/influencer/{username}</a>
+            <a href={`/influencer/${username}`} className={styles.influencerLink}>www.bingemeee.com/influencer/{username}</a>
             <div className={styles.cardHeader}>
               <p className={styles.connect}>Let's Connect</p>
               {/* <button>Add Cards</button> */}
@@ -172,9 +172,9 @@ const Profile = (_props) => {
               } else {
                 return (
                   <div className={styles.slot}>
-                    <input value={data.title} name="title" onChange={(e) => onCardChange(e, index)} />
-                    <input value={data.description} name="description" onChange={(e) => onCardChange(e, index)} />
-                    <input value={data.price} type="Number" name="price" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.title} name="title" placeholder="Title" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.description} name="description" placeholder="Description" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.price} type="Number" name="price" placeholder="Price" onChange={(e) => onCardChange(e, index)} />
                     <div>
                       <button onClick={() => onEditCancel(index)}>Cancel</button>
                       <button onClick={() => onCardSubmit(index, data)}>Submit</button>

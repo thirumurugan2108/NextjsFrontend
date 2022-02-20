@@ -1,7 +1,7 @@
 import axios from "axios";
 
-const baseUrl = 'https://api.bingemeee.com/v1/posts/';
-// const baseUrl = 'http://localhost:3001/v1/posts/';
+// const baseUrl = 'https://api.bingemeee.com/v1/posts/';
+const baseUrl = 'http://localhost:3001/v1/posts/';
 
 export function updatePost(post:any) {
     axios.post(baseUrl+ 'updatePost', post,

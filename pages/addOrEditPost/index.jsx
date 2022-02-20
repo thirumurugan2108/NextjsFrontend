@@ -157,7 +157,6 @@ const addOrEditPost = (_props) => {
           setErrors([]);
           setIsSuccess(true)
           resetValues();
-          valid; // => true
           if (state.imageFile) {
             let formdata = new FormData();
             formdata.set('title', state.title);
