@@ -1,0 +1,23 @@
+.footer {
+    background-image: linear-gradient(to right, red ,red, orangered);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    // height: 6rem;
+    padding: 1rem;
+    text-align: center;
+    color: white;
+    .bottom_links{
+        a{
+            color: white;
+            padding: 0 1rem;
+            line-height: 1.5;
+        }
+    }
+
+    h5 {
+        text-align: center;
+        margin: 1rem;
+    }
+}
+

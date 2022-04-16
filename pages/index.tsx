@@ -1,25 +1,16 @@
-import React from 'react';
-import Link from 'next/link';
-import { useAuth } from '../auth';
+import { useEffect } from 'react';
 
+
+// import '@/static/assets/css/fontawesome.css'
+// import '@/static/assets/css/templatemo-digimedia-v3.css'
+// import '@/static/assets/css/animated.css'
+// import '@/static/assets/css/owl.css'
 
 export default () => {
-  const { user } = useAuth();
-
+      useEffect(() => {
+        window.location.href = 'https://home.bingemeee.com'
+      },[])
   return (
-    <div style={{ padding: '40px' }}>
-      <p>{`User ID: ${user ? user.uid : 'no user signed in'}`}</p>
-
-      <p>
-        <Link href="/authenticated">
-          <a>Go to authenticated route</a>
-        </Link>
-      </p>
-      <p>
-        <Link href="/login">
-          <a>Login</a>
-        </Link>
-      </p>
-    </div>
+    'Loading'
   );
 };

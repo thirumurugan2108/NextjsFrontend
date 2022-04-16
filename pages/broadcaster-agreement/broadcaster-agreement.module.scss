@@ -1,0 +1,15 @@
+.heading{
+  text-align: center;
+}
+
+.broadcast {
+  padding: 1rem;
+  * {
+    font-size: 0.8rem !important;
+  }
+  ol {
+   * {
+      font-size: 1rem !important;
+    }
+  }
+}

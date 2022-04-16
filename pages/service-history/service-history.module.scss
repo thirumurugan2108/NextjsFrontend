@@ -1,0 +1,104 @@
+.container {
+    padding: 1rem 1rem 5rem 1rem;
+
+    .total {
+        width: 90%;
+        display: -moz-box;
+        display: flex;
+        margin: 1rem auto;
+        border: 0.5px solid grey;
+        padding: 1rem;
+        border-radius: 10px;
+        /* margin: 1rem; */
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        div {
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            height: 5rem;
+        }
+
+        .label {
+            width: 30%;
+            flex-direction: column;
+        }
+        .value {
+            width: 70%;
+            .symbol {
+                font-size: 2rem;
+                margin-right: 1rem;
+            }
+            .inr {
+                font-size: 3.5rem;
+            }
+        }
+    }
+
+    .pendingItem {
+        display: flex;
+        width: 100%;
+        box-sizing: border-box;
+        box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 10%);
+        border-radius: 1rem;
+        background: #fafafa;
+        padding: 1rem;
+        margin: 2rem auto;
+
+        align-items: center;
+        .image {
+            width: 25%;
+            text-align: center;
+        }
+        .name {
+            width: 45%;
+            .statusPending {
+                border: 1px solid #48480d;
+                display: inline;
+                background-color: #ffc30066;
+                padding: 0.2rem 1rem;
+                border-radius: 25px;
+                text-transform: uppercase;
+            }
+
+            .statusSuccess {
+                border: 1px solid #48480d;
+                display: inline;
+                background-color: #7bff0066;
+                padding: 0.2rem 1rem;
+                border-radius: 25px;
+                text-transform: uppercase;
+            }
+        }
+        .price {
+            width: 30%;
+            font-size: 1.5rem;
+            color: green;
+            font-weight: bold;
+        }
+    }
+}
+
+.save {
+    margin-right: 1rem;
+}
+
+.modalContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    .labelModal {
+        width: 20%;
+        margin: 1rem 0;
+    }
+
+    .modalValue {
+        width: 70%;
+    }
+
+    .dropdown{
+        width: 70%;
+    }
+}

@@ -1,0 +1,14 @@
+
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  padding-left: 1rem;
+  background-color: red;
+  color: white;
+}
+
+.title {
+  letter-spacing: 3px;
+}

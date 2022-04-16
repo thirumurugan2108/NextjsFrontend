@@ -17,6 +17,10 @@
     }
     p {
       text-align: center;
+      word-break: break-word;
+    }
+    .filename {
+    color: blue;
     }
     input {
       position: absolute;

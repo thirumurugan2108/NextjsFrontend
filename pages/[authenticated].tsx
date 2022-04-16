@@ -13,30 +13,23 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext ) => {
   // const router = useRouter()
   try {
     const cookies = nookies.get(ctx);
-    // console.log(JSON.stringify(cookies, null, 2));
     const token = await firebaseAdmin.auth().verifyIdToken(cookies.token);
     const { uid, email } = token;
-    console.log(ctx.query.post);
     // const { pid } = router.query
-    // console.log(pid);
     // the user is authenticated!
     // FETCH STUFF HERE
     let id = ctx.query.post;//'387909c2-016f-4f18-b29b-3574702d3454';
     let test = await db.collection('urls').where('uuid','==',id ).get();
     let data = '';
-    // console.log(test);
     let urldata : any ;
     test.forEach((doc) => {
           // doc.data() is never undefined for query doc snapshots
-          console.log(doc.id, " => ", doc.data());
-          console.log("sdvzdfb");
           data = doc.data().source_url;
           urldata = doc.data();
         });
     // .then((querySnapshot) => {
     //   querySnapshot.forEach((doc) => {
     //     // doc.data() is never undefined for query doc snapshots
-    //     console.log(doc.id, " => ", doc.data());
     //     return {
     //       props: { message: `Your lknemail is ${uid + email}s` },
     //     };
@@ -44,13 +37,11 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext ) => {
     //   });
     // })
     // .catch((error) => {
-    //   console.log("Error getting documents: ", error);
     //   return {
     //     props: { message: `Your lknemail is ${uid + email}s` },
     //   };
     // });
     
-    console.log("test123");
     return {
             props: { message: `Your lkndeflemail is ${uid + email}s`,
            data: data,
@@ -59,7 +50,6 @@ export const getServerSideProps = async (ctx: GetServerSidePropsContext ) => {
            
           };
     // const entry = await test.docs.map(entry => entry.data());
-    // console.log(entry);
    
   } catch (err) {
     // either the `token` cookie didn't exist
