@@ -47,23 +47,24 @@ export function signup(name: string,email:string, password: string, fullName: st
 
 export function verifySignupOTP(otp: string, email: string) {
   return axios.post(baseUrl+ 'auth/registerVerifyOtp',{
-      "otp": otp,
-      "email": email,
+      otp,
+      email,
     });
 }
 
 export function verifyOTP(otp: string, email: string) {
   return axios.post(baseUrl+ 'auth/VerifyOtp',{
-      "otp": otp,
-      "email": email,
+      otp,
+      email,
     });
 }
 
-export async function userSignUp(name: string,email:string, mobile:string) {
+export async function userSignUp(name: string,email:string, mobile:string, influencer: string) {
   return await axios.post(baseUrl+ 'auth/userRegister',{
-      "name": name,
-      "email": email,
-      "mobile": mobile,
+      name,
+      email,
+      mobile,
+      influencer,
     });
 }
 

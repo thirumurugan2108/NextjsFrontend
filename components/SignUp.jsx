@@ -6,7 +6,7 @@ import styles from '../pages/influencer/home.module.scss'
 import Box from '@mui/material/Box';
 import {ErrorMessage} from "../utils/common/commonUtil"
 
-export default function SignUp({handleOtpSent}) {
+export default function SignUp({handleOtpSent, influencer}) {
   const [signUpData, setSignUpData] = useState({email: '', name: '', mobile: ''})
   const [errorText, setErrorText] = useState({email: '', name: '', mobile: ''})
   const [errors, setErrors] = useState([]);
@@ -33,7 +33,7 @@ export default function SignUp({handleOtpSent}) {
     }
     setErrorText({...errorText,...erroMsg})
     try {
-      const resp = await userSignUp(signUpData.name, signUpData.email, signUpData.mobile)
+      const resp = await userSignUp(signUpData.name, signUpData.email, signUpData.mobile, influencer)
       if (resp.status && resp.data.status == "error") {
         setErrors([resp.data.message])
       }
