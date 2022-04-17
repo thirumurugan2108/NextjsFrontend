@@ -68,7 +68,7 @@ export async function userSignUp(name: string,email:string, mobile:string) {
 }
 
 
-export function getHomeDetailsByUsername (query){
+export function getHomeDetailsByUsername (query:any){
   // return axios.get('http://localhost:3001/v1/users/public?username='+ username);
   let token = ''
   if (query.token) {
