@@ -71,7 +71,7 @@ export default function About(ctx) {
   const [otpEmail, setOtpEmail] = useState('')
   const [loggedInUser, setLoggedInUser] = useState({})
   const [purchasedProduct, setPurchasedProducts] = useState([])
-  const [cookie, setCookie] = useCookies(["user"])
+  const [cookie, setCookie, removeCookie] = useCookies(["user"])
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
@@ -110,7 +110,7 @@ export default function About(ctx) {
 
   const logout = () => {
     setLoggedInUser ({})
-    setCookie(["user"])
+    removeCookie()
   }
 
   const getImageSize = (imageObj) => {
@@ -138,7 +138,8 @@ export default function About(ctx) {
   
   const router = useRouter();
   const query = router.query;
-  if (typeof cookie['user'] == "undefined") {
+
+  if (typeof cookie['user'] != "undefined") {
     query['token'] = cookie['user']
   }
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -150,7 +151,7 @@ export default function About(ctx) {
 
   useEffect(() => {
     if (data) {
-      if (!data.data.user.photoUrl) {
+      if (!data.data || !data.data.user || !data.data.user.photoUrl) {
         data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
       }
       dispatch({ type: 'fetchfromdb', payload: data.data });
