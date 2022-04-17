@@ -72,6 +72,10 @@ export default function About(ctx) {
   const [loggedInUser, setLoggedInUser] = useState({})
   const [purchasedProduct, setPurchasedProducts] = useState([])
   const [cookie, setCookie, removeCookie] = useCookies(["user"])
+  const router = useRouter();
+  const query = router.query;
+  
+  
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
@@ -82,9 +86,8 @@ export default function About(ctx) {
     else {
       setLoginModalOpen(true)
     }
-    
   };
-
+  
   const handleClose = () => {
     setIsPaymentOpen(false)
   };
@@ -106,11 +109,21 @@ export default function About(ctx) {
       maxAge: 86400, // Expires after 24hr
       sameSite: true,
     })
+
+    if (query.validateEmail && query.email) {
+      const newpath = router.pathname.replace('[username]', router.query.username)
+      router.push(newpath)
+    }
   }
 
   const logout = () => {
     setLoggedInUser ({})
-    removeCookie()
+    removeCookie('user')
+    setCookie("user", '', {
+      path: "/",
+      maxAge: 1, // Expires after 24hr
+      sameSite: true,
+    })
   }
 
   const getImageSize = (imageObj) => {
@@ -136,9 +149,7 @@ export default function About(ctx) {
     setSignupModalOpen(true)
   }
   
-  const router = useRouter();
-  const query = router.query;
-
+ 
   if (typeof cookie['user'] != "undefined") {
     query['token'] = cookie['user']
   }
@@ -158,8 +169,13 @@ export default function About(ctx) {
       setLoggedInUser(data.data.loginUser)
       setPurchasedProducts(data.data.currentProductIds)
     }
+    if (query.validateEmail && query.email) {
+      setOtpEmail(query.email)
+      setOtpType('signup')
+      setOtpModalOpen(true)
+    }
   }, [data]);
-
+  
   const onChange = (e) => {
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
@@ -351,7 +367,7 @@ export default function About(ctx) {
         <Login openSignupModal={openSignupModal} handleOtpSent= {handleOtpSent}/>
       </ModalComponent>}
       {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} > 
-        <SignUp handleOtpSent= {handleOtpSent}/>       
+        <SignUp handleOtpSent= {handleOtpSent} influencer={query.username}/>       
       </ModalComponent>}
       {otpModalOpen && 
         <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} > 
