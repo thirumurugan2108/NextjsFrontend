@@ -42,7 +42,7 @@ function reducer(state, action) {
 
 const PaymentDetails = (props) => {
     const router = useRouter();
-    const [state, dispatch] = useReducer(reducer, { buyerName: props.loggedInUser.name, buyerPhoneNumber: props.loggedInUser.mobile, buyerEmailId: props.loggedInUser.email })
+    const [state, dispatch] = useReducer(reducer, { })
     const [data, setData] = useState(undefined);
     const [isPaymentMode, setisPaymentMode] = useState(true);
     const [errors, setErrors] = useState([]);
@@ -50,10 +50,11 @@ const PaymentDetails = (props) => {
     // used for image handling
     const [naturalWidth, setNaturalWidth] = useState(0);
     const [naturalHeight, setNaturalHeight] = useState(0);
-
+    const [paymentMade, setPaymentMade] = useState(false)
+    
     // schema to valiadte user entering details before payment
     let validationSchema = Yup.object({comments: Yup.string().required('please enter comments ')});
- 
+    
     const onChange = (e) => {
         dispatch({ type: "generic", field: e.target.name, value: e.target.value });
     };
@@ -90,8 +91,9 @@ const PaymentDetails = (props) => {
 
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
+        
         var options = {
-            key: 'rzp_live_kSqk8k2TEX0otB', // Enter the Key ID generated from the Dashboard
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
             // name: "Manu Arora Pvt Ltd",
             currency: 'INR',
             amount: data.data.price,
@@ -106,7 +108,10 @@ const PaymentDetails = (props) => {
                     razorpayOrderId: response.razorpay_order_id,
                     razorpaySignature: response.razorpay_signature,
                     buyerDetails: {
-                        ...state
+                        ...state,
+                        buyerName:props.loggedInUser.name, 
+                        buyerPhoneNumber: props.loggedInUser.mobile, 
+                        buyerEmailId: props.loggedInUser.email
                     },
                     productDetails: {
                         username: props.username,
@@ -125,6 +130,8 @@ const PaymentDetails = (props) => {
                     } else {
                         dispatch({ type: "generic", field: 'videoUrl', value: data.data.fileurl });
                     }
+                    props.handlePaymentComplete(props.productid)
+                    setPaymentMade(true)
                 }).catch(err => {
                 });
             },
@@ -140,7 +147,9 @@ const PaymentDetails = (props) => {
                 color: "#61dafb",
             },
         };
-
+        if (options.key.indexOf('rzp_test_') !== -1) {
+            delete options.order_id
+        }
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
     };
@@ -177,7 +186,7 @@ const PaymentDetails = (props) => {
         state.imageUrl = '';
         state.videoUrl = '';
         setCardSuccess(false);
-        props.handleclose();
+        props.handleclose(paymentMade);
     }
 
     const ErrorMessage = () => {
@@ -225,6 +234,7 @@ const PaymentDetails = (props) => {
                                     onChange={(e) => onChange(e)}
                                     style={{ width: '100%' }}
                                 />
+                                <span className={styles.comments}>Enter comments to know more about you. eg. your social profile url, valid mobile etc. Infulencer may contact you in the given details.</span>
                                 <div>
                                     <Button onClick={() => proceed()}>Proceed</Button>
                                 </div>

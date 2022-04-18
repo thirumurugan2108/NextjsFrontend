@@ -71,7 +71,11 @@ export default function About(ctx) {
   const [otpEmail, setOtpEmail] = useState('')
   const [loggedInUser, setLoggedInUser] = useState({})
   const [purchasedProduct, setPurchasedProducts] = useState([])
-  const [cookie, setCookie] = useCookies(["user"])
+  const [cookie, setCookie, removeCookie] = useCookies(["user"])
+  const router = useRouter();
+  const query = router.query;
+  
+  
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
@@ -82,11 +86,13 @@ export default function About(ctx) {
     else {
       setLoginModalOpen(true)
     }
-    
   };
-
-  const handleClose = () => {
+  
+  const handleClose = (paymentMade = false) => {
     setIsPaymentOpen(false)
+    if (paymentMade) {
+      router.reload()
+    }
   };
 
   const handleOtpSent = (type, email) => {
@@ -106,11 +112,27 @@ export default function About(ctx) {
       maxAge: 86400, // Expires after 24hr
       sameSite: true,
     })
+
+    if (query.validateEmail && query.email) {
+      const newpath = router.pathname.replace('[username]', router.query.username)
+      router.push(newpath)
+    }
+  }
+
+  const handlePaymentComplete = (productId) => {
+    const previousProductIds = purchasedProduct
+    previousProductIds.push(productId)
+    setPurchasedProducts(previousProductIds)
   }
 
   const logout = () => {
     setLoggedInUser ({})
-    setCookie(["user"])
+    removeCookie('user')
+    setCookie("user", '', {
+      path: "/",
+      maxAge: 1, // Expires after 24hr
+      sameSite: true,
+    })
   }
 
   const getImageSize = (imageObj) => {
@@ -136,9 +158,8 @@ export default function About(ctx) {
     setSignupModalOpen(true)
   }
   
-  const router = useRouter();
-  const query = router.query;
-  if (typeof cookie['user'] == "undefined") {
+ 
+  if (typeof cookie['user'] != "undefined") {
     query['token'] = cookie['user']
   }
   const [state, dispatch] = useReducer(reducer, initialState);
@@ -150,15 +171,20 @@ export default function About(ctx) {
 
   useEffect(() => {
     if (data) {
-      if (!data.data.user.photoUrl) {
+      if (!data.data || !data.data.user || !data.data.user.photoUrl) {
         data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
       }
       dispatch({ type: 'fetchfromdb', payload: data.data });
       setLoggedInUser(data.data.loginUser)
       setPurchasedProducts(data.data.currentProductIds)
     }
+    if (query.validateEmail && query.email) {
+      setOtpEmail(query.email)
+      setOtpType('signup')
+      setOtpModalOpen(true)
+    }
   }, [data]);
-
+  
   const onChange = (e) => {
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
@@ -311,6 +337,7 @@ export default function About(ctx) {
         username={query.username}
         isCard={isCard}
         loggedInUser = {loggedInUser}
+        handlePaymentComplete = {handlePaymentComplete}
       >
       </PaymentDetails>
 
@@ -350,7 +377,7 @@ export default function About(ctx) {
         <Login openSignupModal={openSignupModal} handleOtpSent= {handleOtpSent}/>
       </ModalComponent>}
       {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} > 
-        <SignUp handleOtpSent= {handleOtpSent}/>       
+        <SignUp handleOtpSent= {handleOtpSent} influencer={query.username}/>       
       </ModalComponent>}
       {otpModalOpen && 
         <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} > 
