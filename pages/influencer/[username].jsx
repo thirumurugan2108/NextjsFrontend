@@ -88,8 +88,11 @@ export default function About(ctx) {
     }
   };
   
-  const handleClose = () => {
+  const handleClose = (paymentMade = false) => {
     setIsPaymentOpen(false)
+    if (paymentMade) {
+      router.reload()
+    }
   };
 
   const handleOtpSent = (type, email) => {
@@ -114,6 +117,12 @@ export default function About(ctx) {
       const newpath = router.pathname.replace('[username]', router.query.username)
       router.push(newpath)
     }
+  }
+
+  const handlePaymentComplete = (productId) => {
+    const previousProductIds = purchasedProduct
+    previousProductIds.push(productId)
+    setPurchasedProducts(previousProductIds)
   }
 
   const logout = () => {
@@ -328,6 +337,7 @@ export default function About(ctx) {
         username={query.username}
         isCard={isCard}
         loggedInUser = {loggedInUser}
+        handlePaymentComplete = {handlePaymentComplete}
       >
       </PaymentDetails>
 
