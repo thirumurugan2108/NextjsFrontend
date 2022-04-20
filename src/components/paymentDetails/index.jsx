@@ -151,7 +151,7 @@ const PaymentDetails = (props) => {
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
     };
-    if (props.open && !props.isCard) {
+    if (props.open && !props.isCard && paymentMade==false) {
        makePayment(state)
     }
     const proceed = () => {
