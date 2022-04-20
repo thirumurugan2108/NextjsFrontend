@@ -51,7 +51,6 @@ const PaymentDetails = (props) => {
     const [naturalWidth, setNaturalWidth] = useState(0);
     const [naturalHeight, setNaturalHeight] = useState(0);
     const [paymentMade, setPaymentMade] = useState(false)
-    
     // schema to valiadte user entering details before payment
     let validationSchema = Yup.object({comments: Yup.string().required('please enter comments ')});
     
@@ -84,15 +83,13 @@ const PaymentDetails = (props) => {
 
     const makePayment = async (buyerDetails) => {
         const res = await initializeRazorpay();
-
+        console.log(res)
         if (!res) {
             return;
         }
-
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
-        
-        var options = {
+        const options = {
             key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
             // name: "Manu Arora Pvt Ltd",
             currency: 'INR',
@@ -132,6 +129,7 @@ const PaymentDetails = (props) => {
                     }
                     props.handlePaymentComplete(props.productid)
                     setPaymentMade(true)
+                    
                 }).catch(err => {
                 });
             },
@@ -153,7 +151,9 @@ const PaymentDetails = (props) => {
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
     };
-
+    if (props.open && !props.isCard) {
+       makePayment(state)
+    }
     const proceed = () => {
         validationSchema.validate(state, { abortEarly: false })
       .catch((err) => {
@@ -211,7 +211,7 @@ const PaymentDetails = (props) => {
         <>
             <div>
 
-                <Modal
+                {props.isCard && <Modal
                     open={props.open}
                     onClose={onClose}
                     aria-labelledby="modal-modal-title"
@@ -219,10 +219,10 @@ const PaymentDetails = (props) => {
                 >
 
                     <Box sx={modalStyle}>
-                        {isPaymentMode &&
+                        {isPaymentMode && props.isCard &&
                             <>
                                 {<ErrorMessage></ErrorMessage>}
-                                <h2 className={styles.userHeading}>Enter Comments for Infulencer</h2>
+                                <h2 className={styles.userHeading}>Enter Comments for Influencer</h2>
                                 <label htmlFor="comments">Comments :</label>
                                
                                 <TextareaAutosize
@@ -270,13 +270,52 @@ const PaymentDetails = (props) => {
                                 {/* <button onClick={download}>Download</button> */}
                             </>
                         }
-
                         {isCardSuccess &&
-
                             <h2>Your order has been placed successfully . Influencer will contact you soon!</h2>
                         }
                     </Box>
-                </Modal>
+                </Modal>}
+                {paymentMade && !props.isCard && <Modal
+                    open={props.open}
+                    onClose={onClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={modalStyle}>
+                        {state.imageUrl &&
+                            <>
+                                <Image
+                                    loader={imageLoader}
+                                    src={state.imageUrl}
+                                    alt="Picture of the author"
+                                    onLoadingComplete={getImageSize}
+                                    width={naturalWidth}
+                                    height={naturalHeight}
+                                    layout="responsive"
+                                // height={500}
+                                />
+                                {/* <button onClick={download}>Download</button> */}
+                            </>
+                        }
+
+                        {state.videoUrl &&
+                            <>
+                                <video
+                                    src={state.videoUrl}
+                                    autoPlay
+                                    controls
+                                    controlsList="nodownload"
+                                    className={styles.video}
+                                    alt="Picture of the author"
+                                />
+                                {/* <button onClick={download}>Download</button> */}
+                            </>
+                        }
+                        {isCardSuccess &&
+                            <h2>Your order has been placed successfully . Influencer will contact you soon!</h2>
+                        }
+                    </Box>
+                </Modal>}
             </div>
         </>
     );
