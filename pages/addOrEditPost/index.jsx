@@ -55,6 +55,7 @@ function reducer(state = initialState, action) {
 const addOrEditPost = (_props) => {
   const [image, setImage] = useState("");
   const [isImage, setIsImage] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isSucess, setIsSuccess] = useState(false);
   const [errors, setErrors] = useState([]);
   const setConfigState = useConfigSetState();
@@ -152,11 +153,11 @@ const addOrEditPost = (_props) => {
         err.errors; // => [{ key: 'field_too_short', values: { min: 18 } }]
         setErrors(err.errors);
       })
-      .then((valid) => {
+      .then(async (valid) => {
         if (valid) {
           setErrors([]);
-          setIsSuccess(true)
           resetValues();
+          setIsLoading(true)
           if (state.imageFile) {
             let formdata = new FormData();
             formdata.set('title', state.title);
@@ -169,20 +170,36 @@ const addOrEditPost = (_props) => {
 
             formdata.set('file', state.imageFile);
             formdata.set('extensionName', state.extensionName);
-            upsertPost(formdata);
+            const data = await upsertPost(formdata);
+            if (data.status == 200 && data.message == "success") {
+              setIsLoading(false)
+              setIsSuccess(true)
+            }
+            else {
+              setIsLoading(false)
+              setErrors("Failed to upload your content")
+            }
           } else {
-            updatePost({
+            const data = await  updatePost({
               title: state.title,
               price: state.price,
               isPaid: state.isPaid,
               id: state.id
             })
+            if (data.status == 200 && data.message == "success") {
+              setIsLoading(false)
+              setIsSuccess(true)
+            }
+            else {
+              setIsLoading(false)
+              setErrors("Failed to upload your content")
+            }
           }
         } else {
           setIsSuccess(false);
+          setIsLoading(false)
         }
       });
-
   }
 
   const addNew = () => {
@@ -216,6 +233,12 @@ const addOrEditPost = (_props) => {
     )
   }
 
+  const LoadingMssage = () => {
+    return (
+      <Alert severity="warning">Uploading your content. Please wait...</Alert>
+    )
+  }
+
   return (
     <Layout>
       <>
@@ -224,6 +247,8 @@ const addOrEditPost = (_props) => {
           <div className={styles.form1}>
             {errors.length !== 0 && <ErrorNotification></ErrorNotification>}
             {isSucess && <SuccessMssage></SuccessMssage>}
+            {isLoading && <LoadingMssage />}
+            
             {/* </div> */}
             <UploadBox updateFile={(e) => updloadFile(e)}></UploadBox>
             <div className="row">
