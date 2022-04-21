@@ -57,7 +57,14 @@ const PaymentDetails = (props) => {
     const onChange = (e) => {
         dispatch({ type: "generic", field: e.target.name, value: e.target.value });
     };
-
+    useEffect (() => {
+        if (!props.isCard) {
+            if (props.open && !props.isCard && paymentMade==false) {
+                console.log("000000000000000")
+               makePayment(state)
+            }
+        }
+    }, [props])
     // useEffect(() => {
     //     if (data) {
     //     //   dispatch({ type: 'fetchfromdb', payload: data.data });
@@ -83,7 +90,6 @@ const PaymentDetails = (props) => {
 
     const makePayment = async (buyerDetails) => {
         const res = await initializeRazorpay();
-        console.log(res)
         if (!res) {
             return;
         }
@@ -151,9 +157,7 @@ const PaymentDetails = (props) => {
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
     };
-    if (props.open && !props.isCard && paymentMade==false) {
-       makePayment(state)
-    }
+    
     const proceed = () => {
         validationSchema.validate(state, { abortEarly: false })
       .catch((err) => {
@@ -207,6 +211,7 @@ const PaymentDetails = (props) => {
         setNaturalWidth(imageObj.naturalWidth);
         setNaturalHeight(imageObj.naturalHeight);
     }
+    
     return (
         <>
             <div>
