@@ -22,6 +22,18 @@ export function updateCardDetails(postData:any) {
     })
 }
 
+export function deleteCardById(id:any) {
+  return axios.post(baseUrl + 'deleteCard',
+    {
+      id: id
+    },
+    {
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      }
+    })
+}
+
 export function createCardDetails(postData:any) {
   return axios.post(baseUrl,
     postData,
