@@ -3,9 +3,12 @@
  */
  const nextConfig = {
     /* config options here */
-    images: {
-        domains: ['https://bingmee1.s3.ap-south-1.amazonaws.com','bingmee1.s3.ap-south-1.amazonaws.com'],
-      },
+    env: {
+      basePath: '/docs',
+      isDev: false,
+      // apiBaseUrl:'http://localhost:3001/v1/'
+      apiBaseUrl:'https://api.bingemeee.com/v1/'
+    },
   }
   
   module.exports = nextConfig

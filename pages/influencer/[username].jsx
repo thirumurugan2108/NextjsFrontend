@@ -11,6 +11,7 @@ import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
+import Popup18plus from '../../src/components/Popup18plus'
 import Footer from '../../src/components/footer';
 
 
@@ -118,6 +119,7 @@ export default function About(ctx) {
   }
   return (
     <div className={styles.container}>
+      <Popup18plus></Popup18plus>
       <div className={styles.main}>
         <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
         <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
@@ -132,34 +134,19 @@ export default function About(ctx) {
           {state.cardList && state.cardList.map((data, index) => {
             return (
               <div className={styles.slot} key={index.toString()}>
-
                 <div className={styles.around}>
                   <h4>{data.title}</h4>
                   <p className={styles.chatContent}>{data.description}</p>
                   <p>{data.price}</p>
                 </div>
-
                 <div className={styles.align}>
-
                   <a onClick={() => handleOpen(data.id, true)}>Booknow</a>
                 </div>
               </div>
             )
           }
           )}
-          {/* <div className={styles.slot}>
-
-            <div className={styles.around}>
-              <h4>DM on Instagram</h4>
-              <p className={styles.chatContent}>Lets chat instagram for 10mins</p>
-              <Text>Rs:400</Text>
-            </div>
-
-            <div className={styles.align}>
-
-              <a onClick={handleOpen}>Booknow</a>
-            </div>
-          </div> */}
+         
           {state.images?.length != 0 && <h4 className={styles.subHeading}>Images</h4>}
           <div className={styles.parentScroll}>
             {state.images && state.images.map((data, index) => {

@@ -62,6 +62,7 @@ export default (_props) => {
     if (isLogin) {
       login(state.name, state.password).then(data => {
         sessionStorage.setItem('token', data.data.tokens.access.token);
+        sessionStorage.setItem('refreshToken', data.data.tokens.refresh.token);
         sessionStorage.setItem('name', data.data.user.name);
         router.push('./service-history');
         // router.back();

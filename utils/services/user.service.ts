@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://api.bingemeee.com/v1/';
-// const baseUrl = 'http://localhost:3001/v1/';
+const baseUrl = process.env.apiBaseUrl;
 
 export function login(username: string, password: string) {
     return axios.post(baseUrl+ 'auth/login',{
@@ -10,10 +9,15 @@ export function login(username: string, password: string) {
       })
 }
 
+export function logout() {
+  return axios.post(baseUrl+ 'auth/logout',{
+    refreshToken:sessionStorage.refreshToken
+    })
+}
+
 
 export function getUserDetails() {
   return axios.get(`${baseUrl}users/`, 
-  // return axios.get(`http://localhost:3001/v1/users/`, 
   {
     headers: {
       Authorization: 'Bearer ' + sessionStorage.getItem('token')
@@ -22,7 +26,6 @@ export function getUserDetails() {
 }
 
 export function uploadPhoto (formdata: any){
-  // return axios.post(`http://localhost:3001/v1/users/uploadphoto`, 
   return axios.post(`${baseUrl}users/uploadphoto`, 
   formdata,
   {
@@ -43,6 +46,5 @@ export function signup(name: string,email:string, password: string, fullName: st
 
 
 export function getHomeDetailsByUsername (username: String){
-  // return axios.get('http://localhost:3001/v1/users/public?username='+ username);
   return axios.get(`${baseUrl}users/public?username=`+ username);
 }
