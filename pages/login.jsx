@@ -67,6 +67,7 @@ export default (_props) => {
         else {
           sessionStorage.setItem('token', data.data.tokens.access.token);
           sessionStorage.setItem('name', data.data.user.name);
+          sessionStorage.setItem('refreshToken', data.data.tokens.refresh.token);
           router.push('./service-history');
         }
         // router.back();

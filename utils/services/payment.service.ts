@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://api.bingemeee.com/v1/payment/';
-// const baseUrl = 'http://localhost:3001/v1/payment/';
+const baseUrl = process.env.apiBaseUrl+'payment/';
 
 export async function createPayment(username: String, id: String, isCard: Boolean) {
   return await axios.get(baseUrl + `?username=${username}&id=${id}&isCard=${isCard}`,

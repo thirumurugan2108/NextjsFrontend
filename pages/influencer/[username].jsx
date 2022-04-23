@@ -12,6 +12,7 @@ import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
+import Popup18plus from '../../src/components/Popup18plus'
 import Footer from '../../src/components/footer';
 import ModalComponent from '../../components/Modal'
 import Login from '../../components/Login'
@@ -204,7 +205,7 @@ export default function About(ctx) {
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
-      
+      <Popup18plus></Popup18plus>
       <div className={styles.main}>
       {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
         Login
@@ -237,19 +238,7 @@ export default function About(ctx) {
             )
           }
           )}
-          {/* <div className={styles.slot}>
-
-            <div className={styles.around}>
-              <h4>DM on Instagram</h4>
-              <p className={styles.chatContent}>Lets chat instagram for 10mins</p>
-              <Text>Rs:400</Text>
-            </div>
-
-            <div className={styles.align}>
-
-              <a onClick={handleOpen}>Booknow</a>
-            </div>
-          </div> */}
+         
           {state.images?.length != 0 && <h4 className={styles.subHeading}>Images</h4>}
           <div className={styles.parentScroll}>
             {state.images && state.images.map((data, index) => {

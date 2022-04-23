@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../src/components/layout";
+import { useRouter } from "next/router";
+import Image from 'next/image';
+import { useReducer } from "react";
+
 import styles from './profile.module.scss';
 import { getExtensionFromFileName } from '../../utils/common/commonUtil'
-import { getcardDetails, updateCardDetails } from "../../utils/services/card.service";
+import { createCardDetails, getcardDetails, updateCardDetails, deleteCardById } from "../../utils/services/card.service";
 import { getUserDetails, uploadPhoto } from "../../utils/services/user.service"
-import Image from 'next/image';
 
-import { useReducer } from "react";
 import { Card } from "../../utils/models/card.model";
-import { useRouter } from "next/router";
+import Delete from '../../assets/images/delete.svg';
 const initialState = {
   cardList: [{
     "title": "DM on Instagram",
@@ -43,7 +45,13 @@ function reducer(state, action) {
             return data;
           }
         })
-      }
+      };
+    case "addCard":
+      return {
+        ...state,
+        cardList: [initialState.cardList[0], ...state?.cardList
+        ]
+      };
     case "fetchfromdb":
       return {
         ...action.payload,
@@ -114,6 +122,16 @@ const Profile = (_props) => {
 
   }
 
+  const addCard = () => {
+    dispatch({ type: 'addCard' });
+    createCardDetails(initialState.cardList[0]);
+  }
+
+  const deleteCard = async (id) => {
+    await deleteCardById(id);
+    fetchAllDetails();
+  }
+
   const onCardChange = (e, index) => {
     dispatch({ type: "onCardChange", field: e.target.name, value: e.target.value, index: index });
   };
@@ -149,7 +167,7 @@ const Profile = (_props) => {
             <a href={`/influencer/${username}`} className={styles.influencerLink}>www.bingemeee.com/influencer/{username}</a>
             <div className={styles.cardHeader}>
               <p className={styles.connect}>Let's Connect</p>
-              {/* <button>Add Cards</button> */}
+              <button onClick={() => addCard()}>Add Cards</button>
             </div>
             {state.cardList && state.cardList.map((data, index) => {
 
@@ -163,10 +181,11 @@ const Profile = (_props) => {
                       <p className={styles.chatContent}>{data.description}</p>
                       <text>{data.price}</text>
                     </div>
-
+                  <div className={styles.cardEditContainer}>
                     <div className={styles.cardEdit} onClick={() => onEdit(index)}>
-
                     </div>
+                    <Image src={Delete} onClick={() => deleteCard(data.id)} />
+                  </div>
                   </div>
                 )
               } else {
@@ -175,10 +194,10 @@ const Profile = (_props) => {
                     <input value={data.title} name="title" placeholder="Title" onChange={(e) => onCardChange(e, index)} />
                     <input value={data.description} name="description" placeholder="Description" onChange={(e) => onCardChange(e, index)} />
                     <input value={data.price} type="Number" name="price" placeholder="Price" onChange={(e) => onCardChange(e, index)} />
-                    <div>
-                      <button onClick={() => onEditCancel(index)}>Cancel</button>
-                      <button onClick={() => onCardSubmit(index, data)}>Submit</button>
-                    </div>
+                    
+                      <button  className={styles.floatNone} onClick={() => onEditCancel(index)}>Cancel</button>
+                      <button className={styles.floatNone} onClick={() => onCardSubmit(index, data)}>Submit</button>
+                    
                   </div>
                 )
               }

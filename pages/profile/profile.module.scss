@@ -123,9 +123,6 @@
   background: #fafafa;
   height: 30%;
   margin-top: 2rem;
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   padding: 1rem;
   margin: 1rem 1rem 1rem;
   .cardEdit {
@@ -147,7 +144,10 @@
     margin: 0 0.5rem;
   }
 }
-
+.cardEditContainer{
+  display: flex;
+  justify-content: end;
+}
 .chatContent {
   color: grey;
   margin-top: -1rem;
@@ -160,4 +160,8 @@
 
 .alt {
   margin: 3rem 4rem;
+}
+
+.floatNone{
+  float: none;
 }
