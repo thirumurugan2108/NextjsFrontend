@@ -34,6 +34,11 @@ export function uploadPhoto (formdata: any){
     }
   });
 }
+export function userLogin(email:string) {
+  return axios.post(baseUrl+ 'auth/userLogin',{
+      "email": email,
+    });
+}
 
 export function signup(name: string,email:string, password: string, fullName: string) {
     return axios.post(baseUrl+ 'auth/register',{
@@ -42,6 +47,29 @@ export function signup(name: string,email:string, password: string, fullName: st
         "password": password,
         fullName: fullName
       });
+}
+
+export function verifySignupOTP(otp: string, email: string) {
+  return axios.post(baseUrl+ 'auth/registerVerifyOtp',{
+      otp,
+      email,
+    });
+}
+
+export function verifyOTP(otp: string, email: string) {
+  return axios.post(baseUrl+ 'auth/VerifyOtp',{
+      otp,
+      email,
+    });
+}
+
+export async function userSignUp(name: string,email:string, mobile:string, influencer: string) {
+  return await axios.post(baseUrl+ 'auth/userRegister',{
+      name,
+      email,
+      mobile,
+      influencer,
+    });
 }
 
 

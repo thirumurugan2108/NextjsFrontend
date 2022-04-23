@@ -2,8 +2,8 @@ import axios from "axios";
 
 const baseUrl = process.env.apiBaseUrl+'posts/';
 
-export function updatePost(post:any) {
-    axios.post(baseUrl+ 'updatePost', post,
+export const updatePost = async (post:any) => {
+    return await axios.post(baseUrl+ 'updatePost', post,
     {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('token')
@@ -20,8 +20,8 @@ export function getAllpost() {
     });
 }
 
-export function upsertPost(post:FormData){
-  axios.post(baseUrl+'uploadImages', post,
+export const upsertPost = async(post:FormData) =>{
+  return await axios.post(baseUrl+'uploadImages', post,
     {
       headers: {
         Authorization: 'Bearer ' + sessionStorage.getItem('token')

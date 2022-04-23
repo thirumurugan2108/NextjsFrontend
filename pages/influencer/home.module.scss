@@ -166,3 +166,18 @@
    .parent-scroll::-webkit-scrollbar {
       display: none;
     }
+
+.LoginLink {
+  color: white;
+  text-align: right;
+  padding-right: 10%;
+  padding-top: 20px;
+  text-decoration: none;
+}
+.signupLinkWrapper {
+  clear: both;
+  text-align: center;
+}
+.sendOTPButton {
+  margin-top: 10px;
+}

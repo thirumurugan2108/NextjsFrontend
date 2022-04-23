@@ -61,10 +61,15 @@ export default (_props) => {
   const loginOrSignUp = () => {
     if (isLogin) {
       login(state.name, state.password).then(data => {
-        sessionStorage.setItem('token', data.data.tokens.access.token);
-        sessionStorage.setItem('refreshToken', data.data.tokens.refresh.token);
-        sessionStorage.setItem('name', data.data.user.name);
-        router.push('./service-history');
+        if (data.data.status == 'error') {
+          setErrorMessage(data.data.message);
+        }
+        else {
+          sessionStorage.setItem('token', data.data.tokens.access.token);
+          sessionStorage.setItem('name', data.data.user.name);
+          sessionStorage.setItem('refreshToken', data.data.tokens.refresh.token);
+          router.push('./service-history');
+        }
         // router.back();
       }).catch( err => {
         setErrorMessage(err.response.data.message);
@@ -75,10 +80,14 @@ export default (_props) => {
         setSignUpSucess(false);
       }).then( data => {
         if(data){
+          if (data.data.status == 'error') {
+            setErrorMessage(data.data.message);
+          }
+          else {
           setSignUpSucess(true);
           window.scrollTo(0, 0);
           setErrorMessage('');
-          
+          }
         }
       });
     }

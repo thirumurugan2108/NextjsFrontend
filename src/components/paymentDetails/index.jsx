@@ -42,30 +42,29 @@ function reducer(state, action) {
 
 const PaymentDetails = (props) => {
     const router = useRouter();
-    const [state, dispatch] = useReducer(reducer, {});
+    const [state, dispatch] = useReducer(reducer, { })
     const [data, setData] = useState(undefined);
     const [isPaymentMode, setisPaymentMode] = useState(true);
     const [errors, setErrors] = useState([]);
     const [isCardSuccess, setCardSuccess] = useState(false);
-
     // used for image handling
     const [naturalWidth, setNaturalWidth] = useState(0);
     const [naturalHeight, setNaturalHeight] = useState(0);
-
+    const [paymentMade, setPaymentMade] = useState(false)
     // schema to valiadte user entering details before payment
-    let validationSchema = Yup.object({
-        buyerName: Yup.string()
-            .required('please enter name '),
-        buyerPhoneNumber: Yup.string()
-            .required('please enter phonenumber '),
-        buyerEmailId: Yup.string().email('Invalid Email format')
-            .required('please enter email '),
-    });
- 
+    let validationSchema = Yup.object({comments: Yup.string().required('please enter comments ')});
+    
     const onChange = (e) => {
         dispatch({ type: "generic", field: e.target.name, value: e.target.value });
     };
-
+    useEffect (() => {
+        if (!props.isCard) {
+            if (props.open && !props.isCard && paymentMade==false) {
+                console.log("000000000000000")
+               makePayment(state)
+            }
+        }
+    }, [props])
     // useEffect(() => {
     //     if (data) {
     //     //   dispatch({ type: 'fetchfromdb', payload: data.data });
@@ -90,17 +89,14 @@ const PaymentDetails = (props) => {
     };
 
     const makePayment = async (buyerDetails) => {
-
         const res = await initializeRazorpay();
-
         if (!res) {
             return;
         }
-
         // Make API call to the serverless API
         const data = await createPayment(props.username, props.productid, props.isCard);
-        var options = {
-            key: 'rzp_live_kSqk8k2TEX0otB', // Enter the Key ID generated from the Dashboard
+        const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
             // name: "Manu Arora Pvt Ltd",
             currency: 'INR',
             amount: data.data.price,
@@ -115,7 +111,10 @@ const PaymentDetails = (props) => {
                     razorpayOrderId: response.razorpay_order_id,
                     razorpaySignature: response.razorpay_signature,
                     buyerDetails: {
-                        ...state
+                        ...state,
+                        buyerName:props.loggedInUser.name, 
+                        buyerPhoneNumber: props.loggedInUser.mobile, 
+                        buyerEmailId: props.loggedInUser.email
                     },
                     productDetails: {
                         username: props.username,
@@ -134,6 +133,9 @@ const PaymentDetails = (props) => {
                     } else {
                         dispatch({ type: "generic", field: 'videoUrl', value: data.data.fileurl });
                     }
+                    props.handlePaymentComplete(props.productid)
+                    setPaymentMade(true)
+                    
                 }).catch(err => {
                 });
             },
@@ -149,11 +151,13 @@ const PaymentDetails = (props) => {
                 color: "#61dafb",
             },
         };
-
+        if (options.key.indexOf('rzp_test_') !== -1) {
+            delete options.order_id
+        }
         const paymentObject = new window.Razorpay(options);
         paymentObject.open();
     };
-
+    
     const proceed = () => {
         validationSchema.validate(state, { abortEarly: false })
       .catch((err) => {
@@ -186,7 +190,7 @@ const PaymentDetails = (props) => {
         state.imageUrl = '';
         state.videoUrl = '';
         setCardSuccess(false);
-        props.handleclose();
+        props.handleclose(paymentMade);
     }
 
     const ErrorMessage = () => {
@@ -207,11 +211,12 @@ const PaymentDetails = (props) => {
         setNaturalWidth(imageObj.naturalWidth);
         setNaturalHeight(imageObj.naturalHeight);
     }
+    
     return (
         <>
             <div>
 
-                <Modal
+                {props.isCard && <Modal
                     open={props.open}
                     onClose={onClose}
                     aria-labelledby="modal-modal-title"
@@ -219,21 +224,12 @@ const PaymentDetails = (props) => {
                 >
 
                     <Box sx={modalStyle}>
-                        {isPaymentMode &&
+                        {isPaymentMode && props.isCard &&
                             <>
                                 {<ErrorMessage></ErrorMessage>}
-                                <h2 className={styles.userHeading}>Enter User Details</h2>
-                            
-                                <label htmlFor="buyerName">Name :</label>
-                                <input type="text" id="buyerName" name="buyerName" placeholder='name' onChange={(e) => onChange(e)} />
-
-                                <label htmlFor="buyerPhoneNumber">Phone number :</label>
-                                <input type="text" id="buyerPhoneNumber" name='buyerPhoneNumber' placeholder='phonenumber' onChange={(e) => onChange(e)} />
-
-                                <label htmlFor="buyerEmailId">Email :</label>
-                                <input type="text" id="buyerEmailId" name="buyerEmailId" placeholder='email' onChange={(e) => onChange(e)} />
-
+                                <h2 className={styles.userHeading}>Enter Comments for Influencer</h2>
                                 <label htmlFor="comments">Comments :</label>
+                               
                                 <TextareaAutosize
                                     aria-label="comments"
                                     id="comments"
@@ -243,6 +239,7 @@ const PaymentDetails = (props) => {
                                     onChange={(e) => onChange(e)}
                                     style={{ width: '100%' }}
                                 />
+                                <span className={styles.comments}>Enter comments to know more about you. eg. your social profile url, valid mobile etc. Infulencer may contact you in the given details.</span>
                                 <div>
                                     <Button onClick={() => proceed()}>Proceed</Button>
                                 </div>
@@ -278,13 +275,52 @@ const PaymentDetails = (props) => {
                                 {/* <button onClick={download}>Download</button> */}
                             </>
                         }
-
                         {isCardSuccess &&
-
                             <h2>Your order has been placed successfully . Influencer will contact you soon!</h2>
                         }
                     </Box>
-                </Modal>
+                </Modal>}
+                {paymentMade && !props.isCard && <Modal
+                    open={props.open}
+                    onClose={onClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={modalStyle}>
+                        {state.imageUrl &&
+                            <>
+                                <Image
+                                    loader={imageLoader}
+                                    src={state.imageUrl}
+                                    alt="Picture of the author"
+                                    onLoadingComplete={getImageSize}
+                                    width={naturalWidth}
+                                    height={naturalHeight}
+                                    layout="responsive"
+                                // height={500}
+                                />
+                                {/* <button onClick={download}>Download</button> */}
+                            </>
+                        }
+
+                        {state.videoUrl &&
+                            <>
+                                <video
+                                    src={state.videoUrl}
+                                    autoPlay
+                                    controls
+                                    controlsList="nodownload"
+                                    className={styles.video}
+                                    alt="Picture of the author"
+                                />
+                                {/* <button onClick={download}>Download</button> */}
+                            </>
+                        }
+                        {isCardSuccess &&
+                            <h2>Your order has been placed successfully . Influencer will contact you soon!</h2>
+                        }
+                    </Box>
+                </Modal>}
             </div>
         </>
     );

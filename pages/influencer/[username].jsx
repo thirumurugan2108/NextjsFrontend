@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Image from 'next/image'
 import React from "react";
 import useSWR from 'swr'
+import Link from 'next/link'
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -13,17 +14,18 @@ import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
 import Popup18plus from '../../src/components/Popup18plus'
 import Footer from '../../src/components/footer';
-
-
+import ModalComponent from '../../components/Modal'
+import Login from '../../components/Login'
+import SignUp from '../../components/SignUp'
+import OtpForm from '../../components/OtpForm'
+import { useCookies } from "react-cookie"
 const fetcher = (query) => {
   if (query.username) {
-    return getHomeDetailsByUsername(query.username);
+    return getHomeDetailsByUsername(query);
   } else {
     return
   }
 }
-
-
 
 const initialState = {
   cardList: [],
@@ -55,7 +57,6 @@ function reducer(state, action) {
   }
 }
 
-
 export default function About(ctx) {
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [payableProductId, setPayableProductId] = useState('');
@@ -64,24 +65,104 @@ export default function About(ctx) {
   const [openedProduct, setOpenedProduct] = useState({});
   const [naturalWidth, setNaturalWidth] = useState(0);
   const [naturalHeight, setNaturalHeight] = useState(0);
-
+  const [loginModelOpen, setLoginModalOpen] = useState(false)
+  const [signUpModelOpen, setSignupModalOpen] = useState(false)
+  const [otpModalOpen, setOtpModalOpen] = useState(false)
+  const [otpType, setOtpType] = useState('')
+  const [otpEmail, setOtpEmail] = useState('')
+  const [loggedInUser, setLoggedInUser] = useState({})
+  const [purchasedProduct, setPurchasedProducts] = useState([])
+  const [cookie, setCookie, removeCookie] = useCookies(["user"])
+  const router = useRouter();
+  const query = router.query;
+  
+  
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
-    setIsPaymentOpen(true)
     setIsCard(isCard);
+
+    if (Object.keys(loggedInUser).length > 0) {
+      setIsPaymentOpen(true)
+    }
+    else {
+      setLoginModalOpen(true)
+    }
+  };
+  
+  const handleClose = (paymentMade = false) => {
+    setIsPaymentOpen(false)
+    if (paymentMade) {
+      router.reload()
+    }
   };
 
-  const handleClose = () => {
-    setIsPaymentOpen(false)
-  };
+  const handleOtpSent = (type, email) => {
+    setSignupModalOpen(false)
+    setLoginModalOpen(false)
+    setOtpModalOpen(true)
+    setOtpType(type)
+    setOtpEmail(email)
+  }
+
+  const processVerifiedOtp = (user, token, paidProductIds) => {
+    setOtpModalOpen(false)
+    setLoggedInUser({name:user.name, email: user.email, mobile: user.mobile, photoUrl: user.photoUrl})
+    setPurchasedProducts(paidProductIds);
+    setCookie("user", token.refresh.token, {
+      path: "/",
+      maxAge: 86400, // Expires after 24hr
+      sameSite: true,
+    })
+
+    if (query.validateEmail && query.email) {
+      const newpath = router.pathname.replace('[username]', router.query.username)
+      router.push(newpath)
+    }
+  }
+
+  const handlePaymentComplete = (productId) => {
+    const previousProductIds = purchasedProduct
+    previousProductIds.push(productId)
+    setPurchasedProducts(previousProductIds)
+  }
+
+  const logout = () => {
+    setLoggedInUser ({})
+    removeCookie('user')
+    setCookie("user", '', {
+      path: "/",
+      maxAge: 1, // Expires after 24hr
+      sameSite: true,
+    })
+  }
 
   const getImageSize = (imageObj) => {
     setNaturalWidth(imageObj.naturalWidth);
     setNaturalHeight(imageObj.naturalHeight);
   }
+  const loginModelClose = () => {
+    setLoginModalOpen(false)
+  }
 
-  const router = useRouter();
-  const query = router.query;
+  const openLoginModal = () => {
+    setLoginModalOpen(true)
+  }
+  const signupModelClose = () => {
+    setSignupModalOpen(false)
+  }
+  const otpModelClose = () => {
+    setOtpModalOpen(false)
+  }
+  const openSignupModal = (e) => {
+    e.preventDefault()    
+    setLoginModalOpen(false)
+    setSignupModalOpen(true)
+  }
+  
+ 
+  if (typeof cookie['user'] != "undefined") {
+    query['token'] = cookie['user']
+  }
   const [state, dispatch] = useReducer(reducer, initialState);
   const { data, error } = useSWR(query, fetcher, {
     revalidateIfStale: false,
@@ -90,17 +171,21 @@ export default function About(ctx) {
   })
 
   useEffect(() => {
-  }, []);
-
-  useEffect(() => {
     if (data) {
-      if (!data.data.user.photoUrl) {
+      if (!data.data || !data.data.user || !data.data.user.photoUrl) {
         data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
       }
       dispatch({ type: 'fetchfromdb', payload: data.data });
+      setLoggedInUser(data.data.loginUser)
+      setPurchasedProducts(data.data.currentProductIds)
+    }
+    if (query.validateEmail && query.email) {
+      setOtpEmail(query.email)
+      setOtpType('signup')
+      setOtpModalOpen(true)
     }
   }, [data]);
-
+  
   const onChange = (e) => {
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
@@ -110,17 +195,24 @@ export default function About(ctx) {
     setOpenedProduct({});
   }
 
-
   const openFreeProduct = (data, isImage) => {
     setfreeProductOpen(true);
     setOpenedProduct({
       ...data, isImage
     });
   }
+
+  const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
       <Popup18plus></Popup18plus>
       <div className={styles.main}>
+      {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
+        Login
+      </div>}
+      {isUserLoggedIn && <div className={styles.LoginLink}>
+        Welcome {loggedInUser.name} | <Link href="#"><a onClick={logout}  className={styles.LoginLink}>Logout</a></Link>
+      </div>}
         <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
         <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
 
@@ -150,11 +242,11 @@ export default function About(ctx) {
           {state.images?.length != 0 && <h4 className={styles.subHeading}>Images</h4>}
           <div className={styles.parentScroll}>
             {state.images && state.images.map((data, index) => {
+              const displayUnlock = data.isPaid == 'Yes' && purchasedProduct.indexOf(data.id) == -1 ? true: false
               return (
-                <>
                   <div key={index.toString()}>
                     <div className={styles.scroll}>
-                      {data.isPaid === 'Yes' &&
+                      {displayUnlock &&
                         <>
                           <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
                             <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
@@ -165,7 +257,7 @@ export default function About(ctx) {
 
                       }
 
-                      {data.isPaid === 'No' &&
+                      {!displayUnlock &&
                         <img
                           src={
                             data?.fileUrl
@@ -180,7 +272,6 @@ export default function About(ctx) {
                     </div>
                     <p className={styles.imgTitle}>{data.title}</p>
                   </div>
-                </>
               )
             }
             )}
@@ -189,11 +280,11 @@ export default function About(ctx) {
           {state.videos?.length != 0 && <h4 className={styles.subHeading}>Videos</h4>}
           <div className={styles.parentScroll}>
             {state.videos && state.videos.map((data, index) => {
+              const displayUnlock = data.isPaid == "Yes"  && purchasedProduct.indexOf(data.id) == -1 ? true: false
               return (
-                <>
                   <div key={index.toString()}>
                     <div className={styles.scroll}>
-                      {data.isPaid === 'Yes' &&
+                      {displayUnlock &&
                         <>
                           <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
                             <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
@@ -204,7 +295,7 @@ export default function About(ctx) {
 
                       }
 
-                      {data.isPaid === 'No' &&
+                      {!displayUnlock &&
                         <video
                           src={
                             data?.fileUrl
@@ -219,7 +310,6 @@ export default function About(ctx) {
                     </div>
                     <p className={styles.imgTitle}>{data.title}</p>
                   </div>
-                </>
               )
             }
             )}
@@ -235,6 +325,8 @@ export default function About(ctx) {
         productid={payableProductId}
         username={query.username}
         isCard={isCard}
+        loggedInUser = {loggedInUser}
+        handlePaymentComplete = {handlePaymentComplete}
       >
       </PaymentDetails>
 
@@ -270,6 +362,16 @@ export default function About(ctx) {
           </>
         </Box>
       </Modal>
+      {loginModelOpen && <ModalComponent open={loginModelOpen} onClose={loginModelClose} modalStyle={modalStyle} > 
+        <Login openSignupModal={openSignupModal} handleOtpSent= {handleOtpSent}/>
+      </ModalComponent>}
+      {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} > 
+        <SignUp handleOtpSent= {handleOtpSent} influencer={query.username}/>       
+      </ModalComponent>}
+      {otpModalOpen && 
+        <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} > 
+          <OtpForm type={otpType} email = {otpEmail} processVerifiedOtp={processVerifiedOtp}/>       
+        </ModalComponent>}
     </div>
   );
 }
