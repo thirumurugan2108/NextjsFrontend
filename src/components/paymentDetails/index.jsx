@@ -265,13 +265,14 @@ const PaymentDetails = (props) => {
                         {state.videoUrl &&
                             <>
                                 <video
-                                    src={state.videoUrl}
                                     autoPlay
                                     controls
                                     controlsList="nodownload"
                                     className={styles.video}
                                     alt="Picture of the author"
-                                />
+                                >
+                                    <source src={state.videoUrl} type='video/mp4'/>
+                                    </video>
                                 {/* <button onClick={download}>Download</button> */}
                             </>
                         }

@@ -294,18 +294,16 @@ export default function About(ctx) {
                         </>
 
                       }
-
                       {!displayUnlock &&
                         <video
-                          src={
-                            data?.fileUrl
-                          }
                           onClick={() => openFreeProduct(data, false)}
                           key={index.toString()}
                           width="153"
                           className={styles.imgList}
                           height="160.5"
-                        />
+                        >
+                          <source src={data?.fileUrl} type='video/mp4'/>
+                        </video>
                       }
                     </div>
                     <p className={styles.imgTitle}>{data.title}</p>
