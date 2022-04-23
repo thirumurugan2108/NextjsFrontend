@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./Popup18plus.module.scss"
+import styles from "./popup18plus.module.scss"
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';

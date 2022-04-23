@@ -12,7 +12,7 @@ import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
-import Popup18plus from '../../src/components/Popup18plus'
+import popup18plus from '../../src/components/popup18plus'
 import Footer from '../../src/components/footer';
 import ModalComponent from '../../components/Modal'
 import Login from '../../components/Login'
@@ -205,7 +205,7 @@ export default function About(ctx) {
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
-      <Popup18plus></Popup18plus>
+      <popup18plus></popup18plus>
       <div className={styles.main}>
       {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
         Login
