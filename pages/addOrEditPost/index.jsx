@@ -171,7 +171,7 @@ const addOrEditPost = (_props) => {
             formdata.set('file', state.imageFile);
             formdata.set('extensionName', state.extensionName);
             const data = await upsertPost(formdata);
-            if (data.status == 200 && data.message == "success") {
+            if (data.data.status == 200 && data.data.message == "success") {
               setIsLoading(false)
               setIsSuccess(true)
             }
