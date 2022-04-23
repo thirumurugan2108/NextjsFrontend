@@ -186,7 +186,7 @@ const addOrEditPost = (_props) => {
               isPaid: state.isPaid,
               id: state.id
             })
-            if (data.status == 200 && data.message == "success") {
+            if (data.data.status == 200 && data.data.message == "success") {
               setIsLoading(false)
               setIsSuccess(true)
             }
