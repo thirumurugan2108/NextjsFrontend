@@ -73,6 +73,10 @@ export async function userSignUp(name: string,email:string, mobile:string, influ
 }
 
 
-export function getHomeDetailsByUsername (username: String){
-  return axios.get(`${baseUrl}users/public?username=`+ username);
+export function getHomeDetailsByUsername (query:any){
+  let token = ''
+  if (query.token) {
+    token = `&token=${query.token}`
+  }
+  return axios.get(`${baseUrl}users/public?username=${query.username}${token}`);
 }
