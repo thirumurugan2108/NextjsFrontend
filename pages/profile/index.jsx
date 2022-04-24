@@ -191,8 +191,8 @@ const Profile = (_props) => {
               } else {
                 return (
                   <div className={styles.slot}>
-                    <input value={data.title} name="title" placeholder="Title" onChange={(e) => onCardChange(e, index)} />
-                    <input value={data.description} name="description" placeholder="Description" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.title} name="title" placeholder="Title"  maxLength="30"onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.description} name="description"  maxLength="50" placeholder="Description" onChange={(e) => onCardChange(e, index)} />
                     <input value={data.price} type="Number" name="price" placeholder="Price" onChange={(e) => onCardChange(e, index)} />
                     
                       <button  className={styles.floatNone} onClick={() => onEditCancel(index)}>Cancel</button>
