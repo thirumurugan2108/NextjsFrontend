@@ -13,7 +13,7 @@
     font-weight: bold;
     font-size:18px;
     margin-left:1rem;
-    
+    margin-bottom: 0.2rem
   }
    
   
@@ -44,6 +44,10 @@
     bottom: 0;
     border-top: 0.5px solid grey;
     justify-content: space-around;
+  }
+
+  .around {
+    width: 250px;
   }
   .profileIconOuter {
     border-radius: 10rem;
@@ -90,22 +94,19 @@
   
   }
   
- 
-  
   .slot {
     box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 10%);
     border-radius: 1rem;
     background: #fafafa;
-    height: 30%;
     margin-top: 2rem;
-    display: flex;
-    justify-content: space-between;
-    padding: 1rem;
+    padding: 0.5rem 1rem;
     margin: 1rem 1rem 1rem;
   }
   .chatContent {
     color: grey;
-    margin-top: -1rem;
+    font-size: 0.8rem;
+    /* margin-top: -0.2rem; */
+    margin: 0.5rem 0 1rem 0;
   }
   
   
@@ -115,6 +116,7 @@
     border-radius: 4px;
     padding:0.2rem 0.5rem;
     align-self:flex-end;
+    float: right;
   }
   
   .col {
@@ -172,8 +174,6 @@
 .LoginLink {
   color: white;
   text-align: right;
-  padding-right: 10%;
-  padding-top: 20px;
   text-decoration: none;
 }
 .signupLinkWrapper {
@@ -182,4 +182,40 @@
 }
 .sendOTPButton {
   margin-top: 10px;
+}
+
+.imgList {
+  object-fit: contain;
+}
+
+
+.cardContainer {
+  display: flex;
+  width: 100%;
+  overflow-x: scroll;
+}
+
+
+.chattitle {
+  font-size: 0.9rem;
+  margin: 0.5rem 0 0.2rem 0;
+}
+
+
+.bookContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price{
+  margin: 0;
+}
+
+
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding:0.5rem;
 }
