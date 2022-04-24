@@ -33,6 +33,7 @@ export default function SignUp({handleOtpSent, influencer}) {
     }
     setErrorText({...errorText,...erroMsg})
     try {
+      const otpResult = handleOtpSent('signup', signUpData.email)
       const resp = await userSignUp(signUpData.name, signUpData.email, signUpData.mobile, influencer)
       if (resp.status && resp.data.status == "error") {
         setErrors([resp.data.message])
@@ -40,8 +41,7 @@ export default function SignUp({handleOtpSent, influencer}) {
       else {
         setErrors([])
         if (resp.statusText == 'Created') {
-          const otpResult = handleOtpSent('signup', signUpData.email)
-          console.log(otpResult)
+          
         }
       }
     }

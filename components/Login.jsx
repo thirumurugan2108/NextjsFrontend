@@ -18,6 +18,7 @@ export default function Login({openSignupModal, handleOtpSent}) {
    }
    else {
     try {
+      const otpResult = handleOtpSent('login', loginData.email)
       const resp = await userLogin(loginData.email)
       if (resp.status && resp.data.status == "error") {
         setErrors([resp.data.message])
@@ -25,8 +26,7 @@ export default function Login({openSignupModal, handleOtpSent}) {
       else {
         setErrors([])
         if (resp.statusText == 'Created') {
-          const otpResult = handleOtpSent('login', loginData.email)
-          console.log(otpResult)
+          //console.log(otpResult)
         }
       }
     }
