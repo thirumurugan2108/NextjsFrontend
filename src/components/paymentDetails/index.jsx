@@ -270,6 +270,7 @@ const PaymentDetails = (props) => {
                                     controlsList="nodownload"
                                     className={styles.video}
                                     alt="Picture of the author"
+                                    poster={state.videoUrl ? state.videoUrl.replace('video/', 'thumbnail/').replace('.mp4', '.png'): ''}
                                 >
                                     <source src={state.videoUrl} type='video/mp4'/>
                                     </video>

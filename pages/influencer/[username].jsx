@@ -301,6 +301,7 @@ export default function About(ctx) {
                           width="153"
                           className={styles.imgList}
                           height="160.5"
+                          poster={data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
                         >
                           <source src={data?.fileUrl} type='video/mp4'/>
                         </video>

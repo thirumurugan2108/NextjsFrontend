@@ -149,6 +149,7 @@
   
   .imgTitle{
     margin-left: 1rem;
+    word-break: break-word;
   }
   
   .scroll{
@@ -157,6 +158,7 @@
     padding:1rem;
     margin: 0 0.5rem;
     position:relative;
+    max-width: 200px;
     // background-color:#EEEEEE;
     // background-image: url('../../assets/images/test.jpeg');
     background-color: #d3d3d345;
