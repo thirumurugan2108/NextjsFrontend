@@ -372,7 +372,10 @@ export default function About(ctx) {
                 controlsList="nodownload"
                 className={styles.video}
                 alt="Picture of the author"
-              />
+                poster={data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
+                >
+                  <source src={data?.fileUrl} type='video/mp4'/>
+                </video>
             }
             {/* <button onClick={download}>Download</button> */}
           </>
