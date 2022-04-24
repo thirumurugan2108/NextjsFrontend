@@ -12,7 +12,8 @@ import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
-import popup18plus from '../../src/components/popup18plus'
+import Report from '../../assets/images/report.svg';
+import Popup18plus from '../../src/components/popup18plus'
 import Footer from '../../src/components/footer';
 import ModalComponent from '../../components/Modal'
 import Login from '../../components/Login'
@@ -75,8 +76,8 @@ export default function About(ctx) {
   const [cookie, setCookie, removeCookie] = useCookies(["user"])
   const router = useRouter();
   const query = router.query;
-  
-  
+
+
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
@@ -88,7 +89,7 @@ export default function About(ctx) {
       setLoginModalOpen(true)
     }
   };
-  
+
   const handleClose = (paymentMade = false) => {
     setIsPaymentOpen(false)
     if (paymentMade) {
@@ -106,7 +107,7 @@ export default function About(ctx) {
 
   const processVerifiedOtp = (user, token, paidProductIds) => {
     setOtpModalOpen(false)
-    setLoggedInUser({name:user.name, email: user.email, mobile: user.mobile, photoUrl: user.photoUrl})
+    setLoggedInUser({ name: user.name, email: user.email, mobile: user.mobile, photoUrl: user.photoUrl })
     setPurchasedProducts(paidProductIds);
     setCookie("user", token.refresh.token, {
       path: "/",
@@ -127,7 +128,7 @@ export default function About(ctx) {
   }
 
   const logout = () => {
-    setLoggedInUser ({})
+    setLoggedInUser({})
     removeCookie('user')
     setCookie("user", '', {
       path: "/",
@@ -154,12 +155,12 @@ export default function About(ctx) {
     setOtpModalOpen(false)
   }
   const openSignupModal = (e) => {
-    e.preventDefault()    
+    e.preventDefault()
     setLoginModalOpen(false)
     setSignupModalOpen(true)
   }
-  
- 
+
+
   if (typeof cookie['user'] != "undefined") {
     query['token'] = cookie['user']
   }
@@ -185,7 +186,7 @@ export default function About(ctx) {
       setOtpModalOpen(true)
     }
   }, [data]);
-  
+
   const onChange = (e) => {
     dispatch({ type: "generic", field: e.target.name, value: e.target.value });
   };
@@ -202,17 +203,25 @@ export default function About(ctx) {
     });
   }
 
+  const navigateToContactus = () => {
+    window.location.href = 'https://home.bingemeee.com/#contact';
+  }
+
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
-      <popup18plus></popup18plus>
+      <Popup18plus></Popup18plus>
       <div className={styles.main}>
-      {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
-        Login
-      </div>}
-      {isUserLoggedIn && <div className={styles.LoginLink}>
-        Welcome {loggedInUser.name} | <Link href="#"><a onClick={logout}  className={styles.LoginLink}>Logout</a></Link>
-      </div>}
+        <div className={styles.header}>
+
+          <Image src={Report} onClick={() => { navigateToContactus() }} />
+          {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
+            Login
+          </div>}
+        </div>
+        {isUserLoggedIn && <div className={styles.LoginLink}>
+          Welcome {loggedInUser.name} | <Link href="#"><a onClick={logout} className={styles.LoginLink}>Logout</a></Link>
+        </div>}
         <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
         <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
 
@@ -223,55 +232,63 @@ export default function About(ctx) {
           </div>
           <h3>{state?.user?.fullName}</h3>
           <p className={styles.subHeading}>Let's Connect</p>
-          {state.cardList && state.cardList.map((data, index) => {
-            return (
-              <div className={styles.slot} key={index.toString()}>
-                <div className={styles.around}>
-                  <h4>{data.title}</h4>
-                  <p className={styles.chatContent}>{data.description}</p>
-                  <p>{data.price}</p>
-                </div>
-                <div className={styles.align}>
-                  <a onClick={() => handleOpen(data.id, true)}>Booknow</a>
-                </div>
-              </div>
-            )
-          }
-          )}
-         
+          <div className={styles.cardContainer}>
+
+            {state.cardList && state.cardList.map((data, index) => {
+              return (
+                <>
+                  <div className={styles.slot} key={index.toString()}>
+                    <div className={styles.around}>
+                      <h4 className={styles.chattitle}>{data.title}</h4>
+                      <p className={styles.chatContent}>{data.description}</p>
+                    </div>
+                    <div className={styles.bookContainer}>
+                      <p className={styles.price}>₹ {data.price}</p>
+                      <div className={styles.align}>
+                        <a onClick={() => handleOpen(data.id, true)}>Book now</a>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )
+            }
+            )}
+
+          </div>
+
           {state.images?.length != 0 && <h4 className={styles.subHeading}>Images</h4>}
           <div className={styles.parentScroll}>
             {state.images && state.images.map((data, index) => {
-              const displayUnlock = data.isPaid == 'Yes' && purchasedProduct.indexOf(data.id) == -1 ? true: false
+              const displayUnlock = data.isPaid == 'Yes' && purchasedProduct.indexOf(data.id) == -1 ? true : false
               return (
-                  <div key={index.toString()}>
-                    <div className={styles.scroll}>
-                      {displayUnlock &&
-                        <>
-                          <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
-                            <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
-                          </svg>
+                <div key={index.toString()}>
+                  <div className={styles.scroll}>
+                    {displayUnlock &&
+                      <>
+                        <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
+                          <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
+                        </svg>
 
-                          <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
-                        </>
+                        <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
+                      </>
 
-                      }
+                    }
 
-                      {!displayUnlock &&
-                        <img
-                          src={
-                            data?.fileUrl
-                          }
-                          onClick={() => openFreeProduct(data, true)}
+                    {!displayUnlock &&
+                      <img
+                        src={
+                          data?.fileUrl
+                        }
+                        onClick={() => openFreeProduct(data, true)}
 
-                          width="153"
-                          className={styles.imgList}
-                          height="160.5"
-                        />
-                      }
-                    </div>
-                    <p className={styles.imgTitle}>{data.title}</p>
+                        width="153"
+                        className={styles.imgList}
+                        height="160.5"
+                      />
+                    }
                   </div>
+                  <p className={styles.imgTitle}>{data.title}</p>
+                </div>
               )
             }
             )}
@@ -280,7 +297,7 @@ export default function About(ctx) {
           {state.videos?.length != 0 && <h4 className={styles.subHeading}>Videos</h4>}
           <div className={styles.parentScroll}>
             {state.videos && state.videos.map((data, index) => {
-              const displayUnlock = data.isPaid == "Yes"  && purchasedProduct.indexOf(data.id) == -1 ? true: false
+              const displayUnlock = data.isPaid == "Yes" && purchasedProduct.indexOf(data.id) == -1 ? true : false
               return (
                   <div key={index.toString()}>
                     <div className={styles.scroll}>
@@ -306,9 +323,9 @@ export default function About(ctx) {
                           <source src={data?.fileUrl} type='video/mp4'/>
                         </video>
                       }
-                    </div>
-                    <p className={styles.imgTitle}>{data.title}</p>
                   </div>
+                  <p className={styles.imgTitle}>{data.title}</p>
+                </div>
               )
             }
             )}
@@ -324,8 +341,8 @@ export default function About(ctx) {
         productid={payableProductId}
         username={query.username}
         isCard={isCard}
-        loggedInUser = {loggedInUser}
-        handlePaymentComplete = {handlePaymentComplete}
+        loggedInUser={loggedInUser}
+        handlePaymentComplete={handlePaymentComplete}
       >
       </PaymentDetails>
 
@@ -348,28 +365,28 @@ export default function About(ctx) {
             // height={500}
             />}
 
-            {!openedProduct.isImage && 
+            {!openedProduct.isImage &&
               <video
-              src={openedProduct.fileUrl}
-              controls
-              controlsList="nodownload"
-              className={styles.video}
-              alt="Picture of the author"
-          />
+                src={openedProduct.fileUrl}
+                controls
+                controlsList="nodownload"
+                className={styles.video}
+                alt="Picture of the author"
+              />
             }
             {/* <button onClick={download}>Download</button> */}
           </>
         </Box>
       </Modal>
-      {loginModelOpen && <ModalComponent open={loginModelOpen} onClose={loginModelClose} modalStyle={modalStyle} > 
-        <Login openSignupModal={openSignupModal} handleOtpSent= {handleOtpSent}/>
+      {loginModelOpen && <ModalComponent open={loginModelOpen} onClose={loginModelClose} modalStyle={modalStyle} >
+        <Login openSignupModal={openSignupModal} handleOtpSent={handleOtpSent} />
       </ModalComponent>}
-      {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} > 
-        <SignUp handleOtpSent= {handleOtpSent} influencer={query.username}/>       
+      {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} >
+        <SignUp handleOtpSent={handleOtpSent} influencer={query.username} />
       </ModalComponent>}
-      {otpModalOpen && 
-        <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} > 
-          <OtpForm type={otpType} email = {otpEmail} processVerifiedOtp={processVerifiedOtp}/>       
+      {otpModalOpen &&
+        <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} >
+          <OtpForm type={otpType} email={otpEmail} processVerifiedOtp={processVerifiedOtp} />
         </ModalComponent>}
     </div>
   );
