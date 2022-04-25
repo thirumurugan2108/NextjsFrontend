@@ -124,7 +124,7 @@ const PaymentDetails = (props) => {
                 }).then(data => {
                     // router.push('../login');
                     // props.handleclose();
-                    setisPaymentMode(false);
+                    //setisPaymentMode(false);
                     if (props.isCard) {
                         setCardSuccess(true)
                     }
@@ -224,7 +224,7 @@ const PaymentDetails = (props) => {
                 >
 
                     <Box sx={modalStyle}>
-                        {isPaymentMode && props.isCard &&
+                        {!paymentMade && isPaymentMode && props.isCard &&
                             <>
                                 {<ErrorMessage></ErrorMessage>}
                                 <h2 className={styles.userHeading}>Enter Comments for Influencer</h2>
