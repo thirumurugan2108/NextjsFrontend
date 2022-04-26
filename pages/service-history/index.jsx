@@ -18,6 +18,7 @@ import Modal from '@mui/material/Modal';
 import { useReducer } from "react";
 import { borderRadius } from "@mui/system";
 import { getpaymentdetailsByUser, updatePaymentStatus } from "../../utils/services/payment.service";
+import DataTable from "../../components/DataTable"
 
 const style = {
   position: 'absolute',
@@ -92,6 +93,13 @@ const ServiceHistory = (_props) => {
     setdisplayModal(true);
   };
 
+  const statusChange = (e) => {
+    const id = e.target.id.replace('status-', '')
+    const currentStatus = e.target.value
+
+    updatePaymentStatus(id, currentStatus);
+  }
+
   const hideUserDetailsModal = () => {
     setdisplayModal(false);
     setStatusChanged(false);
@@ -120,9 +128,6 @@ const ServiceHistory = (_props) => {
     setStatusChanged(false);
     await fetchAllDetails();
   }
-
-
-
 
   return (
     <Layout>
@@ -224,7 +229,7 @@ const ServiceHistory = (_props) => {
 
         </Modal>}
 
-        <h2 id={styles.head3}>Pending</h2>
+        {/* <h2 id={styles.head3}>Pending</h2>
 
         {state.paymentDetails?.pendingJobs && state.paymentDetails?.pendingJobs.map((data, index) => {
           const buyerDetails = data.buyerDetails;
@@ -232,7 +237,7 @@ const ServiceHistory = (_props) => {
             <div onClick={() => viewUserDetailsModal(data, index)}
               className={styles.pendingItem}>
               {/* <div className={styles.}><a >
-              </a></div> */}
+              </a></div> 
               <div className={styles.image}>
                 <Image src={UserCircle} width="50px" height="50px" />
               </div>
@@ -258,7 +263,7 @@ const ServiceHistory = (_props) => {
             <div onClick={() => viewUserDetailsModal(data, index)}
               className={styles.pendingItem}>
               {/* <div className={styles.}><a >
-              </a></div> */}
+              </a></div> 
               <div className={styles.image}>
                 <Image src={UserCircle} width="50px" height="50px" />
               </div>
@@ -274,7 +279,10 @@ const ServiceHistory = (_props) => {
 
             </div>)
         }
-        )}
+        )} */}
+        <div className={styles.cardpayments}>
+        {state.paymentDetails &&  <DataTable rows = {state.paymentDetails.cardPayments} statusChange = {statusChange}/> }
+        </div>
       </div>
     </Layout>
   );

@@ -35,6 +35,12 @@
             }
         }
     }
+    .cardpayments {
+        width: 90%;
+        display: -moz-box;
+        display: flex;
+        margin: auto;
+    }
 
     .pendingItem {
         display: flex;
