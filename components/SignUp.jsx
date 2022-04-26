@@ -5,12 +5,13 @@ import TextField from '@mui/material/TextField';
 import styles from '../pages/influencer/home.module.scss'
 import Box from '@mui/material/Box';
 import {ErrorMessage} from "../utils/common/commonUtil"
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function SignUp({handleOtpSent, influencer}) {
   const [signUpData, setSignUpData] = useState({email: '', name: '', mobile: ''})
   const [errorText, setErrorText] = useState({email: '', name: '', mobile: ''})
-  const [errors, setErrors] = useState([]);
-
+  const [errors, setErrors] = useState([])
+  const [loading, setLoading] = useState(false)
   const signUp = async (e) => {
     e.preventDefault()
     const erroMsg = {name: '', mobile: '', email: ''}
@@ -32,16 +33,20 @@ export default function SignUp({handleOtpSent, influencer}) {
       erroMsg.email = 'Enter valid email'
     }
     setErrorText({...errorText,...erroMsg})
+    if (erroMsg.name || erroMsg.mobile || erroMsg.email)  {
+      return;
+    }
     try {
-      const otpResult = handleOtpSent('signup', signUpData.email)
+      setLoading(true)
       const resp = await userSignUp(signUpData.name, signUpData.email, signUpData.mobile, influencer)
+      setLoading(false)
       if (resp.status && resp.data.status == "error") {
         setErrors([resp.data.message])
       }
       else {
         setErrors([])
         if (resp.statusText == 'Created') {
-          
+          const otpResult = handleOtpSent('signup', signUpData.email) 
         }
       }
     }
@@ -99,7 +104,8 @@ return (
       onChange={(e) => setSignUpData({...signUpData, email: e.target.value})}
       value={signUpData.email}
     />
-      <button onClick={signUp} className={styles.sendOTPButton}>Sign Up</button>
+      {!loading && <button onClick={signUp} className={styles.sendOTPButton}>Sign Up</button>}
+      {loading && <div className={styles.progress}><CircularProgress /></div>}
     
     </Box>
     </div>

@@ -186,13 +186,13 @@ const addOrEditPost = (_props) => {
               isPaid: state.isPaid,
               id: state.id
             })
-            if (data.status == 200 && data.data.message == "success") {
+            if (data.status == 200) {
               setIsLoading(false)
               setIsSuccess(true)
             }
             else {
               setIsLoading(false)
-              setErrors("Failed to upload your content")
+              setErrors(["Failed to upload your content"])
             }
           }
         } else {
