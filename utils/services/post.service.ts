@@ -20,6 +20,15 @@ export function getAllpost() {
     });
 }
 
+export const deletePost = async (uuid:any) => {
+  return await axios.delete(`${baseUrl}/deletePost/${uuid}`,
+    {
+      headers: {
+        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      }
+    }).catch(e => console.log(e));
+}
+
 export const upsertPost = async(post:FormData) =>{
   return await axios.post(baseUrl+'uploadImages', post,
     {

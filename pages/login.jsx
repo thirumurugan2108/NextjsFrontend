@@ -72,9 +72,18 @@ export default (_props) => {
         }
         // router.back();
       }).catch( err => {
-        setErrorMessage(err.response.data.message);
+        if (err && err.response && err.response.data && err.response.data.message) {
+          setErrorMessage(err.response.data.message);
+        }
+        else {
+          setErrorMessage("Server error during login")
+        }
       });
     } else {
+      if(state.name != state.name.toLowerCase()) {
+        setErrorMessage(['Name should be in lowercase']);
+        return;
+      }
       signup(state.name, state.email, state.password, state.fullName).catch( err => {
         setErrorMessage(err.response.data.message);
         setSignUpSucess(false);

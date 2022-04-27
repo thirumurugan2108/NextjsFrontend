@@ -26,6 +26,7 @@
     margin:0;
     min-height: 100vh;
     position: relative;
+    min-height: -webkit-fill-available;
   }
   
   input[type=text],input[type=number], select, textarea {
@@ -89,4 +90,7 @@
       margin-top: 0;
     }
   }
-
+  html {
+    height: -webkit-fill-available;
+    min-height: 100vh;
+  }

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Layout from "../../src/components/layout";
 import styles from "./addOrEditPost.module.scss";
 import { useReducer } from "react";
-import { updatePost, upsertPost } from "../../utils/services/post.service";
+import { updatePost, upsertPost, deletePost } from "../../utils/services/post.service";
 import { useConfigState, useConfigSetState } from "../../utils/context/postContext";
 import UploadBox from "../../utils/sharedComponents/uploadBox/uploadBox";
 import { getExtensionFromFileName } from "../../utils/common/commonUtil";
@@ -57,6 +57,7 @@ const addOrEditPost = (_props) => {
   const [isImage, setIsImage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isSucess, setIsSuccess] = useState(false);
+  const [isDelSuccess, setIsDelSuccess] = useState(false)
   const [errors, setErrors] = useState([]);
   const setConfigState = useConfigSetState();
   const configState = useConfigState();
@@ -64,7 +65,6 @@ const addOrEditPost = (_props) => {
   const router = useRouter();
 
   const [state, dispatch] = useReducer(reducer, initialState);
-
 
   const [open, setOpen] = useState(false);
 
@@ -201,7 +201,15 @@ const addOrEditPost = (_props) => {
         }
       });
   }
-
+  const delPost = async () => {
+    const resp = await deletePost(state.uuid)
+    if (resp.status == 200 && resp.data == "success") {
+      setIsDelSuccess(true)
+    }
+    else {
+      setErrors(["Failed to delete your content"])
+    }
+  }
   const addNew = () => {
     resetValues();
     window.scrollTo(0, 0);
@@ -226,7 +234,11 @@ const addOrEditPost = (_props) => {
       return
     }
   }
-
+  const DelSuccessMssage = () => {
+    return (
+      <Alert severity="success">Your file has been deleted successfully!. It will reflect in few mins</Alert>
+    )
+  }
   const SuccessMssage = () => {
     return (
       <Alert severity="success">Your file has been saved successfully!. It will reflect in few mins</Alert>
@@ -247,6 +259,7 @@ const addOrEditPost = (_props) => {
           <div className={styles.form1}>
             {errors.length !== 0 && <ErrorNotification></ErrorNotification>}
             {isSucess && <SuccessMssage></SuccessMssage>}
+            {isDelSuccess && <DelSuccessMssage />}
             {isLoading && <LoadingMssage />}
             
             {/* </div> */}
@@ -333,6 +346,9 @@ const addOrEditPost = (_props) => {
               <button value="Add New" className={styles.submit} onClick={() => addNew()}>
                 Add New
               </button>
+              {state.uuid && <button value="Delete Post" className={styles.submit} onClick={() => delPost()}>
+                Delete Post
+              </button>}
             </div>
           </div>
         </div>

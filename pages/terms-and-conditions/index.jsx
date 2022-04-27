@@ -1372,9 +1372,7 @@ const termsAndConditions = () => {
           <li style={{ fontWeight: 100 }}><span style={{ fontWeight: 100 }}>NO AGENCY: THESE TERMS DO NOT FORM ANY AGENCY, PARTNERSHIP, JOINT VENTURE, OR EMPLOYMENT ARRANGEMENT, AND NEITHER PARTY HAS ANY AUTHORITY TO BIND THE OTHER IN ANY WAY.</span></li>
         </ul>
         <p><span style={{ fontWeight: 100 }}>BINGEMEEE</span></p>
-        <p><span style={{ fontWeight: 100 }}>16/64,2nd FLOOR MUNIAPPAN CHETTY STREET</span></p>
-        <p><span style={{ fontWeight: 100 }}>PERAMBUR</span></p>
-        <p><span style={{ fontWeight: 100 }}>CHENNAI - 600011</span></p>
+        <p><span style={{ fontWeight: 100 }}>CHENNAI, India</span></p>
         <p><span style={{ fontWeight: 100 }}>DATABASE ADMINISTRATOR - </span><span style={{ fontWeight: 100 }}>SUPPORT@BINGEMEEE.COM</span></p>
         <p><br /><br /><br /></p>
       </div>
