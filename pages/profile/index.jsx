@@ -49,7 +49,10 @@ function reducer(state, action) {
     case "addCard":
       return {
         ...state,
-        cardList: [initialState.cardList[0], ...state?.cardList
+        cardList: [{
+          ...initialState.cardList[0],
+          id: action.payload.id
+        }, ...state?.cardList
         ]
       };
     case "fetchfromdb":
@@ -122,9 +125,9 @@ const Profile = (_props) => {
 
   }
 
-  const addCard = () => {
-    dispatch({ type: 'addCard' });
-    createCardDetails(initialState.cardList[0]);
+  const addCard = async () => {
+    const newCard = await createCardDetails(initialState.cardList[0]);
+    dispatch({ type: 'addCard', payload: { id: newCard.data.id } });
   }
 
   const deleteCard = async (id) => {
@@ -181,23 +184,23 @@ const Profile = (_props) => {
                       <p className={styles.chatContent}>{data.description}</p>
                       <text>{data.price}</text>
                     </div>
-                  <div className={styles.cardEditContainer}>
-                    <div className={styles.cardEdit} onClick={() => onEdit(index)}>
+                    <div className={styles.cardEditContainer}>
+                      <div className={styles.cardEdit} onClick={() => onEdit(index)}>
+                      </div>
+                      <Image src={Delete} onClick={() => deleteCard(data.id)} />
                     </div>
-                    <Image src={Delete} onClick={() => deleteCard(data.id)} />
-                  </div>
                   </div>
                 )
               } else {
                 return (
                   <div className={styles.slot}>
-                    <input value={data.title} name="title" placeholder="Title"  maxLength="30"onChange={(e) => onCardChange(e, index)} />
-                    <input value={data.description} name="description"  maxLength="50" placeholder="Description" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.title} name="title" placeholder="Title" maxLength="30" onChange={(e) => onCardChange(e, index)} />
+                    <input value={data.description} name="description" maxLength="50" placeholder="Description" onChange={(e) => onCardChange(e, index)} />
                     <input value={data.price} type="Number" name="price" placeholder="Price" onChange={(e) => onCardChange(e, index)} />
-                    
-                      <button  className={styles.floatNone} onClick={() => onEditCancel(index)}>Cancel</button>
-                      <button className={styles.floatNone} onClick={() => onCardSubmit(index, data)}>Submit</button>
-                    
+
+                    <button className={styles.floatNone} onClick={() => onEditCancel(index)}>Cancel</button>
+                    <button className={styles.floatNone} onClick={() => onCardSubmit(index, data)}>Submit</button>
+
                   </div>
                 )
               }
