@@ -205,6 +205,11 @@ const addOrEditPost = (_props) => {
     const resp = await deletePost(state.uuid)
     if (resp.status == 200 && resp.data == "success") {
       setIsDelSuccess(true)
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
     }
     else {
       setErrors(["Failed to delete your content"])
