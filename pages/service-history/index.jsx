@@ -16,9 +16,11 @@ import Modal from '@mui/material/Modal';
 
 
 import { useReducer } from "react";
-import { borderRadius } from "@mui/system";
 import { getpaymentdetailsByUser, updatePaymentStatus } from "../../utils/services/payment.service";
-import DataTable from "../../components/DataTable"
+
+import ModalComponent from '../../components/Modal'
+import StatusCnfModal from '../../components/StatusCnf'
+import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 
 const style = {
   position: 'absolute',
@@ -64,7 +66,7 @@ const ServiceHistory = (_props) => {
   const [isDisplayModal, setdisplayModal] = useState(false);
   const [isStatusChanged, setStatusChanged] = useState(false);
   const [state, dispatch] = useReducer(reducer, initialState);
-
+  const [statusCnfModalOpen, setStatusCnfModalOpen] = useState(false)
 
   const fetchAllDetails = async () => {
     const paymentDetails = await getpaymentdetailsByUser();
@@ -100,6 +102,7 @@ const ServiceHistory = (_props) => {
     updatePaymentStatus(id, currentStatus);
   }
 
+  
   const hideUserDetailsModal = () => {
     setdisplayModal(false);
     setStatusChanged(false);
@@ -120,8 +123,18 @@ const ServiceHistory = (_props) => {
     }
   };
 
+  const handleStsCnfClose = (e) => {
+    setStatusCnfModalOpen(false)
+    setStatusChanged(false);
+    setdisplayModal(false)
+  }
+
+  const saveStatusConf = async () => {
+    setStatusCnfModalOpen(true)
+  }
   const saveSatus = async () => {
     // save the status to backend..call the service here
+    setStatusCnfModalOpen(false)
     if (isStatusChanged && state.userModalData.id) {
       await updatePaymentStatus(state.userModalData.id, state.userModalData.status);
     }
@@ -221,7 +234,7 @@ const ServiceHistory = (_props) => {
 
             <div>
               <Button variant="outlined" onClick={hideUserDetailsModal}  >Cancel</Button>
-              <Button variant="outlined" className={styles.save} onClick={saveSatus}>Save</Button>
+              <Button variant="outlined" className={styles.save} onClick={saveStatusConf}>Save</Button>
             </div>
 
 
@@ -229,15 +242,14 @@ const ServiceHistory = (_props) => {
 
         </Modal>}
 
-        {/* <h2 id={styles.head3}>Pending</h2>
+        {state.paymentDetails?.pendingJobs && <h2 id={styles.head3}>Pending</h2>}
 
         {state.paymentDetails?.pendingJobs && state.paymentDetails?.pendingJobs.map((data, index) => {
           const buyerDetails = data.buyerDetails;
           return (
             <div onClick={() => viewUserDetailsModal(data, index)}
               className={styles.pendingItem}>
-              {/* <div className={styles.}><a >
-              </a></div> 
+         
               <div className={styles.image}>
                 <Image src={UserCircle} width="50px" height="50px" />
               </div>
@@ -262,8 +274,7 @@ const ServiceHistory = (_props) => {
           return (
             <div onClick={() => viewUserDetailsModal(data, index)}
               className={styles.pendingItem}>
-              {/* <div className={styles.}><a >
-              </a></div> 
+     
               <div className={styles.image}>
                 <Image src={UserCircle} width="50px" height="50px" />
               </div>
@@ -277,12 +288,13 @@ const ServiceHistory = (_props) => {
                 + {data.productDetails.price}
               </div>
 
-            </div>)
+            </div>) 
         }
-        )} */}
-        <div className={styles.cardpayments}>
-        {state.paymentDetails &&  <DataTable rows = {state.paymentDetails.cardPayments} statusChange = {statusChange}/> }
-        </div>
+        )}
+        {statusCnfModalOpen &&
+        <ModalComponent open={statusCnfModalOpen} onClose={handleStsCnfClose} modalStyle={modalStyle} >
+          <StatusCnfModal confirmation={saveSatus} close={handleStsCnfClose} />
+        </ModalComponent>}
       </div>
     </Layout>
   );

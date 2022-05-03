@@ -44,14 +44,15 @@
 
     .pendingItem {
         display: flex;
-        width: 100%;
+        width: 90%;
         box-sizing: border-box;
         box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 10%);
         border-radius: 1rem;
         background: #fafafa;
+        cursor: pointer;
         padding: 1rem;
         margin: 2rem auto;
-
+        margin-left: 5%;
         align-items: center;
         .image {
             width: 25%;

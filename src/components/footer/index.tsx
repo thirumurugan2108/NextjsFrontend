@@ -11,7 +11,9 @@ export default function Footer() {
           Terms and Conditions</Link>|<Link href="/broadcaster-agreement"
             >Broadcaster Agreement</Link>|
         <Link href="/refund-policy"
-          >Refund Policy</Link>
+          >Refund Policy</Link>|
+        <Link href="https://home.bingemeee.com/#contact"
+            >Contact Us</Link>|
         |<Link href="/privacy-policy"
           >Privacy
           Policy</Link>

@@ -152,6 +152,7 @@
   .imgTitle{
     margin-left: 1rem;
     word-break: break-word;
+    max-width: 200px;
   }
   
   .scroll{
@@ -182,6 +183,9 @@
 }
 .sendOTPButton {
   margin-top: 10px;
+}
+.sendCnfButton {
+  margin-left: 10px;
 }
 
 .imgList {
