@@ -217,6 +217,7 @@ export default function About(ctx) {
       setOpenedProduct({
         ...data, isImage
       });
+      setCurrentAlbum('')
     }
     else {
       setCurrentAlbum({index: 0, albumUrl:data.albumUrl, url: data.albumUrl + albumFileNames[0], isImage, length: albumFileNames.length, albums: albumFileNames})
