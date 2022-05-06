@@ -13,6 +13,7 @@ import MuiAlert from '@mui/material/Alert';
 
 import * as Yup from 'yup';
 import { useRouter } from "next/router";
+import image from "next/image";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -53,7 +54,8 @@ function reducer(state = initialState, action) {
 }
 
 const addOrEditPost = (_props) => {
-  const [image, setImage] = useState("");
+  const [images, setImages] = useState("");
+  const [imageUploads, setImageUploads] = useState([]);
   const [isImage, setIsImage] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [isSucess, setIsSuccess] = useState(false);
@@ -95,7 +97,18 @@ const addOrEditPost = (_props) => {
     if (sessionStorage.getItem('token')) {
       if (configState !== null && configState !== undefined && Object.keys(configState).length !== 0) {
         dispatch({ type: "editMode", payload: configState });
-        setImage(configState.fileUrl);
+        if (configState.albumFileNames) {
+          const fileNames = []
+          const fileNamesSplit = configState.albumFileNames.split(',')
+          fileNamesSplit.map(fl => {
+            const flN = configState.albumUrl + fl
+            fileNames.push(flN)
+          })
+          setImages(fileNames);
+        }
+        else {
+          setImages([configState.fileUrl]);
+        }
         if (configState.isVideo) {
           setIsImage(false);
         } else {
@@ -112,28 +125,36 @@ const addOrEditPost = (_props) => {
   }, []);
 
   const updloadFile = (event) => {
-    var file = event.target.files[0];
+    var files = event.target.files;
 
-    if (file) {
-      if (file.type === 'video/mp4') {
+    if (files.length>0) {
+      if (files[0].type === 'video/mp4') {
         setIsImage(false);
       } else {
         setIsImage(true);
       }
-      var reader = new FileReader();
-      reader.readAsDataURL(file);
-      setImage(URL.createObjectURL(file));
+      const imageUrls = []
+      
+      Array.from(event.target.files).map((fl)=> {
+        const reader = new FileReader();
+        reader.readAsDataURL(fl);
+        imageUrls.push(URL.createObjectURL(fl))
+      })
+      setImages(imageUrls)
+      setImageUploads(event.target.files)
+      const reader = new FileReader();
       reader.onloadend = function () {
         // dispatch({ type: "generic", field: "image", value: reader.result });
-        dispatch({ type: "generic", field: "imageFile", value: file });
-        dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
+        dispatch({ type: "generic", field: "imageFile", value: files });
+        dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(files[0].name) });
       }.bind(this);
+    
     }
   };
 
   const submit = () => {
     window.scrollTo(0, 0);
-    if (!image) {
+    if (!images) {
       validationSchema = validationSchema.shape({
         imageFile: Yup.string()
           .required('please upload a file!'),
@@ -158,7 +179,7 @@ const addOrEditPost = (_props) => {
           setErrors([]);
           resetValues();
           setIsLoading(true)
-          if (state.imageFile) {
+          if (Array.from(imageUploads).length > 0) {
             let formdata = new FormData();
             formdata.set('title', state.title);
             formdata.set('price', state.price);
@@ -167,8 +188,12 @@ const addOrEditPost = (_props) => {
             if (state.uuid) {
               formdata.set('uuid', state.uuid);
             }
-
-            formdata.set('file', state.imageFile);
+           // formdata.set('files', Array.from(imageUploads))
+            Array.from(imageUploads).map(file => {
+              formdata.append("files", file);
+            })
+            
+            // formdata.set('files', imageUploads);
             formdata.set('extensionName', state.extensionName);
             const data = await upsertPost(formdata)
             if (data.status == 200 && data.data.message == "success") {
@@ -184,7 +209,7 @@ const addOrEditPost = (_props) => {
               title: state.title,
               price: state.price,
               isPaid: state.isPaid,
-              id: state.id
+              id: state._id
             })
             if (data.status == 200) {
               setIsLoading(false)
@@ -223,7 +248,7 @@ const addOrEditPost = (_props) => {
   function resetValues() {
     dispatch({ type: "clear", payload: initialState });
     setConfigState({});
-    setImage('');
+    setImages('');
   }
 
   const ErrorNotification = () => {
@@ -256,6 +281,23 @@ const addOrEditPost = (_props) => {
     )
   }
 
+  const DisplayImages = () => {
+    return images.map((imgSrc, index) => {
+      return <img src={imgSrc} key={`${index}-image`} alt={'image'} width="300" />
+    })
+  }
+  const DisplayVideos = () => {
+    return images.map((imgSrc, index) => {
+      return <div className={styles.videoWrapper}><video
+      key={`${index}-image`}
+      src={imgSrc}
+      controls="true"
+      autoPlay
+      className={styles.video}
+      /></div>
+    })
+  }
+
   return (
     <Layout>
       <>
@@ -270,13 +312,8 @@ const addOrEditPost = (_props) => {
             {/* </div> */}
             <UploadBox updateFile={(e) => updloadFile(e)}></UploadBox>
             <div className="row">
-              {image && isImage && <img src={image} alt={'image'} width="300" />}
-              {image && !isImage && <video
-                src={image}
-                controls="true"
-                autoPlay
-                className={styles.video}
-              />}
+              {images.length > 0 && isImage && <DisplayImages />}
+              {images.length > 0 && !isImage && <DisplayVideos />}
             </div>
             <div className="row">
               <div className="col-25">
