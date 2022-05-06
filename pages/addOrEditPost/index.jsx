@@ -13,6 +13,7 @@ import MuiAlert from '@mui/material/Alert';
 
 import * as Yup from 'yup';
 import { useRouter } from "next/router";
+import image from "next/image";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
@@ -285,6 +286,17 @@ const addOrEditPost = (_props) => {
       return <img src={imgSrc} key={`${index}-image`} alt={'image'} width="300" />
     })
   }
+  const DisplayVideos = () => {
+    return images.map((imgSrc, index) => {
+      return <div className={styles.videoWrapper}><video
+      key={`${index}-image`}
+      src={imgSrc}
+      controls="true"
+      autoPlay
+      className={styles.video}
+      /></div>
+    })
+  }
 
   return (
     <Layout>
@@ -301,12 +313,7 @@ const addOrEditPost = (_props) => {
             <UploadBox updateFile={(e) => updloadFile(e)}></UploadBox>
             <div className="row">
               {images.length > 0 && isImage && <DisplayImages />}
-              {images.length > 0 && !isImage && <video
-                src={images[0]}
-                controls="true"
-                autoPlay
-                className={styles.video}
-              />}
+              {images.length > 0 && !isImage && <DisplayVideos />}
             </div>
             <div className="row">
               <div className="col-25">

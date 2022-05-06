@@ -333,6 +333,13 @@ export default function About(ctx) {
           <div className={styles.parentScroll}>
             {state.videos && state.videos.map((data, index) => {
               const displayUnlock = data.isPaid == "Yes" && purchasedProduct.indexOf(data.id) == -1 ? true : false
+              let poster = ''
+              if (data.albumUrl) {
+                poster= data.albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
+              }
+              else {
+                poster = data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png')
+              }
               return (
                   <div key={index.toString()}>
                     <div className={styles.scroll}>
@@ -353,7 +360,8 @@ export default function About(ctx) {
                           width="153"
                           className={styles.imgList}
                           height="160.5"
-                          poster={data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
+                          autoplay={true}
+                          poster
                         >
                           <source src={data?.fileUrl} type='video/mp4'/>
                         </video>
