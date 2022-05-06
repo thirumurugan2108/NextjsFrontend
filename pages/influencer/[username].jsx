@@ -290,7 +290,7 @@ export default function About(ctx) {
                       <>
                         <div className={styles.unlockWrapper}>
                           {albumImageCount > 0 && <div className={styles.albumIcon}>
-                            <Image src={AlbumIcon} width={24} height={24}/ >
+                            <Image src={AlbumIcon} width={20} height={20}/ >
                             &nbsp;{albumImageCount}
                             </div>}
                           <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
