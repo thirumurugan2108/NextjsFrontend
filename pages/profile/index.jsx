@@ -167,7 +167,7 @@ const Profile = (_props) => {
 
             </div>
             <h3>{fullName}</h3>
-            <a href={`/influencer/${username}`} className={styles.influencerLink}>www.bingemeee.com/influencer/{username}</a>
+            <a href={`/${username}`} className={styles.influencerLink}>www.bingemeee.com/{username}</a>
             <div className={styles.cardHeader}>
               <p className={styles.connect}>Let's Connect</p>
               <button onClick={() => addCard()}>Add Cards</button>
