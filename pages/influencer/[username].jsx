@@ -304,11 +304,14 @@ export default function About(ctx) {
                     }
 
                     {!displayUnlock &&
-                    <div className={styles.unlockWrapper}>
+                    <>
                       {albumImageCount > 0 && <div className={styles.albumIcon}>
-                        <Image src={AlbumIcon} width={24} height={24}/ >
+                        <Image src={AlbumIcon} width={20} height={20}/ >
                         &nbsp;{albumImageCount}
-                        </div>}
+                        </div>
+                      }
+
+                      <div className={styles.unlockWrapper}>
                         <img
                           src={
                             data?.fileUrl
@@ -321,6 +324,7 @@ export default function About(ctx) {
                         height="160.5"
                       />
                       </div>
+                      </>
                     }
                   </div>
                   <p className={styles.imgTitle}>{data.title}</p>
