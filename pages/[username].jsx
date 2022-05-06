@@ -1,0 +1,472 @@
+import { useState, useReducer, useEffect } from 'react';
+import { useRouter } from "next/router";
+import Image from 'next/image'
+import React from "react";
+import useSWR from 'swr'
+import Link from 'next/link'
+
+import Box from '@mui/material/Box';
+import Modal from '@mui/material/Modal';
+import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { modalStyle, imageLoader } from '../utils/common/commonUtil';
+import styles from './home.module.scss'
+import { getHomeDetailsByUsername } from '../utils/services/user.service'
+import PaymentDetails from '../src/components/paymentDetails'
+import Report from '../assets/images/report.svg';
+import AlbumIcon from '../assets/images/album.png';
+import Popup18plus from '../src/components/popup18plus'
+import Footer from '../src/components/footer';
+import ModalComponent from '../components/Modal'
+import Login from '../components/Login'
+import SignUp from '../components/SignUp'
+import OtpForm from '../components/OtpForm'
+import { useCookies } from "react-cookie"
+const fetcher = (query) => {
+  if (query.username) {
+    return getHomeDetailsByUsername(query);
+  } else {
+    return
+  }
+}
+
+const initialState = {
+  cardList: [],
+  images: [],
+  videos: [],
+  buyerName: '',
+  buyerPhoneNumber: '',
+  buyerEmailId: '',
+  user: {
+    photoUrl: ''
+  }
+};
+
+function reducer(state, action) {
+  switch (action.type) {
+    case "fetchfromdb":
+      return {
+        ...action.payload,
+      };
+    case "generic":
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+    default:
+      return {
+        ...state,
+      };
+  }
+}
+
+export default function About(ctx) {
+  const [isPaymentOpen, setIsPaymentOpen] = useState(false);
+  const [payableProductId, setPayableProductId] = useState('');
+  const [isCard, setIsCard] = useState(false);
+  const [isFreeProdcutOpen, setfreeProductOpen] = useState(false);
+  const [openedProduct, setOpenedProduct] = useState({});
+  const [currentAlbum, setCurrentAlbum] = useState('');
+  const [naturalWidth, setNaturalWidth] = useState(0);
+  const [naturalHeight, setNaturalHeight] = useState(0);
+  const [loginModelOpen, setLoginModalOpen] = useState(false)
+  const [signUpModelOpen, setSignupModalOpen] = useState(false)
+  const [otpModalOpen, setOtpModalOpen] = useState(false)
+  const [otpType, setOtpType] = useState('')
+  const [otpEmail, setOtpEmail] = useState('')
+  const [loggedInUser, setLoggedInUser] = useState({})
+  const [purchasedProduct, setPurchasedProducts] = useState([])
+  const [cookie, setCookie, removeCookie] = useCookies(["user"])
+  const router = useRouter();
+  const query = router.query;
+
+
+  const handleOpen = (productId, isCard) => {
+    setPayableProductId(productId);
+    setIsCard(isCard);
+
+    if (Object.keys(loggedInUser).length > 0) {
+      setIsPaymentOpen(true)
+    }
+    else {
+      setLoginModalOpen(true)
+    }
+  };
+
+  const handleClose = (paymentMade = false) => {
+    setIsPaymentOpen(false)
+    if (paymentMade) {
+      router.reload()
+    }
+  };
+
+  const handleOtpSent = (type, email) => {
+    setSignupModalOpen(false)
+    setLoginModalOpen(false)
+    setOtpModalOpen(true)
+    setOtpType(type)
+    setOtpEmail(email)
+  }
+
+  const processVerifiedOtp = (user, token, paidProductIds) => {
+    setOtpModalOpen(false)
+    setLoggedInUser({ name: user.name, email: user.email, mobile: user.mobile, photoUrl: user.photoUrl })
+    setPurchasedProducts(paidProductIds);
+    setCookie("user", token.refresh.token, {
+      path: "/",
+      maxAge: 86400, // Expires after 24hr
+      sameSite: true,
+    })
+
+    if (query.validateEmail && query.email) {
+      const newpath = router.pathname.replace('[username]', router.query.username)
+      router.push(newpath)
+    }
+  }
+
+  const handlePaymentComplete = (productId) => {
+    const previousProductIds = purchasedProduct
+    previousProductIds.push(productId)
+    setPurchasedProducts(previousProductIds)
+  }
+
+  const logout = () => {
+    setLoggedInUser({})
+    removeCookie('user')
+    setCookie("user", '', {
+      path: "/",
+      maxAge: 1, // Expires after 24hr
+      sameSite: true,
+    })
+  }
+
+  const getImageSize = (imageObj) => {
+    setNaturalWidth(imageObj.naturalWidth);
+    setNaturalHeight(imageObj.naturalHeight);
+  }
+  const loginModelClose = () => {
+    setLoginModalOpen(false)
+  }
+
+  const openLoginModal = () => {
+    setLoginModalOpen(true)
+  }
+  const signupModelClose = () => {
+    setSignupModalOpen(false)
+  }
+  const otpModelClose = () => {
+    setOtpModalOpen(false)
+  }
+  const openSignupModal = (e) => {
+    e.preventDefault()
+    setLoginModalOpen(false)
+    setSignupModalOpen(true)
+  }
+  const albumPrev = (e) => {
+    const prevIndex = currentAlbum.index <=1 ? 0 : currentAlbum.index -1
+    const prevUrl = currentAlbum.albumUrl + currentAlbum.albums[prevIndex]
+    setCurrentAlbum({...currentAlbum, index: prevIndex, url: prevUrl})
+  }
+  const albumNext = (e) => {
+    const nextIndex = currentAlbum.index >= currentAlbum.length - 1 ? currentAlbum.length : currentAlbum.index + 1
+    const nextUrl = currentAlbum.albumUrl + currentAlbum.albums[nextIndex]
+    setCurrentAlbum({...currentAlbum, index: nextIndex, url: nextUrl})
+    console.log(currentAlbum)
+  }
+
+
+  if (typeof cookie['user'] != "undefined") {
+    query['token'] = cookie['user']
+  }
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { data, error } = useSWR(query, fetcher, {
+    revalidateIfStale: false,
+    revalidateOnFocus: false,
+    revalidateOnReconnect: false
+  })
+
+  useEffect(() => {
+    if (data) {
+      if (!data.data || !data.data.user || !data.data.user.photoUrl) {
+        data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
+      }
+      dispatch({ type: 'fetchfromdb', payload: data.data });
+      setLoggedInUser(data.data.loginUser)
+      setPurchasedProducts(data.data.currentProductIds)
+    }
+    if (query.validateEmail && query.email) {
+      setOtpEmail(query.email)
+      setOtpType('signup')
+      setOtpModalOpen(true)
+    }
+  }, [data]);
+
+  const onChange = (e) => {
+    dispatch({ type: "generic", field: e.target.name, value: e.target.value });
+  };
+
+  const onClose = () => {
+    setfreeProductOpen(false);
+    setOpenedProduct({});
+  }
+
+  const openFreeProduct = (data, isImage) => {
+    setfreeProductOpen(true);
+    const albumFileNames = data.albumFileNames ? data.albumFileNames.split(',') : ''
+    if (!albumFileNames) {
+      setOpenedProduct({
+        ...data, isImage
+      });
+      setCurrentAlbum('')
+    }
+    else {
+      setCurrentAlbum({index: 0, albumUrl:data.albumUrl, url: data.albumUrl + albumFileNames[0], isImage, length: albumFileNames.length, albums: albumFileNames})
+    }
+  }
+
+  const navigateToContactus = () => {
+    window.location.href = 'https://home.bingemeee.com/#contact';
+  }
+
+  const isUserLoggedIn = Object.keys(loggedInUser).length
+  return (
+    <div className={styles.container}>
+      <Popup18plus></Popup18plus>
+      <div className={styles.main}>
+        <div className={styles.header}>
+
+          <Image src={Report} onClick={() => { navigateToContactus() }} />
+          {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
+            Login
+          </div>}
+        </div>
+        {isUserLoggedIn && <div className={styles.LoginLink}>
+          Welcome {loggedInUser.name} | <Link href="#"><a onClick={logout} className={styles.LoginLink}>Logout</a></Link>
+        </div>}
+        <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
+        <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
+
+        <div className={styles.contentSection}>
+          <div className={styles.profileIconOuter}>
+            <div className={styles.profileIconInner} style={{ backgroundImage: `url(${state.user?.photoUrl})` }}>
+            </div>
+          </div>
+          <h3>{state?.user?.fullName}</h3>
+          <p className={styles.subHeading}>Let's Connect</p>
+          <div className={styles.cardContainer}>
+
+            {state.cardList && state.cardList.map((data, index) => {
+              return (
+                <>
+                  <div className={styles.slot} key={index.toString()}>
+                    <div className={styles.around}>
+                      <h4 className={styles.chattitle}>{data.title}</h4>
+                      <p className={styles.chatContent}>{data.description}</p>
+                    </div>
+                    <div className={styles.bookContainer}>
+                      <p className={styles.price}>₹ {data.price}</p>
+                      <div className={styles.align}>
+                        <a onClick={() => handleOpen(data.id, true)}>Book now</a>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )
+            }
+            )}
+
+          </div>
+
+          {state.images?.length != 0 && <h4 className={styles.subHeading}>Images</h4>}
+          <div className={styles.parentScroll}>
+            {state.images && state.images.map((data, index) => {
+              const displayUnlock = data.isPaid == 'Yes' && purchasedProduct.indexOf(data.id) == -1 ? true : false
+              const albumImages = data.albumFileNames ? data.albumFileNames.split(',') : ''
+              const albumImageCount = albumImages ? albumImages.length : 0
+              return (
+                <div key={index.toString()}>
+                  <div className={styles.scroll}>
+                    {displayUnlock &&
+                      <>
+                       {albumImageCount > 0 && <div className={styles.albumIcon}>
+                            <Image src={AlbumIcon} width={20} height={20}/ >
+                            &nbsp;{albumImageCount}
+                            </div>}
+                        <div className={styles.unlockWrapper}>
+                          <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
+                            <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
+                          </svg>
+
+                        <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
+                        </div>
+                      </>
+
+                    }
+
+                    {!displayUnlock &&
+                    <>
+                      {albumImageCount > 0 && <div className={styles.albumIcon}>
+                        <Image src={AlbumIcon} width={20} height={20}/ >
+                        &nbsp;{albumImageCount}
+                        </div>
+                      }
+
+                      <div className={styles.unlockWrapper}>
+                        <img
+                          src={
+                            data?.fileUrl
+                          }
+                        onClick={() => openFreeProduct(data, true)}
+
+
+                        width="153"
+                        className={styles.imgList}
+                        height="160.5"
+                      />
+                      </div>
+                      </>
+                    }
+                  </div>
+                  <p className={styles.imgTitle}>{data.title}</p>
+                </div>
+              )
+            }
+            )}
+          </div>
+
+          {state.videos?.length != 0 && <h4 className={styles.subHeading}>Videos</h4>}
+          <div className={styles.parentScroll}>
+            {state.videos && state.videos.map((data, index) => {
+              const displayUnlock = data.isPaid == "Yes" && purchasedProduct.indexOf(data.id) == -1 ? true : false
+              let poster = ''
+              if (data.albumUrl) {
+                poster= data.albumUrl ? data.albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png' : ''
+              }
+              else {
+                poster = data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png') : ''
+              }
+              return (
+                  <div key={index.toString()}>
+                    <div className={styles.scroll}>
+                      {displayUnlock &&
+                        <>
+                          <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
+                            <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
+                          </svg>
+
+                          <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
+                        </>
+
+                      }
+                      {!displayUnlock &&
+                        <video
+                          onClick={() => openFreeProduct(data, false)}
+                          key={index.toString()}
+                          width="153"
+                          className={styles.imgList}
+                          height="160.5"
+                          autoplay={true}
+                          poster
+                        >
+                          <source src={data?.fileUrl} type='video/mp4'/>
+                        </video>
+                      }
+                  </div>
+                  <p className={styles.imgTitle}>{data.title}</p>
+                </div>
+              )
+            }
+            )}
+          </div>
+        </div>
+
+
+      </div>
+      <Footer></Footer>
+
+      <PaymentDetails handleclose={handleClose}
+        open={isPaymentOpen}
+        productid={payableProductId}
+        username={query.username}
+        isCard={isCard}
+        loggedInUser={loggedInUser}
+        handlePaymentComplete={handlePaymentComplete}
+      >
+      </PaymentDetails>
+
+      <Modal
+        open={isFreeProdcutOpen}
+        onClose={onClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={modalStyle}>
+          <>
+            {!currentAlbum && openedProduct.isImage && <Image
+              loader={imageLoader}
+              src={openedProduct.fileUrl}
+              alt="Picture of the author"
+              onLoadingComplete={getImageSize}
+              width={naturalWidth}
+              height={naturalHeight}
+              layout="responsive"
+            // height={500}
+            />}
+
+            {!currentAlbum && !openedProduct.isImage &&
+              <video
+                src={openedProduct.fileUrl}
+                controls
+                controlsList="nodownload"
+                className={styles.video}
+                alt="Picture of the author"
+                //poster={openedProduct.fileUrl ? openedProduct.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
+                >
+                  <source src={openedProduct?.fileUrl} type='video/mp4'/>
+                </video>
+            }
+            {currentAlbum && 
+            <div className={styles.carousel} >
+              { currentAlbum.index>0 && <div className={styles.carouselPrev} onClick={albumPrev}><ArrowBackIosNew /></div>}
+              <div className={styles.carouselItem}>
+              { currentAlbum.isImage && <Image src={currentAlbum.url}
+                loader={imageLoader}
+                alt="Picture of the author"
+                onLoadingComplete={getImageSize}
+                width={naturalWidth}
+                height={naturalHeight}
+                layout="responsive"
+                />}
+                {!currentAlbum.isImage && 
+                  <video
+                  src={currentAlbum.url}
+                  controls
+                  controlsList="nodownload"
+                  className={styles.video}
+                  alt="Picture of the author"
+                  poster={currentAlbum.url ? currentAlbum.url.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
+                  >
+                    <source src={currentAlbum?.url} type='video/mp4'/>
+                  </video>
+                }
+              </div>
+              <div className={styles.carouselPage}>{currentAlbum.index + 1}/{currentAlbum.length}</div>
+              { currentAlbum.index < currentAlbum.length - 1 && <div className={styles.carouselNext} onClick={albumNext}><ArrowForwardIosIcon /></div> }
+            </div>
+            }
+          </>
+        </Box>
+      </Modal>
+      {loginModelOpen && <ModalComponent open={loginModelOpen} onClose={loginModelClose} modalStyle={modalStyle} >
+        <Login openSignupModal={openSignupModal} handleOtpSent={handleOtpSent} />
+      </ModalComponent>}
+      {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} >
+        <SignUp handleOtpSent={handleOtpSent} influencer={query.username} />
+      </ModalComponent>}
+      {otpModalOpen &&
+        <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} >
+          <OtpForm type={otpType} email={otpEmail} processVerifiedOtp={processVerifiedOtp} />
+        </ModalComponent>}
+    </div>
+  );
+}
