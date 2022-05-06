@@ -7,12 +7,14 @@ import Link from 'next/link'
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-
+import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../../src/components/paymentDetails'
 import Report from '../../assets/images/report.svg';
+import AlbumIcon from '../../assets/images/album.png';
 import Popup18plus from '../../src/components/popup18plus'
 import Footer from '../../src/components/footer';
 import ModalComponent from '../../components/Modal'
@@ -64,6 +66,7 @@ export default function About(ctx) {
   const [isCard, setIsCard] = useState(false);
   const [isFreeProdcutOpen, setfreeProductOpen] = useState(false);
   const [openedProduct, setOpenedProduct] = useState({});
+  const [currentAlbum, setCurrentAlbum] = useState('');
   const [naturalWidth, setNaturalWidth] = useState(0);
   const [naturalHeight, setNaturalHeight] = useState(0);
   const [loginModelOpen, setLoginModalOpen] = useState(false)
@@ -159,6 +162,17 @@ export default function About(ctx) {
     setLoginModalOpen(false)
     setSignupModalOpen(true)
   }
+  const albumPrev = (e) => {
+    const prevIndex = currentAlbum.index <=1 ? 0 : currentAlbum.index -1
+    const prevUrl = currentAlbum.albumUrl + currentAlbum.albums[prevIndex]
+    setCurrentAlbum({...currentAlbum, index: prevIndex, url: prevUrl})
+  }
+  const albumNext = (e) => {
+    const nextIndex = currentAlbum.index >= currentAlbum.length - 1 ? currentAlbum.length : currentAlbum.index + 1
+    const nextUrl = currentAlbum.albumUrl + currentAlbum.albums[nextIndex]
+    setCurrentAlbum({...currentAlbum, index: nextIndex, url: nextUrl})
+    console.log(currentAlbum)
+  }
 
 
   if (typeof cookie['user'] != "undefined") {
@@ -198,9 +212,15 @@ export default function About(ctx) {
 
   const openFreeProduct = (data, isImage) => {
     setfreeProductOpen(true);
-    setOpenedProduct({
-      ...data, isImage
-    });
+    const albumFileNames = data.albumFileNames ? data.albumFileNames.split(',') : ''
+    if (!albumFileNames) {
+      setOpenedProduct({
+        ...data, isImage
+      });
+    }
+    else {
+      setCurrentAlbum({index: 0, albumUrl:data.albumUrl, url: data.albumUrl + albumFileNames[0], isImage, length: albumFileNames.length, albums: albumFileNames})
+    }
   }
 
   const navigateToContactus = () => {
@@ -260,31 +280,46 @@ export default function About(ctx) {
           <div className={styles.parentScroll}>
             {state.images && state.images.map((data, index) => {
               const displayUnlock = data.isPaid == 'Yes' && purchasedProduct.indexOf(data.id) == -1 ? true : false
+              const albumImages = data.albumFileNames ? data.albumFileNames.split(',') : ''
+              const albumImageCount = albumImages ? albumImages.length : 0
               return (
                 <div key={index.toString()}>
                   <div className={styles.scroll}>
                     {displayUnlock &&
                       <>
-                        <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
-                          <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
-                        </svg>
+                        <div className={styles.unlockWrapper}>
+                          {albumImageCount > 0 && <div className={styles.albumIcon}>
+                            <Image src={AlbumIcon} width={24} height={24}/ >
+                            &nbsp;{albumImageCount}
+                            </div>}
+                          <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
+                            <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
+                          </svg>
 
                         <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
+                        </div>
                       </>
 
                     }
 
                     {!displayUnlock &&
-                      <img
-                        src={
-                          data?.fileUrl
-                        }
+                    <div className={styles.unlockWrapper}>
+                      {albumImageCount > 0 && <div className={styles.albumIcon}>
+                        <Image src={AlbumIcon} width={24} height={24}/ >
+                        &nbsp;{albumImageCount}
+                        </div>}
+                        <img
+                          src={
+                            data?.fileUrl
+                          }
                         onClick={() => openFreeProduct(data, true)}
+
 
                         width="153"
                         className={styles.imgList}
                         height="160.5"
                       />
+                      </div>
                     }
                   </div>
                   <p className={styles.imgTitle}>{data.title}</p>
@@ -354,7 +389,7 @@ export default function About(ctx) {
       >
         <Box sx={modalStyle}>
           <>
-            {openedProduct.isImage && <Image
+            {!currentAlbum && openedProduct.isImage && <Image
               loader={imageLoader}
               src={openedProduct.fileUrl}
               alt="Picture of the author"
@@ -365,7 +400,7 @@ export default function About(ctx) {
             // height={500}
             />}
 
-            {!openedProduct.isImage &&
+            {!currentAlbum && !openedProduct.isImage &&
               <video
                 src={openedProduct.fileUrl}
                 controls
@@ -377,7 +412,35 @@ export default function About(ctx) {
                   <source src={openedProduct?.fileUrl} type='video/mp4'/>
                 </video>
             }
-            {/* <button onClick={download}>Download</button> */}
+            {currentAlbum && 
+            <div className={styles.carousel} >
+              { currentAlbum.index>0 && <div className={styles.carouselPrev} onClick={albumPrev}><ArrowBackIosNew /></div>}
+              <div className={styles.carouselItem}>
+              { currentAlbum.isImage && <Image src={currentAlbum.url}
+                loader={imageLoader}
+                alt="Picture of the author"
+                onLoadingComplete={getImageSize}
+                width={naturalWidth}
+                height={naturalHeight}
+                layout="responsive"
+                />}
+                {!currentAlbum.isImage && 
+                  <video
+                  src={currentAlbum.url}
+                  controls
+                  controlsList="nodownload"
+                  className={styles.video}
+                  alt="Picture of the author"
+                  poster={currentAlbum.url ? currentAlbum.url.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
+                  >
+                    <source src={currentAlbum?.url} type='video/mp4'/>
+                  </video>
+                }
+              </div>
+              <div className={styles.carouselPage}>{currentAlbum.index + 1}/{currentAlbum.length}</div>
+              { currentAlbum.index < currentAlbum.length - 1 && <div className={styles.carouselNext} onClick={albumNext}><ArrowForwardIosIcon /></div> }
+            </div>
+            }
           </>
         </Box>
       </Modal>

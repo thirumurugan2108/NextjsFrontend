@@ -33,7 +33,8 @@ export const upsertPost = async(post:FormData) =>{
   return await axios.post(baseUrl+'uploadImages', post,
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+       "Content-Type": 'multipart/form-data'
       }
     }).catch(e => console.log(e));
 }   

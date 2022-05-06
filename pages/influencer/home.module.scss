@@ -192,6 +192,65 @@
   object-fit: contain;
 }
 
+.unlockWrapper {
+  position: relative;
+}
+
+.albumIcon {
+  position: absolute;
+  display: flex;
+  line-height: 24px;
+  flex-direction: row;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+.navButWrapper {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.carousel {
+  display: block;
+}
+.carouselPrev {
+  width: 30px;
+  position: absolute;
+  z-index: 10;
+  top: 45%;
+  width:40px;
+  height:40px;
+  border-radius:20px;
+  font-size:16px;
+  color:#fff;
+  line-height:50px;
+  text-align:center;
+  background:rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+.carouselNext {
+  position: absolute;
+  z-index: 10;
+  right: 40px;
+  top: 45%;
+  cursor: pointer;
+  width:40px;
+  height:40px;
+  border-radius:20px;
+  font-size:16px;
+  color:#fff;
+  line-height:50px;
+  text-align:center;
+  background:rgba(0, 0, 0, 0.5);
+}
+
+.carouselPage {
+  display: block;
+  text-align: right;
+  margin-top: 10px;
+  font-size: 12px;
+}
 
 .cardContainer {
   display: flex;
@@ -201,6 +260,8 @@
     display: none;
   }
 }
+
+
 
 
 .chattitle {
