@@ -80,7 +80,6 @@ export default function About(ctx) {
   const router = useRouter();
   const query = router.query;
 
-
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
@@ -365,8 +364,7 @@ export default function About(ctx) {
                           width="153"
                           className={styles.imgList}
                           height="160.5"
-                          autoplay={true}
-                          poster
+                          poster={poster}
                         >
                           <source src={data?.fileUrl} type='video/mp4'/>
                         </video>
