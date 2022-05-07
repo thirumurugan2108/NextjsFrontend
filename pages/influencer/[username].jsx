@@ -349,9 +349,9 @@ export default function About(ctx) {
               const albumImageCount = albumImages ? albumImages.length : 0
               let poster = ''
               
-              if (data.albumFileNames) {
-                const albumUrl = data.albumUrl.slice(0, -1)
-                poster= albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
+              if (data.albumFileNames && data.albumUrl) {
+                  const albumUrl = data.albumUrl.slice(0, -1)
+                  poster= albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
               }
               else {
                 poster = data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png') : ''
