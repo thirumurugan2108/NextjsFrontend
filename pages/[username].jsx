@@ -10,9 +10,9 @@ import Modal from '@mui/material/Modal';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
+import { modalStyle, imageLoader } from '../utils/common/commonUtil';
 import styles from './home.module.scss'
-import { getHomeDetailsByUsername } from '../../utils/services/user.service'
+import { getHomeDetailsByUsername } from '../utils/services/user.service'
 import PaymentDetails from '../src/components/paymentDetails'
 import Report from '../assets/images/report.svg';
 import AlbumIcon from '../assets/images/album.png';
