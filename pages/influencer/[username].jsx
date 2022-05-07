@@ -222,8 +222,11 @@ export default function About(ctx) {
       setCurrentAlbum('')
     }
     else {
-      const albumUrl = data.albumUrl.slice(0, -1)
-      const poster= albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
+      let poster = ''
+      if (data.albumUrl) {
+        const albumUrl = data.albumUrl.slice(0, -1)
+        poster= albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
+      }
       setCurrentAlbum({index: 0, albumUrl:data.albumUrl, url: data.albumUrl + albumFileNames[0], isImage, length: albumFileNames.length, albums: albumFileNames, poster})
     }
   }
