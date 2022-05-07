@@ -1,5 +1,5 @@
 import {React} from "react";
-import styles from '../pages/influencer/home.module.scss'
+import styles from '../pages/home.module.scss'
 
 export default function StatusCnfModal({confirmation, close}) {
 return (

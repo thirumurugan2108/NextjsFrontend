@@ -1,7 +1,7 @@
 import {React, useState} from "react";
 import { verifySignupOTP, verifyOTP } from "../utils/services/user.service";
 import TextField from '@mui/material/TextField';
-import styles from '../pages/influencer/home.module.scss'
+import styles from '../pages/home.module.scss'
 import {ErrorMessage} from "../utils/common/commonUtil"
 
 

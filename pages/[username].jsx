@@ -9,9 +9,10 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
-import { modalStyle, imageLoader } from '../utils/common/commonUtil';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { modalStyle, imageLoader } from '../../utils/common/commonUtil';
 import styles from './home.module.scss'
-import { getHomeDetailsByUsername } from '../utils/services/user.service'
+import { getHomeDetailsByUsername } from '../../utils/services/user.service'
 import PaymentDetails from '../src/components/paymentDetails'
 import Report from '../assets/images/report.svg';
 import AlbumIcon from '../assets/images/album.png';
@@ -79,6 +80,7 @@ export default function About(ctx) {
   const [cookie, setCookie, removeCookie] = useCookies(["user"])
   const router = useRouter();
   const query = router.query;
+
 
   const handleOpen = (productId, isCard) => {
     setPayableProductId(productId);
@@ -213,13 +215,16 @@ export default function About(ctx) {
     setfreeProductOpen(true);
     const albumFileNames = data.albumFileNames ? data.albumFileNames.split(',') : ''
     if (!albumFileNames) {
+      const poster = data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png') : ''
       setOpenedProduct({
-        ...data, isImage
+        ...data, isImage, poster
       });
       setCurrentAlbum('')
     }
     else {
-      setCurrentAlbum({index: 0, albumUrl:data.albumUrl, url: data.albumUrl + albumFileNames[0], isImage, length: albumFileNames.length, albums: albumFileNames})
+      const albumUrl = data.albumUrl.slice(0, -1)
+      const poster= albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
+      setCurrentAlbum({index: 0, albumUrl:data.albumUrl, url: data.albumUrl + albumFileNames[0], isImage, length: albumFileNames.length, albums: albumFileNames, poster})
     }
   }
 
@@ -337,18 +342,28 @@ export default function About(ctx) {
           <div className={styles.parentScroll}>
             {state.videos && state.videos.map((data, index) => {
               const displayUnlock = data.isPaid == "Yes" && purchasedProduct.indexOf(data.id) == -1 ? true : false
+              const albumImages = data.albumFileNames ? data.albumFileNames.split(',') : ''
+              const albumImageCount = albumImages ? albumImages.length : 0
               let poster = ''
-              if (data.albumUrl) {
-                poster= data.albumUrl ? data.albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png' : ''
+              
+              if (data.albumFileNames) {
+                const albumUrl = data.albumUrl.slice(0, -1)
+                poster= albumUrl.replace('videos/', 'thumbnail/') + '-thumbnail.png'
               }
               else {
                 poster = data.fileUrl ? data.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png') : ''
+                
               }
               return (
                   <div key={index.toString()}>
+                    
                     <div className={styles.scroll}>
                       {displayUnlock &&
                         <>
+                          {albumImageCount > 0 && <div className={styles.albumIcon}>
+                            <Image src={AlbumIcon} width={20} height={20}/ >
+                            &nbsp;{albumImageCount}
+                            </div>}
                           <svg viewBox="0 0 448 512" width="25" className={styles.alt} fill="#757575">
                             <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
                           </svg>
@@ -358,6 +373,14 @@ export default function About(ctx) {
 
                       }
                       {!displayUnlock &&
+                        <>
+                         {albumImageCount > 0 && <div className={styles.albumIcon}>
+                            <Image src={AlbumIcon} width={20} height={20}/ >
+                            &nbsp;{albumImageCount}
+                            </div>}
+                            <div className={styles.playIcon}> 
+                          <PlayArrowIcon />
+                        </div>
                         <video
                           onClick={() => openFreeProduct(data, false)}
                           key={index.toString()}
@@ -368,6 +391,7 @@ export default function About(ctx) {
                         >
                           <source src={data?.fileUrl} type='video/mp4'/>
                         </video>
+                        </>
                       }
                   </div>
                   <p className={styles.imgTitle}>{data.title}</p>
@@ -418,6 +442,7 @@ export default function About(ctx) {
                 controlsList="nodownload"
                 className={styles.video}
                 alt="Picture of the author"
+                poster={openedProduct.poster}
                 //poster={openedProduct.fileUrl ? openedProduct.fileUrl.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
                 >
                   <source src={openedProduct?.fileUrl} type='video/mp4'/>
@@ -442,7 +467,7 @@ export default function About(ctx) {
                   controlsList="nodownload"
                   className={styles.video}
                   alt="Picture of the author"
-                  poster={currentAlbum.url ? currentAlbum.url.replace('videos/', 'thumbnail/').replace('.mp4', '-thumbnail.png'): ''}
+                  poster={currentAlbum.poster}
                   >
                     <source src={currentAlbum?.url} type='video/mp4'/>
                   </video>

@@ -162,6 +162,7 @@
     margin: 0 0.5rem;
     position:relative;
     max-width: 200px;
+    cursor: pointer !important;
     // background-color:#EEEEEE;
     // background-image: url('../../assets/images/test.jpeg');
     background-color: #d3d3d345;
@@ -203,7 +204,27 @@
   flex-direction: row;
   width: 100%;
   justify-content: flex-end;
-  padding-right: 18px;
+  padding-right: 20px;
+  z-index: 2;
+}
+.albumIcon div {
+  background-color: rgba(227, 225, 225, 0.5);
+}
+
+.playIcon {
+  background-color: rgba(227, 225, 225, 0.5);
+  position: absolute;
+  top: 42%;
+  left: 45%;
+
+  width:40px;
+  height:40px;
+  border-radius:20px;
+  font-size:20px;
+  color:#000;
+  line-height:50px;
+  text-align:center;
+  cursor: pointer;
 }
 
 .navButWrapper {
@@ -220,7 +241,7 @@
   width: 30px;
   position: absolute;
   z-index: 10;
-  top: 45%;
+  top: 40%;
   width:40px;
   height:40px;
   border-radius:20px;
@@ -235,12 +256,12 @@
   position: absolute;
   z-index: 10;
   right: 40px;
-  top: 45%;
+  top: 40%;
   cursor: pointer;
   width:40px;
   height:40px;
   border-radius:20px;
-  font-size:16px;
+  font-size:20px;
   color:#fff;
   line-height:50px;
   text-align:center;

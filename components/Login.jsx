@@ -2,7 +2,7 @@ import Link from "next/link";
 import {React, useState, forwardRef} from "react";
 import { userLogin } from "../utils/services/user.service";
 import TextField from '@mui/material/TextField';
-import styles from '../pages/influencer/home.module.scss'
+import styles from '../pages/home.module.scss'
 import {ErrorMessage} from "../utils/common/commonUtil"
 import CircularProgress from '@mui/material/CircularProgress';
 
