@@ -117,9 +117,9 @@ const PaymentDetails = (props) => {
             title: props.paymentTitle
         }
         const dt = await instaMojoPayment(payLoad)
-        // if (!dt) {
-        //     props.handleclose(false, true);
-        // }
+        if (!dt) {
+            props.handleclose(false, true);
+        }
         // const res = await initializeRazorpay();
         // if (!res) {
         //     return;
