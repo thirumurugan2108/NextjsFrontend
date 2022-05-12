@@ -25,6 +25,7 @@ import Login from '../../components/Login'
 import SignUp from '../../components/SignUp'
 import OtpForm from '../../components/OtpForm'
 import { useCookies } from "react-cookie"
+import Head from "next/head"
 
 import MuiAlert from '@mui/material/Alert';
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -279,6 +280,9 @@ const MainPage = (props)  => {
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
+      <Head>
+        <title>{`Bingemeee - ${query.username}`}</title>
+      </Head>
       <Popup18plus></Popup18plus>
       <div className={styles.main}>
         <div className={styles.header}>

@@ -26,6 +26,7 @@ import SignUp from '../components/SignUp'
 import OtpForm from '../components/OtpForm'
 import { useCookies } from "react-cookie"
 import MuiAlert from '@mui/material/Alert';
+import Head from "next/head"
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
@@ -224,7 +225,7 @@ const MainPage = (props)  => {
     revalidateOnFocus: false,
     revalidateOnReconnect: false
   })
-
+  
   useEffect(() => {
     if (data) {
       if (!data.data || !data.data.user || !data.data.user.photoUrl) {
@@ -277,6 +278,9 @@ const MainPage = (props)  => {
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
+      <Head>
+        <title>{`Bingemeee - ${query.username}`}</title>
+      </Head>
       <Popup18plus></Popup18plus>
       <div className={styles.main}>
         <div className={styles.header}>
