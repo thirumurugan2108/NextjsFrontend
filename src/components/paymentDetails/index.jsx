@@ -102,12 +102,12 @@ const PaymentDetails = (props) => {
         }
         const paymentUrl = await createInstaPaymentRequest(payload)
         if (!paymentUrl) {
-            console.log("Unable to process payments currently !!!")
             setErrors(["Unable to process payments currently !!!"]);
             return false
         }
         else {
            router.push(paymentUrl)
+           return true
         }
     }
 
@@ -118,11 +118,10 @@ const PaymentDetails = (props) => {
             isCard: props.isCard,
             title: props.paymentTitle
         }
-        console.log(payLoad)
         const dt = await instaMojoPayment(payLoad)
-        if (!dt) {
-            props.handleclose(false, true);
-        }
+        // if (!dt) {
+        //     props.handleclose(false, true);
+        // }
         // const res = await initializeRazorpay();
         // if (!res) {
         //     return;
