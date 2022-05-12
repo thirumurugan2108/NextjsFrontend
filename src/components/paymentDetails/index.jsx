@@ -8,7 +8,7 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { modalStyle, imageLoader } from '../../../utils/common/commonUtil';
+import { modalStyle, imageLoader, createInstaPaymentRequest } from '../../../utils/common/commonUtil';
 import styles from "./paymentDetails.module.scss"
 import { createPayment, verifyPayment } from "../../../utils/services/payment.service"
 import { TextareaAutosize } from "@mui/material";
@@ -16,11 +16,11 @@ import { TextareaAutosize } from "@mui/material";
 import MuiAlert from '@mui/material/Alert';
 import * as Yup from 'yup';
 
+import Instamojo from "instamojo-payment-nodejs"
+
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-
-
 
 function reducer(state, action) {
     switch (action.type) {
@@ -60,7 +60,6 @@ const PaymentDetails = (props) => {
     useEffect (() => {
         if (!props.isCard) {
             if (props.open && !props.isCard && paymentMade==false) {
-                console.log("000000000000000")
                makePayment(state)
             }
         }
@@ -88,74 +87,109 @@ const PaymentDetails = (props) => {
         });
     };
 
+    const instaMojoPayment = async ({buyerDetails, productId, title, isCard} ) => {
+        let purpose = `Image / Video (${productId})`
+        if (isCard) {
+            purpose = `${title} (${productId})`
+        }
+        const payload = {
+            buyer_name: props.loggedInUser.name,
+            email: props.loggedInUser.email,
+            phone: props.loggedInUser.mobile,
+            productId,
+            isCard,
+            comments: buyerDetails.comments
+        }
+        const paymentUrl = await createInstaPaymentRequest(payload)
+        if (!paymentUrl) {
+            console.log("Unable to process payments currently !!!")
+            setErrors(["Unable to process payments currently !!!"]);
+            return false
+        }
+        else {
+           router.push(paymentUrl)
+        }
+    }
+
     const makePayment = async (buyerDetails) => {
-        const res = await initializeRazorpay();
-        if (!res) {
-            return;
+        const payLoad = {
+            buyerDetails,
+            productId: props.productid,
+            isCard: props.isCard,
+            title: props.paymentTitle
         }
-        // Make API call to the serverless API
-        const data = await createPayment(props.username, props.productid, props.isCard);
-        const options = {
-            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
-            // name: "Manu Arora Pvt Ltd",
-            currency: 'INR',
-            amount: data.data.price,
-            order_id: data.data.id,
-            // description: "Thankyou for your test donation",
-            // image: "https://manuarora.in/logo.png",
-            handler: async function (response) {
-                // Validate payment at server - using webhooks is a better idea.
-                verifyPayment({
-                    orderCreationId: data.data.id,
-                    razorpayPaymentId: response.razorpay_payment_id,
-                    razorpayOrderId: response.razorpay_order_id,
-                    razorpaySignature: response.razorpay_signature,
-                    buyerDetails: {
-                        ...state,
-                        buyerName:props.loggedInUser.name, 
-                        buyerPhoneNumber: props.loggedInUser.mobile, 
-                        buyerEmailId: props.loggedInUser.email
-                    },
-                    productDetails: {
-                        username: props.username,
-                        productid: props.productid
-                    },
-                    isCard: props.isCard
-                }).then(data => {
-                    // router.push('../login');
-                    // props.handleclose();
-                    //setisPaymentMode(false);
-                    if (props.isCard) {
-                        setCardSuccess(true)
-                    }
-                    if (!data.data.isVideo) {
-                        dispatch({ type: "generic", field: 'imageUrl', value: data.data.fileurl });
-                    } else {
-                        dispatch({ type: "generic", field: 'videoUrl', value: data.data.fileurl });
-                    }
-                    props.handlePaymentComplete(props.productid)
-                    setPaymentMade(true)
+        console.log(payLoad)
+        const dt = await instaMojoPayment(payLoad)
+        if (!dt) {
+            props.handleclose(false, true);
+        }
+        // const res = await initializeRazorpay();
+        // if (!res) {
+        //     return;
+        // }
+        // // Make API call to the serverless API
+        // const data = await createPayment(props.username, props.productid, props.isCard);
+        // const options = {
+        //     key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Enter the Key ID generated from the Dashboard
+        //     // name: "Manu Arora Pvt Ltd",
+        //     currency: 'INR',
+        //     amount: data.data.price,
+        //     order_id: data.data.id,
+        //     // description: "Thankyou for your test donation",
+        //     // image: "https://manuarora.in/logo.png",
+        //     handler: async function (response) {
+        //         // Validate payment at server - using webhooks is a better idea.
+        //         verifyPayment({
+        //             orderCreationId: data.data.id,
+        //             razorpayPaymentId: response.razorpay_payment_id,
+        //             razorpayOrderId: response.razorpay_order_id,
+        //             razorpaySignature: response.razorpay_signature,
+        //             buyerDetails: {
+        //                 ...state,
+        //                 buyerName:props.loggedInUser.name, 
+        //                 buyerPhoneNumber: props.loggedInUser.mobile, 
+        //                 buyerEmailId: props.loggedInUser.email
+        //             },
+        //             productDetails: {
+        //                 username: props.username,
+        //                 productid: props.productid
+        //             },
+        //             isCard: props.isCard
+        //         }).then(data => {
+        //             // router.push('../login');
+        //             // props.handleclose();
+        //             //setisPaymentMode(false);
+        //             if (props.isCard) {
+        //                 setCardSuccess(true)
+        //             }
+        //             if (!data.data.isVideo) {
+        //                 dispatch({ type: "generic", field: 'imageUrl', value: data.data.fileurl });
+        //             } else {
+        //                 dispatch({ type: "generic", field: 'videoUrl', value: data.data.fileurl });
+        //             }
+        //             props.handlePaymentComplete(props.productid)
+        //             setPaymentMade(true)
                     
-                }).catch(err => {
-                });
-            },
-            prefill: {
-                name: buyerDetails.buyerName,
-                email: buyerDetails.buyerEmailId,
-                contact: buyerDetails.buyerPhoneNumber,
-            },
-            // notes: {
-            //   address: "Soumya Dey Corporate Office",
-            // },
-            theme: {
-                color: "#61dafb",
-            },
-        };
-        if (options.key.indexOf('rzp_test_') !== -1) {
-            delete options.order_id
-        }
-        const paymentObject = new window.Razorpay(options);
-        paymentObject.open();
+        //         }).catch(err => {
+        //         });
+        //     },
+        //     prefill: {
+        //         name: buyerDetails.buyerName,
+        //         email: buyerDetails.buyerEmailId,
+        //         contact: buyerDetails.buyerPhoneNumber,
+        //     },
+        //     // notes: {
+        //     //   address: "Soumya Dey Corporate Office",
+        //     // },
+        //     theme: {
+        //         color: "#61dafb",
+        //     },
+        // };
+        // if (options.key.indexOf('rzp_test_') !== -1) {
+        //     delete options.order_id
+        // }
+        // const paymentObject = new window.Razorpay(options);
+        // paymentObject.open();
     };
     
     const proceed = () => {
@@ -215,7 +249,6 @@ const PaymentDetails = (props) => {
     return (
         <>
             <div>
-
                 {props.isCard && <Modal
                     open={props.open}
                     onClose={onClose}

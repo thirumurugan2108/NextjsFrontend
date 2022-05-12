@@ -15,8 +15,21 @@
     margin-left:1rem;
     margin-bottom: 0.2rem
   }
-   
-  
+  .paymentMessage {
+    color: #fff;
+    font-size: 16px;
+  }
+  .paymentMessage a { 
+    color: #fff;
+  }
+  .closeIcon {
+    position: absolute;
+    z-index: 10;
+    right: 0;
+    top: -30px;
+    cursor: pointer;
+
+  }
   .subTitle {
     color: orange;
     font-size: 0.8rem;

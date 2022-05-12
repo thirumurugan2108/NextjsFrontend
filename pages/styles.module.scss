@@ -1,0 +1,58 @@
+.receiptContainer {
+   margin-top: 2%;
+}
+.receiptPaper {
+  padding: 20px;
+}
+.receiptLogo {
+  width: 150px;
+}
+.receiptLogoWrapper {
+  text-align: center;
+}
+.receiptHeader {
+  margin-bottom: 5px;
+}
+.receiptId {
+  margin: 0px;
+  font-size: 10px;
+  color: #a00;
+}
+.receiptSummaryWrapper {
+  background-color: rgb(245, 61, 15, 0.3);
+}
+.receiptSummaryWrapper>div {
+  padding: 10px 10px;
+  border-bottom: 1px solid gray;
+}
+.receiptSummaryWrapper div div{
+  display: inline-block;
+  font-size: 12px;
+}
+.receiptSummaryWrapper div div:last-child{
+  float: right;
+}
+.receiptSummaryWrapper>div:last-child {
+  border-bottom: 0px
+}
+.receiptHr {
+  border-top: 1px solid rgb(193, 191, 191);
+  color: rgb(193, 191, 191);
+  width: 100%;
+  height: 2px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.receiptFooterText {
+  font-size: 10px;
+}
+.receiptDetailsWapper {
+  margin-top: 20px;
+  display: flex;
+  font-size: 12px;
+  text-align: center;
+}
+.receiptDetailsWapper div{
+  margin-top: 5px;
+}

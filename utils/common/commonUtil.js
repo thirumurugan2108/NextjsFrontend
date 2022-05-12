@@ -1,10 +1,21 @@
 import MuiAlert from '@mui/material/Alert';
 import {forwardRef} from "react";
+import axios from 'axios';
+import {getInstaPaymentUrl} from '../services/payment.service'
 
 export function getExtensionFromFileName (filename){
     return filename.split('.').pop();
 }
-
+export const alertModalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  "min-width": "300px",
+  border: "0px",
+  background: "transparent",
+  text: "#fff",
+}
 export const modalStyle = {
     position: 'absolute',
     top: '50%',
@@ -39,5 +50,13 @@ export const ErrorMessage = ({errors = []}) => {
     }
 }
 
+export const createInstaPaymentRequest = async (payload) => {
+    const authRes = await getInstaPaymentUrl(payload)  
+    if (authRes && authRes.data && authRes.data.url) {
+      return authRes.data.url
+    }
+    else {
+      return false
+    }
 
-    
+}

@@ -10,12 +10,14 @@ import Modal from '@mui/material/Modal';
 import ArrowBackIosNew from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import { modalStyle, imageLoader } from '../utils/common/commonUtil';
+import { modalStyle, imageLoader, alertModalStyle } from '../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../utils/services/user.service'
+import { storeInstaPaymentDetail } from '../utils/services/payment.service'
 import PaymentDetails from '../src/components/paymentDetails'
 import Report from '../assets/images/report.svg';
 import AlbumIcon from '../assets/images/album.png';
+import CloseIcon from '@mui/icons-material/Close';
 import Popup18plus from '../src/components/popup18plus'
 import Footer from '../src/components/footer';
 import ModalComponent from '../components/Modal'
@@ -23,6 +25,30 @@ import Login from '../components/Login'
 import SignUp from '../components/SignUp'
 import OtpForm from '../components/OtpForm'
 import { useCookies } from "react-cookie"
+import MuiAlert from '@mui/material/Alert';
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+const PaymentSuccess = ({isCard}) => {
+  let message = 'You have successfully purchased the product. If you are unable to view the product please contact our <a href="https://home.bingemeee.com/#contact">support team</a>'
+  if (isCard) {
+    message = 'Your payment is success. Our Influencer will contact you shortly !!!'
+  }
+  return (
+    <Alert severity="success" className={styles.paymentMessage}>{message}</Alert>
+  )
+}
+
+const PaymentFailure = () => {
+  return (
+    <Alert severity="error" className={styles.paymentMessage}><h3>Your transaction is failed !!!. If your amount is debited from your account. Please contact our <a href="https://home.bingemeee.com/#contact">support team</a> for a refund.</h3></Alert>
+  )
+}
+const PaymentProcessFailure = () => {
+  return (
+    <Alert severity="error" className={styles.paymentMessage}><h3>Unable to process payment currently!, Please try again after sometimes</h3></Alert>
+  )
+}
 const fetcher = (query) => {
   if (query.username) {
     return getHomeDetailsByUsername(query);
@@ -61,10 +87,11 @@ function reducer(state, action) {
   }
 }
 
-export default function About(ctx) {
+const MainPage = (props)  => {
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [payableProductId, setPayableProductId] = useState('');
   const [isCard, setIsCard] = useState(false);
+  const [paymentTitle, setPaymentTitle] = useState(false);
   const [isFreeProdcutOpen, setfreeProductOpen] = useState(false);
   const [openedProduct, setOpenedProduct] = useState({});
   const [currentAlbum, setCurrentAlbum] = useState('');
@@ -77,15 +104,19 @@ export default function About(ctx) {
   const [otpEmail, setOtpEmail] = useState('')
   const [loggedInUser, setLoggedInUser] = useState({})
   const [purchasedProduct, setPurchasedProducts] = useState([])
+  const [isPaymentSucess, setIsPaymentSucess] = useState(props.paymentSuccess)
+  const [isPaymentFailure, setIsPaymentFailure] = useState(props.paymentFailure)
+  const [isPaymentProcessFailure, setIsPaymentProcessFailure] = useState(false)
+
   const [cookie, setCookie, removeCookie] = useCookies(["user"])
   const router = useRouter();
   const query = router.query;
 
 
-  const handleOpen = (productId, isCard) => {
+  const handleOpen = (productId, title, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
-
+    setPaymentTitle(title)
     if (Object.keys(loggedInUser).length > 0) {
       setIsPaymentOpen(true)
     }
@@ -94,10 +125,13 @@ export default function About(ctx) {
     }
   };
 
-  const handleClose = (paymentMade = false) => {
+  const handleClose = (paymentMade = false, instaFailure = false) => {
     setIsPaymentOpen(false)
     if (paymentMade) {
       router.reload()
+    }
+    if (instaFailure) {
+      setIsPaymentProcessFailure(true)
     }
   };
 
@@ -124,7 +158,7 @@ export default function About(ctx) {
       router.push(newpath)
     }
   }
-
+  
   const handlePaymentComplete = (productId) => {
     const previousProductIds = purchasedProduct
     previousProductIds.push(productId)
@@ -162,6 +196,11 @@ export default function About(ctx) {
     e.preventDefault()
     setLoginModalOpen(false)
     setSignupModalOpen(true)
+  }
+  const paymentModelClose = (e) => {
+    setIsPaymentFailure(false)
+    setIsPaymentSucess(false)
+    router.push(`/${query.username}`)
   }
   const albumPrev = (e) => {
     const prevIndex = currentAlbum.index <=1 ? 0 : currentAlbum.index -1
@@ -241,7 +280,6 @@ export default function About(ctx) {
       <Popup18plus></Popup18plus>
       <div className={styles.main}>
         <div className={styles.header}>
-
           <Image src={Report} onClick={() => { navigateToContactus() }} />
           {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
             Login
@@ -273,7 +311,7 @@ export default function About(ctx) {
                     <div className={styles.bookContainer}>
                       <p className={styles.price}>₹ {data.price}</p>
                       <div className={styles.align}>
-                        <a onClick={() => handleOpen(data.id, true)}>Book now</a>
+                        <a onClick={() => handleOpen(data.id, data.title, true)}>Book now</a>
                       </div>
                     </div>
                   </div>
@@ -304,7 +342,7 @@ export default function About(ctx) {
                             <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
                           </svg>
 
-                        <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
+                        <p className={styles.unlock} onClick={() => handleOpen(data.id, "image", false)}>Unlock ₹{data.price}</p>
                         </div>
                       </>
 
@@ -371,7 +409,7 @@ export default function About(ctx) {
                             <path d="M400 256H152V152.9c0-39.6 31.7-72.5 71.3-72.9 40-.4 72.7 32.1 72.7 72v16c0 13.3 10.7 24 24 24h32c13.3 0 24-10.7 24-24v-16C376 68 307.5-.3 223.5 0 139.5.3 72 69.5 72 153.5V256H48c-26.5 0-48 21.5-48 48v160c0 26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V304c0-26.5-21.5-48-48-48zM264 408c0 22.1-17.9 40-40 40s-40-17.9-40-40v-48c0-22.1 17.9-40 40-40s40 17.9 40 40v48z" />
                           </svg>
 
-                          <p className={styles.unlock} onClick={() => handleOpen(data.id, false)}>Unlock ₹{data.price}</p>
+                          <p className={styles.unlock} onClick={() => handleOpen(data.id, "image", false)}>Unlock ₹{data.price}</p>
                         </>
 
                       }
@@ -414,6 +452,7 @@ export default function About(ctx) {
         productid={payableProductId}
         username={query.username}
         isCard={isCard}
+        paymentTitle={paymentTitle}
         loggedInUser={loggedInUser}
         handlePaymentComplete={handlePaymentComplete}
       >
@@ -493,6 +532,48 @@ export default function About(ctx) {
         <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} >
           <OtpForm type={otpType} email={otpEmail} processVerifiedOtp={processVerifiedOtp} />
         </ModalComponent>}
+
+        {isPaymentSucess &&
+          <ModalComponent open={isPaymentSucess} onClose={paymentModelClose} modalStyle={alertModalStyle} >
+          <div>
+            <CloseIcon className={styles.closeIcon} onClick={paymentModelClose}/>
+            <PaymentSuccess isCard = {props.paymentIsCard}/>
+          </div>
+          </ModalComponent>}
+          {isPaymentFailure &&
+            <ModalComponent open={isPaymentFailure} onClose={paymentModelClose} modalStyle={alertModalStyle} >
+              <div>
+              <CloseIcon className={styles.closeIcon} onClick={paymentModelClose}/>
+              <PaymentFailure/>
+            </div>
+            </ModalComponent>}
+          {isPaymentProcessFailure && 
+            <ModalComponent open={isPaymentProcessFailure} onClose={()=>setIsPaymentProcessFailure(false)} modalStyle={alertModalStyle} >
+            <div>
+            <CloseIcon className={styles.closeIcon} onClick={()=>setIsPaymentProcessFailure(false)}/>
+            <PaymentProcessFailure/>
+          </div>
+          </ModalComponent>}
     </div>
   );
 }
+
+export const getServerSideProps = async(context) => {
+  let paymentSuccess = false
+  let paymentFailure = false
+  let paymentIsCard = false
+  if (context.query && context.query.payment_id && context.query.payment_request_id) {
+    const res = await storeInstaPaymentDetail(context.query)
+    if (res && res.data && res.data.status && res.data.status == "payment success") {
+      paymentSuccess = true
+      paymentIsCard = res.data.isCard
+    }
+    else {
+      paymentFailure = true
+    }
+  }
+  
+  return { props: {paymentSuccess, paymentFailure, paymentIsCard}}
+}
+
+export default MainPage

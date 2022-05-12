@@ -43,3 +43,11 @@ export function updatePaymentStatus(id: String, status: String) {
       }
     });
 }
+
+export function getInstaPaymentUrl (payload: any) {
+  return axios.post(baseUrl + 'getInstaPaymentUrl',payload);
+}
+
+export function storeInstaPaymentDetail(data: any) {
+  return axios.post(baseUrl + 'storeInstaPaymentDetail',data);
+}
