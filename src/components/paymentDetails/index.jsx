@@ -16,8 +16,6 @@ import { TextareaAutosize } from "@mui/material";
 import MuiAlert from '@mui/material/Alert';
 import * as Yup from 'yup';
 
-import Instamojo from "instamojo-payment-nodejs"
-
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
