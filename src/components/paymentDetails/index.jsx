@@ -100,7 +100,6 @@ const PaymentDetails = (props) => {
         }
         const paymentUrl = await createInstaPaymentRequest(payload)
         if (!paymentUrl) {
-            setErrors(["Unable to process payments currently !!!"]);
             return false
         }
         else {
