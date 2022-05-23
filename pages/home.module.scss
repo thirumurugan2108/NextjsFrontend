@@ -327,3 +327,78 @@
   width: 25ch;
   text-align: center;
 }
+
+.subscriptionWrapper {
+  border: 1px solid #cdcdcd;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}
+
+.subscriptionWrapperActive {
+  border: 2px solid #006effd2;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin-bottom: 20px;
+}
+
+.subscriptionHeadingWrapper {
+  width: 100%;
+  display: flex;
+  flex-flow: row;
+  max-height: 30px;
+  margin-bottom: 5px;
+}
+
+.subscription {
+  width: 100%;
+}
+.subscriptionHeadingWrapper h5{
+  width: 90%;
+  margin: 0px;
+  margin-top: 5px;
+  padding: 0px;
+  line-height: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(136, 133, 133);
+}
+
+.subscriptionHeadingWrapper span {
+  margin-top: -2px;
+  position: absolute;
+}
+
+.subscriptionPrice {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 16px;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.subscriptionDiscount {
+  padding: 2px;
+  font-size: 12px;
+  border: 1px solid rgb(58, 99, 58, 0.5);
+  border-radius: 2px;
+  width: 100px;
+  background-color: rgb(130, 193, 130, 0.5);
+  text-align: center;
+  color: rgb(58, 99, 58);
+}
+
+.subscriptionDesc {
+  margin-top: 10px;
+  font-size: 12px;
+  color: rgb(136, 133, 133);
+}
+
+.modelTitle {
+  margin-top: 0px;
+  padding-top: 0px;
+  font-size: 18px;
+  font-weight: bolder;
+}
+.expiryDuration {
+  text-align: center;
+}

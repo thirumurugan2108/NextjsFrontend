@@ -118,13 +118,15 @@
 }
 
 .slot {
+  position: relative;
   box-shadow: 2px 2px 5px 2px rgb(0 0 0 / 10%);
   border-radius: 1rem;
   background: #fafafa;
   height: 30%;
   margin-top: 2rem;
   padding: 1rem;
-  margin: 1rem 1rem 1rem;
+  margin: 1rem auto;
+  width: 80%;
   .cardEdit {
     background: url(../../assets/images/edit.svg) no-repeat;
     width: 1.8rem;
@@ -164,4 +166,19 @@
 
 .floatNone{
   float: none;
+}
+
+.carouselWrapper {
+  position: relative;
+  padding-bottom: 40px;
+}
+
+.carouselWrapper div {
+  overflow: visible !important;
+}
+.carouselCount {
+  float: right;
+  position: absolute;
+  top: 10px;
+  right: 10px;
 }

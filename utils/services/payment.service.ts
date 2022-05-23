@@ -44,10 +44,10 @@ export function updatePaymentStatus(id: String, status: String) {
     });
 }
 
-export function getInstaPaymentUrl (payload: any) {
-  return axios.post(baseUrl + 'getInstaPaymentUrl',payload);
+export function createPaymentRequest (payload: any) {
+  return axios.post(baseUrl + 'getPaymentUrl',payload);
 }
 
-export function storeInstaPaymentDetail(data: any) {
-  return axios.post(baseUrl + 'storeInstaPaymentDetail',data);
+export function storePaymentDetail(data: any) {
+  return axios.post(baseUrl + 'storePaymentDetail',data);
 }

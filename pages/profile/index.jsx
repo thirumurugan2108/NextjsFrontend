@@ -8,7 +8,10 @@ import styles from './profile.module.scss';
 import { getExtensionFromFileName } from '../../utils/common/commonUtil'
 import { createCardDetails, getcardDetails, updateCardDetails, deleteCardById } from "../../utils/services/card.service";
 import { getUserDetails, uploadPhoto } from "../../utils/services/user.service"
-
+import { setSubscription, getSubscriptionDetails, disableSubscriptionStatus } from "../../utils/services/subscription.service"
+import Carousel from 'react-material-ui-carousel'
+import ModalComponent from '../../components/Modal'
+import { modalStyle } from '../../utils/common/commonUtil';
 import { Card } from "../../utils/models/card.model";
 import Delete from '../../assets/images/delete.svg';
 const initialState = {
@@ -78,8 +81,10 @@ const Profile = (_props) => {
   const [isCardEditMode, setisCardEditMode] = useState(false);
   const [image, setImage] = useState("");
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  const router = useRouter();
+  const [subscription, setSubscriptionData] = useState(false)
+  const [openSubscriptionModal, setopenSubscriptionModal] = useState(false)
+  const [subscriptionPrice, setSubscriptionPrice] = useState('')
+  const router = useRouter(); 
   useEffect(() => {
     if (sessionStorage.getItem('token')) {
       fetchAllDetails();
@@ -93,6 +98,14 @@ const Profile = (_props) => {
     try {
       const userDetail = await getUserDetails();
       const cardDetail = await getcardDetails();
+      if (userDetail && userDetail.data && userDetail.data.name) {
+        
+        const subscriptionDetails = await getSubscriptionDetails(userDetail.data.name)
+        if (subscriptionDetails && subscriptionDetails.data && subscriptionDetails.data.subscription && subscriptionDetails.data.status == true) {
+          setSubscriptionPrice(subscriptionDetails.data.subscription[0].price)
+          setSubscriptionData(subscriptionDetails.data)
+        }
+      }
       dispatch({
         type: "fetchfromdb", payload: {
           cardList: cardDetail.data
@@ -151,6 +164,32 @@ const Profile = (_props) => {
     await updateCardDetails(postData);
   }
 
+  const enableSubscription = (e) => {
+    e.preventDefault()
+    setopenSubscriptionModal(true)
+  }
+  const disableSubscription = async (e) => {
+    e.preventDefault()
+    await disableSubscriptionStatus({id:subscription.id})
+    router.reload()
+  }
+  const setMonthlySubscriptionPrice = async (e) => {
+    e.preventDefault()
+    if (openSubscriptionModal == true) {
+      setopenSubscriptionModal(false)
+      const payload = {
+        influencer: username, 
+        price: subscriptionPrice
+      }
+      await setSubscription(payload)
+      router.reload()
+    }
+  }
+
+  const closeSubscriptionModal = () => {
+    setopenSubscriptionModal(false)
+  }
+
   return (
     <Layout>
       <div className={styles.container}>
@@ -172,17 +211,20 @@ const Profile = (_props) => {
               <p className={styles.connect}>Let's Connect</p>
               <button onClick={() => addCard()}>Add Cards</button>
             </div>
+            <div className={styles.carouselWrapper}>
+            <Carousel navButtonsAlwaysVisible={true} autoPlay={false} indicators={false}>
             {state.cardList && state.cardList.map((data, index) => {
-
               // ({
               //   data.isEditMode && 
               if (!data.isEditMode) {
                 return (
-                  <div className={styles.slot}>
+                  <div className={styles.slot} key={`card${index}`}>
                     <div className={styles.around}>
-                      <h4>{data.title}</h4>
+                      <div><h4>{data.title}</h4>
+                      <span className={styles.carouselCount}>{index +  1}/{state.cardList.length}</span>
+                      </div>
                       <p className={styles.chatContent}>{data.description}</p>
-                      <text>{data.price}</text>
+                      <span>{data.price}</span>
                     </div>
                     <div className={styles.cardEditContainer}>
                       <div className={styles.cardEdit} onClick={() => onEdit(index)}>
@@ -206,12 +248,39 @@ const Profile = (_props) => {
               }
               // })
             })}
+          </Carousel>
+            </div>
+
+            {/* {subscription} */}
+
+            <div className={styles.cardHeader}>
+              <p className={styles.connect}>Subscription</p>
+              {!subscription && <button onClick={enableSubscription}>Enable Subscription</button>}
+              {subscription && <button onClick={disableSubscription}>Disable Subscription</button>}
+            </div>
+            {subscription && <div className={styles.carouselWrapper}>
+            <Carousel navButtonsAlwaysVisible={true} autoPlay={false} indicators={false}>
+              {subscription.subscription.map((sub, index) => {
+                return <div className={styles.slot}>
+                  <div className={styles.around}>
+                    <div><h4>{sub.name}</h4>
+                    <span className={styles.carouselCount}>{index+1}/ {subscription.subscription.length}</span>
+                    </div>
+                    <span>{sub.price}</span>
+                  </div>
+              </div>
+              })}
+            </Carousel>
+            </div>}
           </div>
-
-
         </div>
-
       </div>
+      {openSubscriptionModal && <ModalComponent open={openSubscriptionModal} onClose={closeSubscriptionModal} modalStyle={modalStyle} >
+              <h3>Set Subscription base Monthly price</h3>
+              <p>Based on the monthly price, 6 months and 1 year subscription price will be calculated with discounted price.</p>
+              <input type="text" name="subscription_price" onChange={(e) => setSubscriptionPrice(e.target.value)} value={subscriptionPrice}/>
+              <button className="" onClick={setMonthlySubscriptionPrice}>Set Monthly Price</button>
+            </ModalComponent>}
     </Layout>
   );
 };

@@ -8,7 +8,8 @@
     border-top: 0.5px solid grey;
     background-color: white;
     justify-content: space-around;
-    height: 80px
+    height: 80px;
+    z-index: 1000;
   }
   
   .svg:hover {

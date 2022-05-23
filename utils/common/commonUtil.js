@@ -49,14 +49,3 @@ export const ErrorMessage = ({errors = []}) => {
       return <></>
     }
 }
-
-export const createInstaPaymentRequest = async (payload) => {
-    const authRes = await getInstaPaymentUrl(payload)  
-    if (authRes && authRes.data && authRes.data.url) {
-      return authRes.data.url
-    }
-    else {
-      return false
-    }
-
-}

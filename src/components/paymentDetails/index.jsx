@@ -8,9 +8,9 @@ import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
-import { modalStyle, imageLoader, createInstaPaymentRequest } from '../../../utils/common/commonUtil';
+import { modalStyle, imageLoader } from '../../../utils/common/commonUtil';
 import styles from "./paymentDetails.module.scss"
-import { createPayment, verifyPayment } from "../../../utils/services/payment.service"
+import { createPayment, verifyPayment, createPaymentRequest } from "../../../utils/services/payment.service"
 import { TextareaAutosize } from "@mui/material";
 
 import MuiAlert from '@mui/material/Alert';
@@ -85,25 +85,26 @@ const PaymentDetails = (props) => {
         });
     };
 
-    const instaMojoPayment = async ({buyerDetails, productId, title, isCard} ) => {
-        let purpose = `Image / Video (${productId})`
-        if (isCard) {
-            purpose = `${title} (${productId})`
-        }
+    const getPaymentUrl = async ({buyerDetails} ) => {
         const payload = {
-            buyer_name: props.loggedInUser.name,
+            //buyer_name: props.loggedInUser.name,
             email: props.loggedInUser.email,
-            phone: props.loggedInUser.mobile,
-            productId,
-            isCard,
-            comments: buyerDetails.comments
+            //phone: props.loggedInUser.mobile,
+            subscription: props.subscription,
+            isCard: props.isCard,
+            influencer: props.username,
+            comments: buyerDetails.comments,
+            paymentGateway: props.paymentGateway,
+            productId: props.productid,
         }
-        const paymentUrl = await createInstaPaymentRequest(payload)
-        if (!paymentUrl) {
+        
+        const paymentUrl = await createPaymentRequest(payload)
+        if (paymentUrl.data && paymentUrl.data.status == "error") {
             return false
         }
         else {
-           router.push(paymentUrl)
+            console.log(paymentUrl)
+           router.push(paymentUrl.data.url)
            return true
         }
     }
@@ -111,11 +112,8 @@ const PaymentDetails = (props) => {
     const makePayment = async (buyerDetails) => {
         const payLoad = {
             buyerDetails,
-            productId: props.productid,
-            isCard: props.isCard,
-            title: props.paymentTitle
         }
-        const dt = await instaMojoPayment(payLoad)
+        const dt = await getPaymentUrl(payLoad)
         if (!dt) {
             props.handleclose(false, true);
         }

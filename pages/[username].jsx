@@ -13,7 +13,7 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import { modalStyle, imageLoader, alertModalStyle } from '../utils/common/commonUtil';
 import styles from './home.module.scss'
 import { getHomeDetailsByUsername } from '../utils/services/user.service'
-import { storeInstaPaymentDetail } from '../utils/services/payment.service'
+import { storePaymentDetail } from '../utils/services/payment.service'
 import PaymentDetails from '../src/components/paymentDetails'
 import Report from '../assets/images/report.svg';
 import AlbumIcon from '../assets/images/album.png';
@@ -27,13 +27,17 @@ import OtpForm from '../components/OtpForm'
 import { useCookies } from "react-cookie"
 import MuiAlert from '@mui/material/Alert';
 import Head from "next/head"
+import SubscriptionForm from '../components/Subscription';
 const Alert = React.forwardRef(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
-const PaymentSuccess = ({isCard}) => {
+const PaymentSuccess = ({isCard, isSubscription}) => {
   let message = 'You have successfully purchased the product. If you are unable to view the product please contact our <a href="https://home.bingemeee.com/#contact">support team</a>'
   if (isCard) {
     message = 'Your payment is success. Our Influencer will contact you shortly !!!'
+  }
+  if (isSubscription) {
+    message = 'Your payment for subscription is success. You can able to view all the products based on your subscription duration.'
   }
   return (
     <Alert severity="success" className={styles.paymentMessage}>{message}</Alert>
@@ -108,6 +112,8 @@ const MainPage = (props)  => {
   const [isPaymentSucess, setIsPaymentSucess] = useState(props.paymentSuccess)
   const [isPaymentFailure, setIsPaymentFailure] = useState(props.paymentFailure)
   const [isPaymentProcessFailure, setIsPaymentProcessFailure] = useState(false)
+  const [isSubscription, setIsSubscription] = useState(false);
+  const [subscription, setSubscription] = useState('')
 
   const [cookie, setCookie, removeCookie] = useCookies(["user"])
   const router = useRouter();
@@ -120,6 +126,7 @@ const MainPage = (props)  => {
     setPaymentTitle(title)
     if (Object.keys(loggedInUser).length > 0) {
       setIsPaymentOpen(true)
+      
     }
     else {
       setLoginModalOpen(true)
@@ -135,6 +142,22 @@ const MainPage = (props)  => {
       setIsPaymentProcessFailure(true)
     }
   };
+
+  const subscribe = () => {
+    if (Object.keys(loggedInUser).length > 0) {
+      setIsSubscription(true);
+      //setIsPaymentOpen(true)
+    }
+    else {
+      setLoginModalOpen(true)
+    }
+  }
+
+  const handleSubscribe = (name) => {
+    setSubscription(name)
+    setIsPaymentOpen(true)
+    setIsSubscription(false);
+  }
 
   const handleOtpSent = (type, email) => {
     setSignupModalOpen(false)
@@ -157,6 +180,9 @@ const MainPage = (props)  => {
     if (query.validateEmail && query.email) {
       const newpath = router.pathname.replace('[username]', router.query.username)
       router.push(newpath)
+    }
+    else {
+      router.reload()
     }
   }
   
@@ -274,7 +300,8 @@ const MainPage = (props)  => {
   const navigateToContactus = () => {
     window.location.href = 'https://home.bingemeee.com/#contact';
   }
-
+  console.log(loggedInUser)
+  
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
     <div className={styles.container}>
@@ -301,6 +328,8 @@ const MainPage = (props)  => {
             </div>
           </div>
           <h3>{state?.user?.fullName}</h3>
+          {state.subscriptions && !state.expiryDuration && <button onClick={subscribe}>Subscribe</button>}
+          {state.expiryDuration && <div className={styles.expiryDuration}>Your Subscrption will expire after {state.expiryDuration} days</div>}
           <p className={styles.subHeading}>Let's Connect</p>
           <div className={styles.cardContainer}>
 
@@ -457,8 +486,10 @@ const MainPage = (props)  => {
         username={query.username}
         isCard={isCard}
         paymentTitle={paymentTitle}
+        subscription={subscription}
         loggedInUser={loggedInUser}
         handlePaymentComplete={handlePaymentComplete}
+        paymentGateway={props.paymentGateway}
       >
       </PaymentDetails>
 
@@ -534,14 +565,14 @@ const MainPage = (props)  => {
       </ModalComponent>}
       {otpModalOpen &&
         <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} >
-          <OtpForm type={otpType} email={otpEmail} processVerifiedOtp={processVerifiedOtp} />
+          <OtpForm type={otpType} email={otpEmail} processVerifiedOtp={processVerifiedOtp}/>
         </ModalComponent>}
 
         {isPaymentSucess &&
           <ModalComponent open={isPaymentSucess} onClose={paymentModelClose} modalStyle={alertModalStyle} >
           <div>
             <CloseIcon className={styles.closeIcon} onClick={paymentModelClose}/>
-            <PaymentSuccess isCard = {props.paymentIsCard}/>
+            <PaymentSuccess isCard = {props.paymentIsCard} isSubscription={props.paymentIsSubscription}/>
           </div>
           </ModalComponent>}
           {isPaymentFailure &&
@@ -558,6 +589,13 @@ const MainPage = (props)  => {
             <PaymentProcessFailure/>
           </div>
           </ModalComponent>}
+          {isSubscription && 
+            <ModalComponent open={isSubscription} onClose={()=>setIsSubscription(false)} modalStyle={modalStyle} >
+            <div>
+            <CloseIcon className={styles.closeIcon} onClick={()=>setIsPaymentProcessFailure(false)}/>
+            <SubscriptionForm subscription={state.subscriptions.subscription} handleSelection={handleSubscribe}/>
+          </div>
+          </ModalComponent>}
     </div>
   );
 }
@@ -566,18 +604,21 @@ export const getServerSideProps = async(context) => {
   let paymentSuccess = false
   let paymentFailure = false
   let paymentIsCard = false
-  if (context.query && context.query.payment_id && context.query.payment_request_id) {
-    const res = await storeInstaPaymentDetail(context.query)
+  let paymentIsSubscription = false
+  if (context.query && ((context.query.payment_id && context.query.payment_request_id) || (context.query.order_id && context.query.order_token))) {
+    const res = await storePaymentDetail(context.query)
+    console.log(res)
     if (res && res.data && res.data.status && res.data.status == "payment success") {
       paymentSuccess = true
       paymentIsCard = res.data.isCard
+      paymentIsSubscription = res.data.isSubscription
     }
     else {
       paymentFailure = true
     }
   }
   
-  return { props: {paymentSuccess, paymentFailure, paymentIsCard}}
+  return { props: {paymentSuccess, paymentFailure, paymentIsCard, paymentIsSubscription, paymentGateway: process.env.PAYMENT_GATEWAY}}
 }
 
 export default MainPage

@@ -93,6 +93,8 @@ const MainPage = (props)  => {
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [payableProductId, setPayableProductId] = useState('');
   const [isCard, setIsCard] = useState(false);
+  const [isSubscription, setIsSubscrption] = useState(false);
+  
   const [paymentTitle, setPaymentTitle] = useState(false);
   const [isFreeProdcutOpen, setfreeProductOpen] = useState(false);
   const [openedProduct, setOpenedProduct] = useState({});
@@ -110,11 +112,11 @@ const MainPage = (props)  => {
   const [isPaymentSucess, setIsPaymentSucess] = useState(props.paymentSuccess)
   const [isPaymentFailure, setIsPaymentFailure] = useState(props.paymentFailure)
   const [isPaymentProcessFailure, setIsPaymentProcessFailure] = useState(false)
-
+  const [subscriptionDuration, setSubscriptionDuration] = useState(1)
   const router = useRouter();
+  
   const query = router.query;
-
-
+  
   const handleOpen = (productId, title, isCard) => {
     setPayableProductId(productId);
     setIsCard(isCard);
@@ -126,6 +128,16 @@ const MainPage = (props)  => {
       setLoginModalOpen(true)
     }
   };
+
+  const subscribe = () => {
+    if (Object.keys(loggedInUser).length > 0) {
+      setIsSubscrption(true);
+      setIsPaymentOpen(true)
+    }
+    else {
+      setLoginModalOpen(true)
+    }
+  }
 
   const handleClose = (paymentMade = false, instaFailure = false) => {
     setIsPaymentOpen(false)
@@ -140,7 +152,7 @@ const MainPage = (props)  => {
   const paymentModelClose = (e) => {
     setIsPaymentFailure(false)
     setIsPaymentSucess(false)
-    router.push(`/${query.username}`)
+    //router.push(`/${query.username}`)
   }
 
   const handleOtpSent = (type, email) => {
@@ -229,6 +241,7 @@ const MainPage = (props)  => {
   })
 
   useEffect(() => {
+    router.push(`/${query.username}`)
     if (data) {
       if (!data.data || !data.data.user || !data.data.user.photoUrl) {
         data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
@@ -304,6 +317,7 @@ const MainPage = (props)  => {
             </div>
           </div>
           <h3>{state?.user?.fullName}</h3>
+          <button onClick={subscribe}>Subscribe</button>
           <p className={styles.subHeading}>Let's Connect</p>
           <div className={styles.cardContainer}>
 
@@ -459,9 +473,12 @@ const MainPage = (props)  => {
         productid={payableProductId}
         username={query.username}
         isCard={isCard}
+        isSubscription={isSubscription}
         paymentTitle={paymentTitle}
+        subscriptionDuration={subscriptionDuration}
         loggedInUser={loggedInUser}
         handlePaymentComplete={handlePaymentComplete}
+        paymentGateway={props.paymentGateway}
       >
       </PaymentDetails>
 
@@ -580,7 +597,7 @@ export const getServerSideProps = async(context) => {
     }
   }
   
-  return { props: {paymentSuccess, paymentFailure, paymentIsCard}}
+  return { props: {paymentSuccess, paymentFailure, paymentIsCard, paymentGateway: process.env.PAYMENT_GATEWAY}}
 }
 
 export default MainPage
