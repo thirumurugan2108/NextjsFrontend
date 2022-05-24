@@ -592,7 +592,7 @@ const MainPage = (props)  => {
           {isSubscription && 
             <ModalComponent open={isSubscription} onClose={()=>setIsSubscription(false)} modalStyle={modalStyle} >
             <div>
-            <CloseIcon className={styles.closeIcon} onClick={()=>setIsPaymentProcessFailure(false)}/>
+            <CloseIcon className={styles.closeIconInside} onClick={()=>setIsSubscription(false)}/>
             <SubscriptionForm subscription={state.subscriptions.subscription} handleSelection={handleSubscribe}/>
           </div>
           </ModalComponent>}

@@ -30,6 +30,14 @@
     cursor: pointer;
 
   }
+  .closeIconInside {
+    position: absolute;
+    z-index: 10;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    fill:red
+  }
   .subTitle {
     color: orange;
     font-size: 0.8rem;
@@ -333,10 +341,11 @@
   border-radius: 5px;
   padding: 5px 10px;
   margin-bottom: 20px;
+  
 }
 
 .subscriptionWrapperActive {
-  border: 2px solid #006effd2;
+  border: 2px solid red;
   border-radius: 5px;
   padding: 5px 10px;
   margin-bottom: 20px;
@@ -352,6 +361,9 @@
 
 .subscription {
   width: 100%;
+  max-height: 40vh;
+  overflow: scroll;
+  display: block;
 }
 .subscriptionHeadingWrapper h5{
   width: 90%;
@@ -368,7 +380,12 @@
   margin-top: -2px;
   position: absolute;
 }
-
+.subscriptionButtonWrapper {
+  text-align: center;
+}
+.subscriptionButtonWrapper button{
+  float: none;
+}
 .subscriptionPrice {
   font-size: 16px;
   font-weight: 700;

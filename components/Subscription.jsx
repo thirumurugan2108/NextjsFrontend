@@ -43,10 +43,12 @@ export default function SubscriptionForm({subscription, handleSelection}) {
         )
       })}
       </RadioGroup>
-      <button onClick={(e)=> handleSelection(subscriptionSelection)} className={styles.sendOTPButton}>Continue Checkout</button>
       </FormControl>
-      
+      <div className={styles.subscriptionButtonWrapper} >
+        <button onClick={(e)=> handleSelection(subscriptionSelection)} className={styles.sendOTPButton}>Continue Checkout</button>
       </div>
+      </div>
+      
       
   </>)
 }
