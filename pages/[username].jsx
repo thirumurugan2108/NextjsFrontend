@@ -300,7 +300,7 @@ const MainPage = (props)  => {
   const navigateToContactus = () => {
     window.location.href = 'https://home.bingemeee.com/#contact';
   }
-  console.log(loggedInUser)
+  console.log(state)
   
   const isUserLoggedIn = Object.keys(loggedInUser).length
   return (
@@ -328,8 +328,8 @@ const MainPage = (props)  => {
             </div>
           </div>
           <h3>{state?.user?.fullName}</h3>
-          {state.subscriptions && !state.expiryDuration && <button onClick={subscribe}>Subscribe</button>}
-          {state.expiryDuration && <div className={styles.expiryDuration}>Your Subscrption will expire after {state.expiryDuration} days</div>}
+          {state.subscriptions && state.expiryDuration == 0 && <button onClick={subscribe}>Subscribe</button>}
+          {state.expiryDuration != 0 && <div className={styles.expiryDuration}>Your Subscrption will expire after {state.expiryDuration} days</div>}
           <p className={styles.subHeading}>Let's Connect</p>
           <div className={styles.cardContainer}>
 
