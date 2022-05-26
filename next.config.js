@@ -6,8 +6,7 @@
     env: {
       basePath: '/docs',
       isDev: false,
-      apiBaseUrl:'http://localhost:3001/v1/'
-      //apiBaseUrl:'https://api.bingemeee.com/v1/'
+      apiBaseUrl:'https://api.bingemeee.com/v1/'
     },
     webpack: (config,options) => {
       // Important: return the modified config
