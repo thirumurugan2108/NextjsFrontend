@@ -32,6 +32,8 @@
   position: relative;
   margin-top: 4rem;
   padding: 0.5rem;
+  margin-top: -200px;
+  z-index: 100;
   .influencerLink {
     text-align: center;
     width: 80%;
@@ -182,3 +184,36 @@
   top: 10px;
   right: 10px;
 }
+
+.coverStyleContainer {
+  background-color: #f9f9f9;
+  min-height: 450px;
+  margin-top: -1px;
+}
+.coverStyleWrapper {
+  position: absolute;
+  width: 100%;
+  z-index: 10;
+  margin-top: -20px;
+}
+.coverUpload {
+  width: 100%;
+  min-height: 400px;
+  visibility: inherit;
+  z-index: 20;
+  position: absolute;
+  cursor: pointer;
+  opacity: 0;
+}
+.coverStyleImage {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  // @media (min-width: 1024px) {
+  //   margin-top: -20%;
+  // }
+  overflow: hidden;
+  max-height: 300px;
+  
+}
+

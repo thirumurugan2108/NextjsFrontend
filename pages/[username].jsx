@@ -17,6 +17,7 @@ import { storePaymentDetail } from '../utils/services/payment.service'
 import PaymentDetails from '../src/components/paymentDetails'
 import Report from '../assets/images/report.svg';
 import AlbumIcon from '../assets/images/album.png';
+import LoginIcon from '../assets/images/login.svg';
 import CloseIcon from '@mui/icons-material/Close';
 import Popup18plus from '../src/components/popup18plus'
 import Footer from '../src/components/footer';
@@ -300,9 +301,11 @@ const MainPage = (props)  => {
   const navigateToContactus = () => {
     window.location.href = 'https://home.bingemeee.com/#contact';
   }
-  console.log(state)
-  
   const isUserLoggedIn = Object.keys(loggedInUser).length
+
+  const Subscribe = <span>Subscribe</span>
+  const Subscribed = <span>Subscribed</span>
+  const styleContainer = state.user.coverUrl ? styles.coverStyleContainer : styles.noCoverStyleContainer
   return (
     <div className={styles.container}>
       <Head>
@@ -310,26 +313,53 @@ const MainPage = (props)  => {
       </Head>
       <Popup18plus></Popup18plus>
       <div className={styles.main}>
-        <div className={styles.header}>
-          <Image src={Report} onClick={() => { navigateToContactus() }} />
-          {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
-            Login
-          </div>}
+        <div className={styleContainer}>
+          <div className={styles.coverStyleWrapper}>
+            <div className={styles.headerMenu}>
+              <Report onClick={() => { navigateToContactus() }} className={styles.userReport}/>
+              {!isUserLoggedIn && <div className={styles.LoginLink} onClick={openLoginModal}>
+                <LoginIcon className={styles.LoginIcon}/>
+              </div>}
+              {isUserLoggedIn!=0 && <div className={styles.LoginLink}>
+               {loggedInUser.name} | <Link href="#"><a onClick={logout} className={styles.LoginLink}>Logout</a></Link></div>}
+            </div> 
+            <img src={state.user.coverUrl} className={styles.coverStyleImage}/>
+          </div>
         </div>
-        {isUserLoggedIn && <div className={styles.LoginLink}>
-          Welcome {loggedInUser.name} | <Link href="#"><a onClick={logout} className={styles.LoginLink}>Logout</a></Link>
-        </div>}
-        <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
-        <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
-
-        <div className={styles.contentSection}>
+       
+        {/* <h5 className={styles.title} >{query.test}WELCOME TO MY OFFICIAL WEBSITE</h5>
+        <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p> */}
+        <div className={styles.userDetailSection}>
           <div className={styles.profileIconOuter}>
             <div className={styles.profileIconInner} style={{ backgroundImage: `url(${state.user?.photoUrl})` }}>
             </div>
           </div>
           <h3>{state?.user?.fullName}</h3>
-          {state.subscriptions && state.expiryDuration == 0 && <button onClick={subscribe}>Subscribe</button>}
-          {state.expiryDuration != 0 && <div className={styles.expiryDuration}>Your Subscrption will expire after {state.expiryDuration} days</div>}
+          <div className={styles.userButtonWrapper}>
+            {state.subscriptions && <button onClick={subscribe}> {state.expiryDuration == 0 && Subscribe} {state.expiryDuration != 0 && {Subscribed}}</button>}
+            {state.expiryDuration != 0 && <div className={styles.expiryDuration}>{state.expiryDuration} days left</div>}
+          </div>
+          <div className={styles.userPostDetailsContainer}>
+            <div className={styles.userPostDetailsWrapper}>
+              <div className={styles.userPostCount}>{state.images.length + state.videos.length}</div>
+              <div className={styles.userPostType}>Posts</div>
+            </div>
+            <div className={styles.userPostDetailsWrapper}>
+              <div className={styles.userPostCount}>{state.images.length}</div>
+              <div className={styles.userPostType}>Images</div>
+            </div>
+            <div className={styles.userPostDetailsWrapper}>
+              <div className={styles.userPostCount}>{state.videos.length}</div>
+              <div className={styles.userPostType}>Videos</div>
+            </div>
+            <div className={styles.userPostDetailsWrapper}>
+              <div className={styles.userPostCount}>0</div>
+              <div className={styles.userPostType}>Subscribers</div>
+            </div>
+          </div>
+        </div>
+        <div className={styles.contentSection}>
+          
           <p className={styles.subHeading}>Let's Connect</p>
           <div className={styles.cardContainer}>
 

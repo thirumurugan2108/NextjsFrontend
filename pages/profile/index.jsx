@@ -7,7 +7,7 @@ import { useReducer } from "react";
 import styles from './profile.module.scss';
 import { getExtensionFromFileName } from '../../utils/common/commonUtil'
 import { createCardDetails, getcardDetails, updateCardDetails, deleteCardById } from "../../utils/services/card.service";
-import { getUserDetails, uploadPhoto } from "../../utils/services/user.service"
+import { getUserDetails, uploadPhoto, uploadCoverPhoto } from "../../utils/services/user.service"
 import { setSubscription, getSubscriptionDetails, disableSubscriptionStatus } from "../../utils/services/subscription.service"
 import Carousel from 'react-material-ui-carousel'
 import ModalComponent from '../../components/Modal'
@@ -80,6 +80,7 @@ const Profile = (_props) => {
   const [username, setUsername] = useState();
   const [isCardEditMode, setisCardEditMode] = useState(false);
   const [image, setImage] = useState("");
+  const [coverImage, setCoverImage] = useState("")
   const [state, dispatch] = useReducer(reducer, initialState);
   const [subscription, setSubscriptionData] = useState(false)
   const [openSubscriptionModal, setopenSubscriptionModal] = useState(false)
@@ -112,6 +113,7 @@ const Profile = (_props) => {
         }
       });
       setImage(userDetail.data.photoUrl);
+      setCoverImage(userDetail.data.coverUrl)
       setFullName(userDetail.data.fullName);
     } catch (err) {
       router.push('./login');
@@ -189,14 +191,38 @@ const Profile = (_props) => {
   const closeSubscriptionModal = () => {
     setopenSubscriptionModal(false)
   }
-
+  const coverUrl = '';
+  const onCoverChange = (event) => {
+    console.log("onCoverChange")
+    const file = event.target.files[0];
+    
+    if (file) {
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      setCoverImage(URL.createObjectURL(file));
+      reader.onloadend = function (e) {
+        console.log("onloadend")
+        // dispatch({ type: "generic", field: "image", value: reader.result });
+        dispatch({ type: "generic", field: "imageCoverFile", value: file });
+        dispatch({ type: "generic", field: "extensionName", value: getExtensionFromFileName(file.name) });
+        let formdata = new FormData();
+        formdata.set('file', file);
+        uploadCoverPhoto(formdata);
+      }.bind(this);
+    }
+  }
+  console.log(state)
   return (
     <Layout>
       <div className={styles.container}>
         <div className={styles.main}>
-          <h5 className={styles.title}>WELCOME TO MY OFFICIAL WEBSITE</h5>
-          <p className={styles.subTitle} >CHECK OUT MY EXCLUSIVE PHOTOS AND VIDEOS</p>
-
+        <div className={styles.coverStyleContainer}>
+          <input type="file" onChange={onCoverChange} name="coverImage" className={styles.coverUpload}/>
+          <div className={styles.coverStyleWrapper}>
+            <img src={coverImage} className={styles.coverStyleImage}/>
+          </div>
+        </div>
+       
           <div className={styles.contentSection}>
             <div className={styles.profileIconOuter}>
               <span className={styles.edit}></span>
@@ -229,7 +255,7 @@ const Profile = (_props) => {
                     <div className={styles.cardEditContainer}>
                       <div className={styles.cardEdit} onClick={() => onEdit(index)}>
                       </div>
-                      <Image src={Delete} onClick={() => deleteCard(data.id)} />
+                      <Delete onClick={() => deleteCard(data.id)} />
                     </div>
                   </div>
                 )

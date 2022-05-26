@@ -163,7 +163,7 @@ const ServiceHistory = (_props) => {
 
         <div className={styles.total}>
           <div className={styles.label}>
-            <Image src={Balance} />
+            <Balance />
             Balance
           </div>
           <div className={styles.value}>
@@ -174,7 +174,7 @@ const ServiceHistory = (_props) => {
 
         <div className={styles.total}>
           <div className={styles.label}>
-            <Image src={Paid} />
+            <Paid />
             Paid
           </div>
           <div className={styles.value}>

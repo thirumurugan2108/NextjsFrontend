@@ -6,7 +6,7 @@
     text-align:center;
   }
   .main {
-    background-color: black;
+    //background-color: black;
     padding-top:1px;
   }
   .subHeading{
@@ -47,15 +47,108 @@
   .logo {
     border-bottom: 0.5px solid grey;
   }
-  .contentSection {
-    border-radius: 15px 15px 1px 1px;
+  .userDetailSection {
+    border-radius: 10px;
+    box-shadow:  0 0 10px  rgba(0,0,0,0.6);
+    -moz-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
+    -webkit-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
+    -o-box-shadow: 0 0 10px  rgba(0,0,0,0.6);
     background-color: white;
-    position: relative;
-    margin-top: 4rem;
+    position: absolute;
+    margin: 0 auto;
+    margin-top: -220px;
+    z-index: 10;
+    left: 2.5%;
     padding: 0.5rem;
-
+    min-height: 200px;
+    text-align: center;
+    width: 95%;
+    @media (min-width: 1024px) {
+      width: 50%;
+      left: 25%;
+    }
+    
   }
-  
+  .userDetailSection h3 {
+    margin-top: 40px;
+  }
+  .LoginIcon {
+    width: 24px;
+    height: 24px;
+  }
+  .noCoverStyleContainer {
+    background-color: #000;
+    min-height: 450px;
+    margin-top: -1px;
+    svg {
+      fill: #fff !important;
+    }
+  }
+  .coverStyleContainer {
+    background-color: #f9f9f9;
+    min-height: 450px;
+    margin-top: -1px;
+    svg {
+      fill: #000 !important;
+    }
+  }
+  .coverStyleWrapper {
+    position: absolute;
+    width: 100%;
+  }
+  .headerMenu {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 5px;
+  }
+  .coverStyleImage {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    // @media (min-width: 1024px) {
+    //   margin-top: -20%;
+    // }
+    overflow: hidden;
+    max-height: 300px;
+    
+  }
+  .contentSection {
+    background-color: white;
+  }
+  .userButtonWrapper {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+  .userPostDetailsContainer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    
+    justify-content: space-around;
+    @media (min-width: 1024px) {
+      width: 100%;
+      justify-content: center;
+    }
+    margin-top: 20px;
+  }
+  .userPostDetailsWrapper {
+    padding-right: 10px;
+    @media (min-width: 1024px) {
+      padding-right: 40px;
+    }
+  }
+  .userPostCount {
+    font-size: 20px;
+  }
+  .userPostType {
+    font-size: 12px;
+    color: #686666;
+    font-weight: bold;
+  }
   .menu {
     display: flex;
     position: absolute;
@@ -195,9 +288,13 @@
     }
 
 .LoginLink {
-  color: white;
+  color: black;
   text-align: right;
   text-decoration: none;
+  padding-right: 10px;
+}
+.userReport{
+  fill: #000
 }
 .signupLinkWrapper {
   clear: both;
@@ -330,6 +427,8 @@
   justify-content: space-between;
   align-items: center;
   padding:0.5rem;
+  flex-direction: row;
+  z-index: 10;
 }
 .progress {
   width: 25ch;

@@ -34,6 +34,17 @@ export function uploadPhoto (formdata: any){
     }
   });
 }
+
+export function uploadCoverPhoto (formdata: any){
+  console.log("uploadCoverPhoto")
+  return axios.post(`${baseUrl}users/uploadCoverphoto`, 
+  formdata,
+  {
+    headers: {
+      Authorization: 'Bearer ' + sessionStorage.getItem('token')
+    }
+  });
+}
 export function userLogin(email:string) {
   return axios.post(baseUrl+ 'auth/userLogin',{
       "email": email,

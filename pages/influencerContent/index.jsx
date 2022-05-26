@@ -67,7 +67,7 @@ export default function About() {
             return (
               <div className={styles.imageIconWrapper}>
                 <div className={styles.imageIcon}>
-                  {data.transaction && <Image src={Report} onClick={(e) => {
+                  {data.transaction && <Report onClick={(e) => {
                     showImageTransaction(e, data.title, data.transaction.totalSales, data.transaction.totalRevenue)
                     }
                   }/>}
@@ -92,7 +92,7 @@ export default function About() {
           return(
             <div className={styles.imageIconWrapper}>
             <div className={styles.imageIcon}>
-              {data.transaction && <Image src={Report} onClick={(e) => {
+              {data.transaction && <Report onClick={(e) => {
                 showImageTransaction(e, data.title, data.transaction.totalSales, data.transaction.totalRevenue)
                 }
               }/>}
