@@ -145,12 +145,14 @@ const MainPage = (props)  => {
   };
 
   const subscribe = () => {
-    if (Object.keys(loggedInUser).length > 0) {
-      setIsSubscription(true);
-      //setIsPaymentOpen(true)
-    }
-    else {
-      setLoginModalOpen(true)
+    if (state.expiryDuration == 0) {
+      if (Object.keys(loggedInUser).length > 0) {
+        setIsSubscription(true);
+        //setIsPaymentOpen(true)
+      }
+      else {
+        setLoginModalOpen(true)
+      }
     }
   }
 
@@ -302,10 +304,11 @@ const MainPage = (props)  => {
     window.location.href = 'https://home.bingemeee.com/#contact';
   }
   const isUserLoggedIn = Object.keys(loggedInUser).length
-
-  const Subscribe = <span>Subscribe</span>
-  const Subscribed = <span>Subscribed</span>
+  console.log(state)
+  const subscribeButtonText = state.expiryDuration == 0 ? <span>Subscribe <span className={styles.subForFree}>For All access </span></span>:  <span>Subscribed</span>
+  const subscribeButtonDisabled = state.expiryDuration !=0 ? "disabled": false
   const styleContainer = state.user.coverUrl ? styles.coverStyleContainer : styles.noCoverStyleContainer
+  const subscribeClassName = state.expiryDuration == 0 ? styles.subscribeButton : styles.subscribedButton
   return (
     <div className={styles.container}>
       <Head>
@@ -336,9 +339,9 @@ const MainPage = (props)  => {
           </div>
           <h3>{state?.user?.fullName}</h3>
           <div className={styles.userButtonWrapper}>
-            {state.subscriptions && <button onClick={subscribe}> {state.expiryDuration == 0 && Subscribe} {state.expiryDuration != 0 && {Subscribed}}</button>}
-            {state.expiryDuration != 0 && <div className={styles.expiryDuration}>{state.expiryDuration} days left</div>}
+            {state.subscriptions && <button onClick={subscribe} className={subscribeClassName} disabled={subscribeButtonDisabled}> {subscribeButtonText}</button>}
           </div>
+          {state.expiryDuration != 0 && <div className={styles.expiryDuration}>{state.expiryDuration} days left</div>}
           <div className={styles.userPostDetailsContainer}>
             <div className={styles.userPostDetailsWrapper}>
               <div className={styles.userPostCount}>{state.images.length + state.videos.length}</div>
@@ -362,7 +365,6 @@ const MainPage = (props)  => {
           
           <p className={styles.subHeading}>Let's Connect</p>
           <div className={styles.cardContainer}>
-
             {state.cardList && state.cardList.map((data, index) => {
               return (
                 <>
@@ -425,8 +427,6 @@ const MainPage = (props)  => {
                             data?.fileUrl
                           }
                         onClick={() => openFreeProduct(data, true)}
-
-
                         width="153"
                         className={styles.imgList}
                         height="160.5"
@@ -588,13 +588,16 @@ const MainPage = (props)  => {
         </Box>
       </Modal>
       {loginModelOpen && <ModalComponent open={loginModelOpen} onClose={loginModelClose} modalStyle={modalStyle} >
+        <CloseIcon className={styles.closeIconInside} onClick={loginModelClose}/>
         <Login openSignupModal={openSignupModal} handleOtpSent={handleOtpSent} />
       </ModalComponent>}
       {signUpModelOpen && <ModalComponent open={signUpModelOpen} onClose={signupModelClose} modalStyle={modalStyle} >
+        <CloseIcon className={styles.closeIconInside} onClick={signupModelClose}/>
         <SignUp handleOtpSent={handleOtpSent} influencer={query.username} />
       </ModalComponent>}
       {otpModalOpen &&
         <ModalComponent open={otpModalOpen} onClose={otpModelClose} modalStyle={modalStyle} >
+          <CloseIcon className={styles.closeIconInside} onClick={otpModelClose}/>
           <OtpForm type={otpType} email={otpEmail} processVerifiedOtp={processVerifiedOtp}/>
         </ModalComponent>}
 

@@ -13,7 +13,7 @@
     font-weight: bold;
     font-size:18px;
     margin-left:1rem;
-    margin-bottom: 0.2rem
+    margin-bottom: 0.75rem
   }
   .paymentMessage {
     color: #fff;
@@ -36,7 +36,7 @@
     right: 5px;
     top: 5px;
     cursor: pointer;
-    fill:red
+    fill:#ed1b24
   }
   .subTitle {
     color: orange;
@@ -56,21 +56,23 @@
     background-color: white;
     position: absolute;
     margin: 0 auto;
-    margin-top: -220px;
+    margin-top: -180px;
     z-index: 10;
-    left: 2.5%;
+    left: 5%;
     padding: 0.5rem;
     min-height: 200px;
     text-align: center;
-    width: 95%;
+    width: 90%;
     @media (min-width: 1024px) {
       width: 50%;
       left: 25%;
     }
-    
-  }
-  .userDetailSection h3 {
-    margin-top: 40px;
+
+    h3 {
+      padding-top: 10px;
+      margin-top: 40px;
+      font-size: 14px;
+    }
   }
   .LoginIcon {
     width: 24px;
@@ -119,6 +121,7 @@
   }
   .contentSection {
     background-color: white;
+    margin-top: 40px;
   }
   .userButtonWrapper {
     width: 100%;
@@ -147,7 +150,7 @@
     font-size: 20px;
   }
   .userPostType {
-    font-size: 12px;
+    font-size: 10px;
     color: #686666;
     font-weight: bold;
   }
@@ -168,8 +171,8 @@
   .profileIconOuter {
     border-radius: 10rem;
     background-color: white;
-    height: 5rem;
-    width: 5rem;
+    height: 6rem;
+    width: 6rem;
     /*   border: 1px solid black; */
     position: absolute;
     left: 50%;
@@ -186,8 +189,8 @@
 }
   
   .profileIconInner{
-     height: 4rem;
-    width: 4rem;
+     height: 5rem;
+    width: 5rem;
     position: absolute;
     left: 0.5rem;
     top:0.5rem;
@@ -227,12 +230,12 @@
   
   
   .align {
-    color: orangered;
-    border: 1px solid orangered;
-    border-radius: 4px;
+    color: #ed1b24;
+    border: 1px solid #ed1b24;
     padding:0.2rem 0.5rem;
     align-self:flex-end;
     float: right;
+    border-radius: 8px;
   }
   
   .col {
@@ -250,7 +253,7 @@
   }
   .unlock{
     border-radius: 8px;
-    background-color: orangered;
+    background-color: #ed1b24;
     cursor: pointer;
     color: white;
     text-align: center;
@@ -399,6 +402,7 @@
   display: flex;
   width: 100%;
   overflow-x: scroll;
+  margin-top: -10px;
   &::-webkit-scrollbar{
     display: none;
   }
@@ -446,7 +450,7 @@
 }
 
 .subscriptionWrapperActive {
-  border: 2px solid red;
+  border: 2px solid #ed1b24;
   border-radius: 5px;
   padding: 5px 10px;
   margin-bottom: 20px;
@@ -518,5 +522,22 @@
   font-weight: bolder;
 }
 .expiryDuration {
+  display: block;
+  color: #ed1b24;
+  font-size: 12px;
   text-align: center;
+  line-height: 20px;
+}
+.subscribedButton {
+  background-color: #cdcdcd;
+  color: #000;
+  border-radius: 8px;
+}
+.subscribeButton {
+  background-color: #ed1b24;
+  color:#fff;
+  border-radius: 8px;
+}
+.subForFree {
+  margin-left: 40px;
 }
