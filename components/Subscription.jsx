@@ -11,7 +11,7 @@ import {ErrorMessage} from "../utils/common/commonUtil"
 
 
 export default function SubscriptionForm({subscription, handleSelection}) {
-  const [subscriptionSelection, setSubscriptionSelection] = useState('')
+  const [subscriptionSelection, setSubscriptionSelection] = useState('monthly')
   return (
   <>
     <div >
@@ -20,6 +20,7 @@ export default function SubscriptionForm({subscription, handleSelection}) {
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"
         defaultValue="monthly"
+        value = {subscriptionSelection}
         name="subscription"
         onChange={(e) => setSubscriptionSelection(e.target.value)}
       >
@@ -29,10 +30,14 @@ export default function SubscriptionForm({subscription, handleSelection}) {
           wrapperClass = styles.subscriptionWrapperActive
         }
         return (
-          <div className={wrapperClass} key={sub.name}>
+          <div className={wrapperClass} key={sub.name} onClick={(e) => setSubscriptionSelection(sub.name)}>
             <div className={styles.subscriptionHeadingWrapper}>
               <h5>{sub.name}</h5>
-              <FormControlLabel value={sub.name} control={<Radio />} label="" />
+              <FormControlLabel value={sub.name} control={<Radio sx={{
+                  '&.Mui-checked': {
+                    color: "#ed1b24",
+                  },
+                }}/>} label="" />
             </div>
             <div className={styles.subscriptionPrice}>
               <Image src={RupeeIcon} width={12} height={12}/> {sub.price}/{sub.priceLabel}

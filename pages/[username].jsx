@@ -342,6 +342,7 @@ const MainPage = (props)  => {
             </div>
           </div>
           <h3>{state?.user?.fullName}</h3>
+          <div className={styles.userName}>@{state.user.name}</div>
           <div className={styles.userButtonWrapper}>
             {state.subscriptions && <button onClick={subscribe} className={subscribeClassName} disabled={subscribeButtonDisabled}> {subscribeButtonText}</button>}
           </div>
