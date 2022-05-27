@@ -18,6 +18,10 @@ import PaymentDetails from '../src/components/paymentDetails'
 import Report from '../assets/images/report.svg';
 import AlbumIcon from '../assets/images/album.png';
 import LoginIcon from '../assets/images/login.svg';
+import VideoSVG from '../assets/images/video.svg'
+import SubscriberSVG from '../assets/images/subscriber.svg'
+import ImageSVG from '../assets/images/image.svg'
+import PostsSVG from '../assets/images/posts.svg'
 import CloseIcon from '@mui/icons-material/Close';
 import Popup18plus from '../src/components/popup18plus'
 import Footer from '../src/components/footer';
@@ -344,18 +348,22 @@ const MainPage = (props)  => {
           {state.expiryDuration != 0 && <div className={styles.expiryDuration}>{state.expiryDuration} days left</div>}
           <div className={styles.userPostDetailsContainer}>
             <div className={styles.userPostDetailsWrapper}>
+              <PostsSVG class={styles.userPostIcon} />
               <div className={styles.userPostCount}>{state.images.length + state.videos.length}</div>
               <div className={styles.userPostType}>Posts</div>
             </div>
             <div className={styles.userPostDetailsWrapper}>
+              <ImageSVG class={styles.userPostIcon} />
               <div className={styles.userPostCount}>{state.images.length}</div>
               <div className={styles.userPostType}>Images</div>
             </div>
             <div className={styles.userPostDetailsWrapper}>
+              <VideoSVG class={styles.userPostIcon} />
               <div className={styles.userPostCount}>{state.videos.length}</div>
               <div className={styles.userPostType}>Videos</div>
             </div>
             <div className={styles.userPostDetailsWrapper}>
+              <SubscriberSVG class={styles.userPostIcon} />
               <div className={styles.userPostCount}>0</div>
               <div className={styles.userPostType}>Subscribers</div>
             </div>
