@@ -309,7 +309,7 @@ const MainPage = (props)  => {
   }
   const isUserLoggedIn = Object.keys(loggedInUser).length
   console.log(state)
-  const subscribeButtonText = state.expiryDuration == 0 ? <span>Subscribe <span className={styles.subForFree}>For All access </span></span>:  <span>Subscribed</span>
+  const subscribeButtonText = state.expiryDuration == 0 ? <span>SUBSCRIBE <span className={styles.subForFree}>FOR ALL ACCESS </span></span>:  <span>SUBSCRIBED</span>
   const subscribeButtonDisabled = state.expiryDuration !=0 ? "disabled": false
   const styleContainer = state.user.coverUrl ? styles.coverStyleContainer : styles.noCoverStyleContainer
   const subscribeClassName = state.expiryDuration == 0 ? styles.subscribeButton : styles.subscribedButton
