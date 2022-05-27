@@ -93,8 +93,8 @@
     min-height: 450px;
     margin-top: -1px;
     svg {
-      fill: #000 !important;
-      color: #000;
+      fill: #fff !important;
+      color: #fff;
     }
   }
   .coverStyleWrapper {
@@ -108,6 +108,7 @@
     flex-direction: row;
     justify-content: space-between;
     padding: 5px;
+    background: linear-gradient(rgb(104, 103, 103, 0.8),transparent);
   }
   .coverStyleImage {
     width: 100%;
@@ -304,13 +305,13 @@
     }
 
 .LoginLink {
-  color: black;
+  color: #fff;
   text-align: right;
   text-decoration: none;
   padding-right: 10px;
 }
 .userReport{
-  fill: #000
+  fill: #fff
 }
 .signupLinkWrapper {
   clear: both;
