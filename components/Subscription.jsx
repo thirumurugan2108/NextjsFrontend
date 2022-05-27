@@ -12,9 +12,17 @@ import {ErrorMessage} from "../utils/common/commonUtil"
 
 export default function SubscriptionForm({subscription, handleSelection}) {
   const [subscriptionSelection, setSubscriptionSelection] = useState('monthly')
+  const [expandState, setExpandState]= useState(false)
+  const handleExpand = (e) => {
+    e.preventDefault()
+    setExpandState(!expandState)
+  }
+  console.log(expandState)
+  const morInfoClass = expandState == true ? styles.moreInfoExpand : styles.moreInfo
+  const moreInfoText = expandState == true ? "less" : "more"
   return (
   <>
-    <div >
+    <div className={styles.subscriptionContainer}>
       <h2 className={styles.modelTitle}>Choose Your Plan</h2>
       <FormControl className={styles.subscription}>
       <RadioGroup
@@ -52,8 +60,18 @@ export default function SubscriptionForm({subscription, handleSelection}) {
       <div className={styles.subscriptionButtonWrapper} >
         <button onClick={(e)=> handleSelection(subscriptionSelection)} className={styles.sendOTPButton}>Continue Checkout</button>
       </div>
+
+        <div className={morInfoClass}>
+          <h5>More Information :</h5>
+            <ul>
+              <li>For your period of subscription, you ll receive full access to this user's content</li>
+              <li>You'll get access to new posts and updates for your subscribed period</li>  
+              <li>No money will be deducted after your subscription ends</li>
+              <li>Once subscribed, it will not be refunded however you can report us for the reason for your cancellation</li>
+              <li>You are not allowed to download, share or misuse this content</li>
+            </ul>
+        </div>
+        <div className={styles.expandLink} onClick = {handleExpand}>Read {moreInfoText} ...</div>
       </div>
-      
-      
-  </>)
+</>)
 }

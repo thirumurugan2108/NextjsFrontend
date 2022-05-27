@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-
+import CloseIcon from '@mui/icons-material/Close';
 import { modalStyle, imageLoader } from '../../../utils/common/commonUtil';
 import styles from "./paymentDetails.module.scss"
 import { createPayment, verifyPayment, createPaymentRequest } from "../../../utils/services/payment.service"
@@ -52,6 +52,15 @@ const PaymentDetails = (props) => {
     // schema to valiadte user entering details before payment
     let validationSchema = Yup.object({comments: Yup.string().required('please enter comments ')});
     
+
+    const [expandState, setExpandState]= useState(false)
+    const handleExpand = (e) => {
+        e.preventDefault()
+        setExpandState(!expandState)
+    }
+    const morInfoClass = expandState == true ? styles.moreInfoExpand : styles.moreInfo
+    const moreInfoText = expandState == true ? "less" : "more"
+
     const onChange = (e) => {
         dispatch({ type: "generic", field: e.target.name, value: e.target.value });
     };
@@ -249,10 +258,12 @@ const PaymentDetails = (props) => {
                     aria-labelledby="modal-modal-title"
                     aria-describedby="modal-modal-description"
                 >
+                    
 
                     <Box sx={modalStyle}>
                         {!paymentMade && isPaymentMode && props.isCard &&
                             <>
+                            <CloseIcon className={styles.closeIconInside} onClick={()=>onClose(false)}/>
                                 {<ErrorMessage></ErrorMessage>}
                                 <h2 className={styles.userHeading}>Enter Comments for Influencer</h2>
                                 <label htmlFor="comments">Comments :</label>
@@ -269,6 +280,18 @@ const PaymentDetails = (props) => {
                                 <span className={styles.comments}>Enter comments to know more about you. eg. your social profile url, valid mobile etc. Infulencer may contact you in the given details.</span>
                                 <div>
                                     <Button onClick={() => proceed()}>Proceed</Button>
+                                </div>
+                                <div className={styles.moreInfoWrapper}>
+                                <div className={morInfoClass}>
+                                <h5>More Information :</h5>
+                                    <ul>
+                                    <li>Influencer will get notified once you made the payment successfully</li>
+                                    <li>Please mention your required details correctly for the influencer to perform your desired interaction</li>  
+                                    <li>Your amount will be refunded if you report us on time only if the interaction is not performed and if it is confirmed by your influencer</li>
+                                    <li>The maximum time for you to get a response from your influencer is 7 days</li>
+                                    </ul>
+                                </div>
+                                <div className={styles.expandLink} onClick = {handleExpand}>Read {moreInfoText} ...</div>
                                 </div>
                             </>
 

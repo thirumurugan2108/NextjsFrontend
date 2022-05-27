@@ -24,9 +24,13 @@ export const modalStyle = {
     "min-width": "300px",
     // height:800,
     bgcolor: 'background.paper',
-    border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+    borderRadius: "10px",
+    "box-shadow":  "0 0 10px  rgba(0,0,0,0.6)",
+    "-moz-box-shadow": "0 0 10px  rgba(0,0,0,0.6)",
+    "-webkit-box-shadow": "0 0 10px  rgba(0,0,0,0.6)",
+    "-o-box-shadow": "0 0 10px  rgba(0,0,0,0.6)",
 }
 
 export const imageLoader = ({ src, width, quality }) => {

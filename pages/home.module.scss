@@ -121,11 +121,8 @@
     width: 100%;
     height: auto;
     object-fit: cover;
-    // @media (min-width: 1024px) {
-    //   margin-top: -20%;
-    // }
     overflow: hidden;
-    max-height: 400px;
+    max-height: 320px;
     
   }
   .contentSection {
@@ -465,7 +462,7 @@
   border-radius: 5px;
   padding: 5px 10px;
   margin-bottom: 20px;
-  
+  cursor: pointer;
 }
 
 .subscriptionWrapperActive {
@@ -485,9 +482,9 @@
 
 .subscription {
   width: 100%;
-  max-height: 40vh;
+  //max-height: 40vh;
   padding-right: 20px;
-  overflow: scroll;
+  //overflow: scroll;
   display: block;
 }
 .subscriptionHeadingWrapper h5{
@@ -507,6 +504,8 @@
 }
 .subscriptionButtonWrapper {
   text-align: center;
+    float: none;
+
 }
 .subscriptionButtonWrapper button{
   float: none;
@@ -559,4 +558,39 @@
 }
 .subForFree {
   margin-left: 40px;
+}
+
+.subscriptionContainer {
+  overflow: auto;
+  max-height: 300px;
+  ul {
+    margin-left: -20px;
+
+    li {
+      margin-left: 0px;
+      padding-left: 0px;
+      list-style-type: disc;
+      font-size: 10px;
+      color: #999898;
+    }
+  }
+  .moreInfo {
+    margin-top: 20px;
+    max-height: 70px;
+    overflow: hidden;
+    font-size: 10px;
+  }
+  .moreInfoExpand {
+    margin-top: 20px;
+    font-size: 10px;
+  }
+  .expandLink {
+    margin-top: 10px;
+    font-size: 10px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    background-color: linear-gradient(rgb(104, 103, 103, 0.8), transparent);
+    height: 40px;
+  }
 }

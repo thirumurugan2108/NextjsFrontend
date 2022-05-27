@@ -9,3 +9,44 @@
     text-align: center;
     margin: auto;
 }
+.closeIconInside {
+    position: absolute;
+    z-index: 10;
+    right: 5px;
+    top: 5px;
+    cursor: pointer;
+    fill:#ed1b24
+  }
+
+.moreInfoWrapper{
+    ul {
+    margin-left: -20px;
+
+        li {
+            margin-left: 0px;
+            padding-left: 0px;
+            list-style-type: disc;
+            font-size: 10px;
+            color: #999898;
+        }
+    }
+    .moreInfo {
+        margin-top: 20px;
+        max-height: 70px;
+        overflow: hidden;
+        font-size: 10px;
+    }
+    .moreInfoExpand {
+        margin-top: 20px;
+        font-size: 10px;
+    }
+    .expandLink {
+        margin-top: 10px;
+        font-size: 10px;
+        cursor: pointer;
+        text-align: center;
+        width: 100%;
+        background-color: linear-gradient(rgb(104, 103, 103, 0.8), transparent);
+        height: 40px;
+    }
+}
