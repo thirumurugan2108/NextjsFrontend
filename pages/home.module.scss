@@ -506,7 +506,8 @@
 }
 .subscriptionButtonWrapper {
   text-align: center;
-    float: none;
+  float: none;
+  margin-top: 20px;
 
 }
 .subscriptionButtonWrapper button{
@@ -580,7 +581,7 @@
     margin-top: 20px;
     max-height: 70px;
     overflow: hidden;
-    font-size: 10px;
+    font-size: .75rem;
   }
   .moreInfoExpand {
     margin-top: 20px;
