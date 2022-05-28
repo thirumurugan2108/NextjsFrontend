@@ -313,6 +313,8 @@ const MainPage = (props)  => {
   const subscribeButtonDisabled = state.expiryDuration !=0 ? "disabled": false
   const styleContainer = state.user.coverUrl ? styles.coverStyleContainer : styles.noCoverStyleContainer
   const subscribeClassName = state.expiryDuration == 0 ? styles.subscribeButton : styles.subscribedButton
+  const subribers = state.user.subscribers ? state.user.subscribers.length : 0
+  
   return (
     <div className={styles.container}>
       <Head>
@@ -365,7 +367,7 @@ const MainPage = (props)  => {
             </div>
             <div className={styles.userPostDetailsWrapper}>
               <SubscriberSVG class={styles.userPostIcon} />
-              <div className={styles.userPostCount}>0</div>
+              <div className={styles.userPostCount}>{subribers}</div>
               <div className={styles.userPostType}>Subscribers</div>
             </div>
           </div>
