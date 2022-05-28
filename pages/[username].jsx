@@ -245,7 +245,6 @@ const MainPage = (props)  => {
     const nextIndex = currentAlbum.index >= currentAlbum.length - 1 ? currentAlbum.length : currentAlbum.index + 1
     const nextUrl = currentAlbum.albumUrl + currentAlbum.albums[nextIndex]
     setCurrentAlbum({...currentAlbum, index: nextIndex, url: nextUrl})
-    console.log(currentAlbum)
   }
 
 
@@ -308,7 +307,6 @@ const MainPage = (props)  => {
     window.location.href = 'https://home.bingemeee.com/#contact';
   }
   const isUserLoggedIn = Object.keys(loggedInUser).length
-  console.log(state)
   const subscribeButtonText = state.expiryDuration == 0 ? <span>SUBSCRIBE <span className={styles.subForFree}>FOR ALL ACCESS </span></span>:  <span>SUBSCRIBED</span>
   const subscribeButtonDisabled = state.expiryDuration !=0 ? "disabled": false
   const styleContainer = state.user.coverUrl ? styles.coverStyleContainer : styles.noCoverStyleContainer
@@ -649,7 +647,6 @@ export const getServerSideProps = async(context) => {
   let paymentFailure = false
   let paymentIsCard = false
   let paymentIsSubscription = false
-  console.log(context.query)
   if (context.query && ((context.query.payment_id && context.query.payment_request_id) || (context.query.order_id && context.query.order_token))) {
     const res = await storePaymentDetail(context.query)
     if (res && res.data && res.data.status && res.data.status == "payment success") {
