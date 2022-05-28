@@ -572,8 +572,8 @@
       margin-left: 0px;
       padding-left: 0px;
       list-style-type: disc;
-      font-size: 10px;
-      color: #999898;
+      font-size: .75rem;
+      color: #000;
     }
   }
   .moreInfo {
@@ -584,15 +584,20 @@
   }
   .moreInfoExpand {
     margin-top: 20px;
-    font-size: 10px;
+    font-size: .75rem;
   }
   .expandLink {
     margin-top: 10px;
-    font-size: 10px;
+    font-size: .75rem;
     cursor: pointer;
     text-align: center;
     width: 100%;
     background-color: linear-gradient(rgb(104, 103, 103, 0.8), transparent);
     height: 40px;
   }
+}
+
+.checkoutButton {
+  width: 100%;
+  max-width: 400px;
 }

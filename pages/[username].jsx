@@ -647,9 +647,9 @@ export const getServerSideProps = async(context) => {
   let paymentFailure = false
   let paymentIsCard = false
   let paymentIsSubscription = false
+  console.log(context.query)
   if (context.query && ((context.query.payment_id && context.query.payment_request_id) || (context.query.order_id && context.query.order_token))) {
     const res = await storePaymentDetail(context.query)
-    console.log(res)
     if (res && res.data && res.data.status && res.data.status == "payment success") {
       paymentSuccess = true
       paymentIsCard = res.data.isCard

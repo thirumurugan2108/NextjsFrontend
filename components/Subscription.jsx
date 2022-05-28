@@ -17,7 +17,6 @@ export default function SubscriptionForm({subscription, handleSelection}) {
     e.preventDefault()
     setExpandState(!expandState)
   }
-  console.log(expandState)
   const morInfoClass = expandState == true ? styles.moreInfoExpand : styles.moreInfo
   const moreInfoText = expandState == true ? "less" : "more"
   return (
@@ -57,9 +56,7 @@ export default function SubscriptionForm({subscription, handleSelection}) {
       })}
       </RadioGroup>
       </FormControl>
-      <div className={styles.subscriptionButtonWrapper} >
-        <button onClick={(e)=> handleSelection(subscriptionSelection)} className={styles.sendOTPButton}>Continue Checkout</button>
-      </div>
+      
 
         <div className={morInfoClass}>
           <h5>More Information :</h5>
@@ -72,6 +69,9 @@ export default function SubscriptionForm({subscription, handleSelection}) {
             </ul>
         </div>
         <div className={styles.expandLink} onClick = {handleExpand}>Read {moreInfoText} ...</div>
+      </div>
+      <div className={styles.subscriptionButtonWrapper} >
+        <button onClick={(e)=> handleSelection(subscriptionSelection)} className={styles.checkoutButton}>Proceed to pay</button>
       </div>
 </>)
 }

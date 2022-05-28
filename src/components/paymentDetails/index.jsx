@@ -278,9 +278,7 @@ const PaymentDetails = (props) => {
                                     style={{ width: '100%' }}
                                 />
                                 <span className={styles.comments}>Enter comments to know more about you. eg. your social profile url, valid mobile etc. Infulencer may contact you in the given details.</span>
-                                <div>
-                                    <Button onClick={() => proceed()}>Proceed</Button>
-                                </div>
+                                
                                 <div className={styles.moreInfoWrapper}>
                                 <div className={morInfoClass}>
                                 <h5>More Information :</h5>
@@ -292,6 +290,10 @@ const PaymentDetails = (props) => {
                                     </ul>
                                 </div>
                                 <div className={styles.expandLink} onClick = {handleExpand}>Read {moreInfoText} ...</div>
+                                </div>
+
+                                <div>
+                                    <button onClick={() => proceed()} className={styles.checkoutButton}>Proceed to pay</button>
                                 </div>
                             </>
 
