@@ -130,14 +130,10 @@
   margin: 1rem auto;
   width: 80%;
   .cardEdit {
-    background: url(../../assets/images/edit.svg) no-repeat;
     width: 1.8rem;
     height: 1.8rem;
     align-self: flex-end;
     cursor: pointer;
-    &:hover{
-      border: 1px solid black;
-    }
   }
   input {
     width: 70%;

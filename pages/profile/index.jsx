@@ -13,6 +13,7 @@ import Carousel from 'react-material-ui-carousel'
 import ModalComponent from '../../components/Modal'
 import { modalStyle } from '../../utils/common/commonUtil';
 import { Card } from "../../utils/models/card.model";
+import Edit from '../../assets/images/edit.svg';
 import Delete from '../../assets/images/delete.svg';
 const initialState = {
   cardList: [{
@@ -253,9 +254,8 @@ const Profile = (_props) => {
                       <span>{data.price}</span>
                     </div>
                     <div className={styles.cardEditContainer}>
-                      <div className={styles.cardEdit} onClick={() => onEdit(index)}>
-                      </div>
-                      <Delete onClick={() => deleteCard(data.id)} />
+                      <Edit  className={styles.cardEdit} onClick={() => onEdit(index)} />
+                      <Delete className={styles.cardEdit} onClick={() => deleteCard(data.id)} />
                     </div>
                   </div>
                 )
