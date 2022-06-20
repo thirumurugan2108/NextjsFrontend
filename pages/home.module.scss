@@ -1,24 +1,22 @@
-
-  
-  .title {
+.title {
     color:white;
     letter-spacing:1px;
     text-align:center;
   }
-  .main {
-    //background-color: black;
-    padding-top:1px;
-  }
-  .subHeading{
-    font-weight: bold;
-    font-size:18px;
-    margin-left:1rem;
-    margin-bottom: 0.75rem
-  }
-  .paymentMessage {
-    color: #fff;
-    font-size: 16px;
-  }
+.main {
+  //background-color: black;
+  padding-top:1px;
+}
+.subHeading{
+  font-weight: bold;
+  font-size:18px;
+  margin-left:1rem;
+  margin-bottom: 0.75rem
+}
+.paymentMessage {
+  color: #fff;
+  font-size: 16px;
+}
   .paymentMessage a { 
     color: #fff;
   }
@@ -56,7 +54,7 @@
     background-color: white;
     position: absolute;
     margin: 0 auto;
-    margin-top: -180px;
+    margin-top: -200px;
     z-index: 10;
     left: 5%;
     padding: 0.5rem;
@@ -126,7 +124,7 @@
   }
   .contentSection {
     background-color: white;
-    margin-top: 50px;
+    margin-top: 60px;
   }
   .userButtonWrapper {
     width: 100%;
@@ -559,7 +557,10 @@
   border-radius: 8px;
 }
 .subForFree {
-  margin-left: 40px;
+  margin-left: 20px;
+  @media (min-width: 375px) {
+    margin-left: 40px;  
+  }
 }
 
 .subscriptionContainer {

@@ -45,9 +45,18 @@ export function updatePaymentStatus(id: String, status: String) {
 }
 
 export function createPaymentRequest (payload: any) {
-  return axios.post(baseUrl + 'getPaymentUrl',payload);
+  return axios.post(baseUrl + 'createOrder',payload);
 }
 
 export function storePaymentDetail(data: any) {
   return axios.post(baseUrl + 'storePaymentDetail',data);
+}
+
+export function getTransactionsByUser(data: any) {
+  return axios.post(baseUrl + 'getTransactionsByUser', data,
+  {
+    headers: {
+      Authorization: 'Bearer ' + sessionStorage.getItem('token')
+    }
+  });
 }
