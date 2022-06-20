@@ -260,7 +260,11 @@ const MainPage = (props)  => {
   
   useEffect(() => {
     if (data) {
-      if (!data.data || !data.data.user || !data.data.user.photoUrl) {
+      if (!data.data || !data.data.user) {
+        router.push('/404')
+      }
+      if (!data.data || !data.data.user || (data.data.user && !data.data.user.photoUrl)) {
+        data.data.user = {}
         data.data.user.photoUrl = 'https://bingmee1.s3.ap-south-1.amazonaws.com/profile/defaultprof.jpg';
       }
       dispatch({ type: 'fetchfromdb', payload: data.data });
@@ -349,22 +353,22 @@ const MainPage = (props)  => {
           {state.expiryDuration != 0 && <div className={styles.expiryDuration}>{state.expiryDuration} days left</div>}
           <div className={styles.userPostDetailsContainer}>
             <div className={styles.userPostDetailsWrapper}>
-              <PostsSVG class={styles.userPostIcon} />
+              <PostsSVG className={styles.userPostIcon} />
               <div className={styles.userPostCount}>{state.images.length + state.videos.length}</div>
               <div className={styles.userPostType}>Posts</div>
             </div>
             <div className={styles.userPostDetailsWrapper}>
-              <ImageSVG class={styles.userPostIcon} />
+              <ImageSVG className={styles.userPostIcon} />
               <div className={styles.userPostCount}>{state.images.length}</div>
               <div className={styles.userPostType}>Images</div>
             </div>
             <div className={styles.userPostDetailsWrapper}>
-              <VideoSVG class={styles.userPostIcon} />
+              <VideoSVG className={styles.userPostIcon} />
               <div className={styles.userPostCount}>{state.videos.length}</div>
               <div className={styles.userPostType}>Videos</div>
             </div>
             <div className={styles.userPostDetailsWrapper}>
-              <SubscriberSVG class={styles.userPostIcon} />
+              <SubscriberSVG className={styles.userPostIcon} />
               <div className={styles.userPostCount}>{subribers}</div>
               <div className={styles.userPostType}>Subscribers</div>
             </div>

@@ -202,7 +202,7 @@ const addOrEditPost = (_props) => {
             }
             else {
               setIsLoading(false)
-              setErrors(["Failed to upload your content"])
+              setErrors(["Failed to upload your content", data.data.message])
             }
           } else {
             const data = await  updatePost({
@@ -217,6 +217,7 @@ const addOrEditPost = (_props) => {
             }
             else {
               setIsLoading(false)
+              
               setErrors(["Failed to upload your content"])
             }
           }
