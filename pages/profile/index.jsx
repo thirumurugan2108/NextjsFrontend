@@ -15,6 +15,12 @@ import { modalStyle } from '../../utils/common/commonUtil';
 import { Card } from "../../utils/models/card.model";
 import Edit from '../../assets/images/edit.svg';
 import Delete from '../../assets/images/delete.svg';
+import MuiAlert from '@mui/material/Alert';
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const initialState = {
   cardList: [{
     "title": "DM on Instagram",
@@ -86,6 +92,8 @@ const Profile = (_props) => {
   const [subscription, setSubscriptionData] = useState(false)
   const [openSubscriptionModal, setopenSubscriptionModal] = useState(false)
   const [subscriptionPrice, setSubscriptionPrice] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+
   const router = useRouter(); 
   useEffect(() => {
     if (sessionStorage.getItem('token')) {
@@ -164,7 +172,14 @@ const Profile = (_props) => {
 
   const onCardSubmit = async (index, postData) => {
     dispatch({ type: "editToggle", index: index, isEdit: false });
-    await updateCardDetails(postData);
+    const data = await updateCardDetails(postData);
+    if (data.data.status && data.data.message) {
+      fetchAllDetails()
+      setErrorMsg(data.data.message)
+    }
+    else {
+      setErrorMsg('')
+    }
   }
 
   const enableSubscription = (e) => {
@@ -223,7 +238,7 @@ const Profile = (_props) => {
             <img src={coverImage} className={styles.coverStyleImage}/>
           </div>
         </div>
-       
+            
           <div className={styles.contentSection}>
             <div className={styles.profileIconOuter}>
               <span className={styles.edit}></span>
@@ -232,6 +247,7 @@ const Profile = (_props) => {
               </div>
 
             </div>
+            {errorMsg && <Alert severity="error" className={styles.errorMsg}>{errorMsg}</Alert>}
             <h3>{fullName}</h3>
             <a href={`/${username}`} className={styles.influencerLink}>www.bingemeee.com/{username}</a>
             <div className={styles.cardHeader}>
