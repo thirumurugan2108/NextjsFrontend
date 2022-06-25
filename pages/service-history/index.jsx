@@ -217,7 +217,8 @@ const ServiceHistory = (_props) => {
               </>}
 
               <span className={styles.labelModal}><b>Status</b>
-              </span><NativeSelect
+              </span>
+              <NativeSelect
                 defaultValue={state.userModalData.status}
                 className={styles.dropdown}
                 inputProps={{
@@ -284,7 +285,6 @@ const ServiceHistory = (_props) => {
                   {data.status}</p>
               </div>
               <div className={styles.price}>
-
                 + {data.productDetails.price}
               </div>
 

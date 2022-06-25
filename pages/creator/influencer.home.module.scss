@@ -149,6 +149,13 @@ $font: 'Roboto', sans-serif;
         text-align: center;
       }
     }
+  }  
+}
+.loadMoreButtonWrapper {
+  text-align: center;
+  padding: 10px;
+  margin-bottom: 10px;
+  button {
+    float: none;
   }
-  
 }

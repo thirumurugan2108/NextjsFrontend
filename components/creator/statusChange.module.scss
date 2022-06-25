@@ -1,0 +1,27 @@
+.modalContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  font-size: 14px;
+  .labelModal {
+      width: 25%;
+     
+      margin: 1rem 0;
+  }
+
+  .modalValue {
+      width: 60%;
+      padding-left: 10px;
+      word-wrap: break-word;
+  }
+
+  .dropdown{
+      width: 70%;
+  }
+}
+.h1 {
+  margin: 0px;
+  font-size: 16px;
+  text-align: center;
+}

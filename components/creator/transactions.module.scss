@@ -1,0 +1,59 @@
+$font: 'Roboto', sans-serif;
+.transactionContainer {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px;
+  box-shadow:  0 0 20px  rgba(129, 128, 128, 0.5);
+  -moz-box-shadow: 0 0 20px  rgba(129, 128, 128, 0.5);
+  -webkit-box-shadow: 0 0 20px  rgba(129, 128, 128, 0.5);
+  -o-box-shadow: 0 0 20px  rgba(129, 128, 128, 0.5);
+
+  .transactionWrapper {
+    display: flex;
+    padding: 5px;
+    flex-flow: row;
+    border-bottom: 1px solid rgb(108, 107, 107, 0.2);
+    &:last-child {
+      border-bottom: 0px;
+    }
+    .userImage {
+      padding-right: 10px;
+    }
+    .userDetailWrapper {
+      width: 70%;
+    }
+    .userName {
+      font-weight: 400;
+      font-family: $font;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+    .cardStatus {
+      font-family: $font;
+      font-size: 10px;
+      padding: 5px;
+      border-radius: 5px;
+    }
+    .tranactionType{
+      font-size: 12px;
+      text-align: left;
+      color:rgb(95, 94, 93)
+    }
+    .amountWrapper {
+      position: relative;
+      right: 0px;
+      justify-items: end;
+      float: right;
+      .date {
+        font-size: 12px;
+        color: rgb(95, 94, 93);
+      }
+      .amount {
+        width: 100%;
+        font-size: 14px;
+        text-align: center;
+      }
+    }
+  }
+}

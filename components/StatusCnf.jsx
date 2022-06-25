@@ -8,7 +8,6 @@ return (
     <h2>Confirm the Status Change</h2>                        
     <button onClick={confirmation} className={styles.sendCnfButton}>Yes</button>
     <button onClick={close} className={styles.sendCnfButton}>No</button>
-    </div>
-    
+  </div>
  </>)
 }
