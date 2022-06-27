@@ -2,12 +2,22 @@ $font: 'Roboto', sans-serif;
 
 .earnings {
   margin-top: 20px;
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 100;
   text-align: center;
   font-family: $font;
+  font-weight: 700;
   color: rgb(56, 54, 54);
   letter-spacing: 5px;
+  span {
+    color: rgb(85, 84, 84);
+    font-size: 28px;
+  }
+}
+.header {
+  font-family: $font;
+  font-weight: 700;
+  font-size: 20px;
 }
 .incomePaidWrapper {
   display: flex;
@@ -30,6 +40,14 @@ $font: 'Roboto', sans-serif;
   .buttonTextWrapper {
     display: flex;
     padding-right: 10px;
+  }
+  .buttonTitle {
+    font-size: 14px;
+  }
+  .buttonText {
+    font-family: $font;
+    font-size: 18px;
+    font-weight: 700;
   }
 }
 .pageButton:hover,.pageButton:focus {
@@ -91,6 +109,15 @@ $font: 'Roboto', sans-serif;
     margin-top: 15px;
     font-family: $font;
     cursor: pointer;
+    
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      font-size: 13px;
+      font-family: $font;
+      font-weight: bold;
+      color: rgb(85, 84, 84);
+    }
   }
 }
 .transactionContainer {
@@ -159,3 +186,4 @@ $font: 'Roboto', sans-serif;
     float: none;
   }
 }
+

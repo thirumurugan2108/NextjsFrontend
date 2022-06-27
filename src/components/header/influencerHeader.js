@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import MenuIcon from "../../../assets/images/menu.svg"
-import Logo from "../../../assets/images/Binge_Meee.png"
+import Logo from "../../../assets/images/logo.png"
 import profileIcon from "../../../assets/images/defaultprof.jpg"
 import ModalComponent from '../../../components/Modal'
 import { modalStyle } from '../../../utils/common/commonUtil';
@@ -53,7 +53,7 @@ export default function InfluencerHeader({ children, Styles, ...props }) {
           <MenuIcon width={"24px"} height={"24px"}/>
         </div>
         <div className={Styles.logoWrapper}>
-          <Image src={Logo} width="100%" height={"48px"}/>
+          <Image src={Logo} className={Styles.logo}/>
         </div>
         {profileIcon && <div className={Styles.profileIconWrapper}>
           <Image src={profileIcon} width={"24px"} height={"24px"}  onClick={(e) => setShowProfileMenu(true)}/>

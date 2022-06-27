@@ -75,9 +75,9 @@ const CreatorTransaction = () => {
   }, [queryParam, page, resetPage, resetQueryParam])
   return (
     <Layout>
-      <h2>Transactions</h2>
+      <h2 className={Styles.header}>Transactions</h2>
       <div>
-        Filter by
+        Filter by &nbsp;
         <NativeSelect
         defaultValue={queryParam}
         className={Styles.dropdown}
@@ -87,6 +87,7 @@ const CreatorTransaction = () => {
         }}
         onChange={handleFilter}
       >
+        <option value={''}>Select Type</option>
         <option value={'all-success'}>Select Type</option>
         <option value={'cards-pending'}>Cards Pending</option>
         <option value={'cards-success'}>Cards Success</option>

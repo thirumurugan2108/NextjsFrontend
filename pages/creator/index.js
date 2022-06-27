@@ -9,6 +9,7 @@ import Link from "next/link"
 
 import { getpaymentdetailsByUser, updatePaymentStatus } from "../../utils/services/payment.service";
 import Transactions from "../../components/creator/transactions";
+import { Style } from "@mui/icons-material";
 
 const InfulencerHome = () => {
   const router = useRouter();
@@ -59,7 +60,7 @@ const InfulencerHome = () => {
   return (
     <Layout>
       <div className={Styles.earnings}>
-          ₹ {influencerState.totalRevenue}
+          <span>₹</span> {influencerState.totalRevenue}
       </div>
       <div className={Styles.incomePaidWrapper}>
         <div className={Styles.pageButton}>
@@ -94,7 +95,7 @@ const InfulencerHome = () => {
         <div className={Styles.transactionHeadingWrapper}>
           <div className={Styles.Heading}>Cards Pending Transactions</div>
           <div className={Styles.viewAll}>
-            <Link href="/creator/transactions?type=cards-pending">View All</Link></div>
+            <Link href="/creator/transactions?type=cards-pending" className={Styles.viewAllLink}>View All</Link></div>
         </div>
         {pendingTransaction.length > 0 && <Transactions transactions={pendingTransaction} type="pending" />}
         {pendingTransaction.length ==0 && <div>No transaction for past 1 week</div>}
@@ -103,7 +104,7 @@ const InfulencerHome = () => {
         <div className={Styles.transactionHeadingWrapper}>
           <div className={Styles.Heading}>Transactions</div>
           <div className={Styles.viewAll}>
-            <Link href="/creator/transactions?type=all-success">View All</Link></div>
+            <Link href="/creator/transactions?type=all-success" className={Styles.viewAllLink}>View All</Link></div>
         </div>
         {otherTransaction.length >0 && <Transactions transactions={otherTransaction} type="other" />}
         {otherTransaction.length ==0 && <div>No transaction for past 1 week</div>}
