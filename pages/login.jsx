@@ -67,8 +67,14 @@ export default (_props) => {
         else {
           sessionStorage.setItem('token', data.data.tokens.access.token);
           sessionStorage.setItem('name', data.data.user.name);
+          sessionStorage.setItem('role', data.data.user.role);
           sessionStorage.setItem('refreshToken', data.data.tokens.refresh.token);
-          router.push('./service-history');
+          if (data.data.user.role == "superadmin") {
+            router.push('./superadmin');
+          }
+          else {
+            router.push('./service-history')
+          }
         }
         // router.back();
       }).catch( err => {
@@ -164,6 +170,9 @@ export default (_props) => {
               Not registered?{" "}
               <a href="#" onClick={() => switchForm()}>
                 Create an account
+              </a>
+              <a href="/forgot" onClick={() => switchForm()}>
+                Forgot Password
               </a>
             </>
           )}

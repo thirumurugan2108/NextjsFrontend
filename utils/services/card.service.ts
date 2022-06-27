@@ -6,7 +6,9 @@ export function getcardDetails() {
   return axios.get(baseUrl,
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     })
 }
@@ -17,7 +19,9 @@ export function updateCardDetails(postData:any) {
     postData,
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     })
 }
@@ -29,7 +33,9 @@ export function deleteCardById(id:any) {
     },
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     })
 }
@@ -39,7 +45,9 @@ export function createCardDetails(postData:any) {
     postData,
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     })
 }

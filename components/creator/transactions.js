@@ -9,7 +9,7 @@ import { updatePaymentStatus } from "../../utils/services/payment.service";
 import { modalStyle } from '../../utils/common/commonUtil';
 import {useRouter} from "next/router"
 
-const Transactions = ({transactions, type, resetPageHandle}) => {
+const Transactions = ({transactions, type}) => {
   const router = useRouter()
   const [TransactionRender, setTransactionRender]= useState ('')
   const [TransactionRenderDisplay, setTransactionRenderDisplay]= useState (false)

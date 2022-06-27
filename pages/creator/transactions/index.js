@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Layout from "../../../src/components/layout/influencer";
-import ProfileIcon from "../../../assets/images/profile.svg"
 import { useRouter } from 'next/router'
 import { getTransactionsByUser } from "../../../utils/services/payment.service";
 import Transactions from "../../../components/creator/transactions";
 import Styles from "../influencer.home.module.scss"
 import NativeSelect from '@mui/material/NativeSelect';
-import Button from '@mui/material/Button';
 
 const CreatorTransaction = () => {
   const router = useRouter();

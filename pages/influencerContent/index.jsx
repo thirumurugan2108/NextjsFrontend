@@ -1,6 +1,6 @@
 import { useRouter } from "next/dist/client/router"
 import * as React from "react"
-import Layout from "../../src/components/layout"
+import Layout from "../../src/components/layout/influencer"
 import Menu from "../../src/components/Menu"
 import { useConfigSetState } from "../../utils/context/postContext"
 import { getAllpost } from "../../utils/services/post.service"

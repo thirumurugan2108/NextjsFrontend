@@ -29,6 +29,7 @@ const InfulencerHome = () => {
           graph: paymentDetails.data.graph
         }
       )
+      console.log(paymentDetails.data.transactions)
       return true
     }
     else {
@@ -53,7 +54,8 @@ const InfulencerHome = () => {
       router.push('/login')
     }
   }, [influencerState.username])
-  
+  console.log(pendingTransaction)
+  console.log(otherTransaction)
   return (
     <Layout>
       <div className={Styles.earnings}>
@@ -88,23 +90,24 @@ const InfulencerHome = () => {
         <div className={Styles.ChartSubheading}>01/05 - 07/05</div>
         <Chart data={influencerState.graph}/>
       </div>
-      {pendingTransaction.length > 0 && <div>
+      <div>
         <div className={Styles.transactionHeadingWrapper}>
           <div className={Styles.Heading}>Cards Pending Transactions</div>
           <div className={Styles.viewAll}>
             <Link href="/creator/transactions?type=cards-pending">View All</Link></div>
         </div>
-        <Transactions transactions={pendingTransaction} type="pending" />
-      </div>}
-
-       {otherTransaction.length > 0 && <div>
+        {pendingTransaction.length > 0 && <Transactions transactions={pendingTransaction} type="pending" />}
+        {pendingTransaction.length ==0 && <div>No transaction for past 1 week</div>}
+      </div>
+      <div>
         <div className={Styles.transactionHeadingWrapper}>
           <div className={Styles.Heading}>Transactions</div>
           <div className={Styles.viewAll}>
             <Link href="/creator/transactions?type=all-success">View All</Link></div>
         </div>
-        <Transactions transactions={otherTransaction} type="other" />
-      </div>} 
+        {otherTransaction.length >0 && <Transactions transactions={otherTransaction} type="other" />}
+        {otherTransaction.length ==0 && <div>No transaction for past 1 week</div>}
+      </div>
 
     </Layout>
   )

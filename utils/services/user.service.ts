@@ -15,12 +15,36 @@ export function logout() {
     })
 }
 
+export function getInfluencers() {
+  return axios.get(`${baseUrl}users/getInfluencers`, 
+  {
+    headers: {
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      userRole: ''+sessionStorage.getItem('role')
+    }
+  });
+
+}
+
+export function changePassword (data: any) {
+  return axios.post(`${baseUrl}auth/changepassword`, 
+  data,
+  {
+    headers: {
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      infLoginAs: ''+sessionStorage.getItem('loginAs'),
+      userRole: ''+sessionStorage.getItem('role')
+    }
+  });
+}
 
 export function getUserDetails() {
   return axios.get(`${baseUrl}users/`, 
   {
     headers: {
-      Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      infLoginAs: ''+sessionStorage.getItem('loginAs'),
+      userRole: ''+sessionStorage.getItem('role')
     }
   });
 }
@@ -30,7 +54,9 @@ export function uploadPhoto (formdata: any){
   formdata,
   {
     headers: {
-      Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      infLoginAs: ''+sessionStorage.getItem('loginAs'),
+      userRole: ''+sessionStorage.getItem('role')
     }
   });
 }
@@ -41,7 +67,9 @@ export function uploadCoverPhoto (formdata: any){
   formdata,
   {
     headers: {
-      Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      infLoginAs: ''+sessionStorage.getItem('loginAs'),
+      userRole: ''+sessionStorage.getItem('role')
     }
   });
 }

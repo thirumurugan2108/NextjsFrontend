@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Layout from "../../src/components/layout";
+import Layout from "../../src/components/layout/influencer";
 import { useRouter } from "next/router";
 import Image from 'next/image';
 import { useReducer } from "react";
@@ -98,7 +98,12 @@ const Profile = (_props) => {
   useEffect(() => {
     if (sessionStorage.getItem('token')) {
       fetchAllDetails();
-      setUsername(sessionStorage.getItem('name'));
+      if (sessionStorage.getItem('loginAs')) {
+        setUsername(sessionStorage.getItem('loginAsUserName'))
+      }
+      else {
+        setUsername(sessionStorage.getItem('name'))
+      }
     } else {
       router.push('./login');
     }

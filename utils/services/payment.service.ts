@@ -18,7 +18,9 @@ export function getAllpost(isVideo: Boolean) {
   return axios.get(baseUrl + '?isVideo=' + isVideo,
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     });
 }
@@ -27,7 +29,9 @@ export function getpaymentdetailsByUser() {
   return axios.get(baseUrl + 'paymentDetails',
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     });
 }
@@ -39,7 +43,9 @@ export function updatePaymentStatus(id: String, status: String) {
   },
     {
       headers: {
-        Authorization: 'Bearer ' + sessionStorage.getItem('token')
+        Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+        infLoginAs: ''+sessionStorage.getItem('loginAs'),
+        userRole: ''+sessionStorage.getItem('role')
       }
     });
 }
@@ -56,7 +62,9 @@ export function getTransactionsByUser(data: any) {
   return axios.post(baseUrl + 'getTransactionsByUser', data,
   {
     headers: {
-      Authorization: 'Bearer ' + sessionStorage.getItem('token')
+      Authorization: 'Bearer ' + sessionStorage.getItem('token'),
+      infLoginAs: ''+sessionStorage.getItem('loginAs'),
+      userRole: ''+sessionStorage.getItem('role')
     }
   });
 }

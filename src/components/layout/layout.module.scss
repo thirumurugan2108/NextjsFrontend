@@ -1,0 +1,34 @@
+
+
+.header {
+  display: flex;
+  align-items: center;
+  height: 10vh;
+  padding-left: 1rem;
+  background-color: red;
+  color: white;
+}
+
+.title {
+  letter-spacing: 3px;
+}
+
+.superAdminWrapper {
+  top: 0px;
+  display: flex;
+  background-color: rgba(0,0,0, 0.5);
+  color: #fff;
+  padding: 5px;
+  font-size: 12px;
+  margin: 0px;
+  width: 100%;
+  justify-content: space-between;
+  h3 {
+    display: inline;
+    margin: 5px;
+  }
+  a {
+    color: #fff;
+    line-height: 20px;
+  }
+}
